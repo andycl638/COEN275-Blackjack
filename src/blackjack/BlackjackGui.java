@@ -54,7 +54,7 @@ public class BlackjackGui {
 	private void initialize() {
 		frame = new JFrame();
 		frame.getContentPane().setBackground(new Color(139, 69, 19));
-		frame.setResizable(false);
+		frame.setResizable(true);
 		frame.setBackground(new Color(0, 128, 0));
 		frame.setBounds(100, 100, 600, 419);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
