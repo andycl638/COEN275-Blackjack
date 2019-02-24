@@ -129,7 +129,7 @@ public class Dealer {
 		//add a new hand to player
 		//double bet
 	}
-	
+	//remove comment
 	// Andy
 	private boolean blackjack(Hand playerHand) {
 		//check for an ace and a 10-value card just after the cards are dealt
