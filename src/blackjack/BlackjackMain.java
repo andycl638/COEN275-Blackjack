@@ -3,14 +3,24 @@ package blackjack;
 public class BlackjackMain {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		
+		
+		Player player = new Player("player 1");
+		int bet = 10;
+		// set the initial bet. should be passed in to dealer
+		// deck might need to be created outside so that the dealer can have the same deck when a game is finished
+		Deck deck = new Deck(); //pass to dealer param
+		Dealer dealer = new Dealer(player, bet, deck);
+		
+		// the dealer is passed in to the GUI/event handler
+	}
+	
+	public void testDeckAndHand() {
 		//Currently this is a tester class. We can use it to test backend functionality
 		Deck deck = new Deck();
 		System.out.println(deck.toString());
 	
 		Hand hand = new Hand();
-		
 		
 		try {
 			System.out.println("dealing card");
@@ -31,7 +41,8 @@ public class BlackjackMain {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
 		}
-		
 	}
 
 }
+
+

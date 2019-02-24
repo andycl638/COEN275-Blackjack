@@ -10,7 +10,7 @@ public class Hand {
 	private int bet = 0; // each hand has it's own bet
 	
 	// returns if there is an ace on the hand
-	public boolean getAceValue() {
+	public boolean hasAceValue() {
 		return this.aceValue;
 	}
 	
@@ -46,7 +46,7 @@ public class Hand {
 		int totalValue = 0;
 		for (Card card: cards ) {
 			
-			if (getAceValue() == true)
+			if (hasAceValue() == true)
 			{
 				// there is an ace! do something special
 			}
@@ -66,7 +66,7 @@ public class Hand {
 		//int totalValue = 0;
 		
 		// the card is an ace
-		if (getAceValue() == true)
+		if (hasAceValue() == true)
 		{
 			// hand value is 11 or over, ace is treated as 1 or you bust
 			if(this.handValue >= 11) {
