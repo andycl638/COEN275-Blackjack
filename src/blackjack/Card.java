@@ -7,7 +7,7 @@ public class Card {
     private int value;
 
     public Card(Character imagePath, int value) {
-        this.imagePath = ".\\src\\cards\\"+value+imagePath+".gif";
+        this.imagePath = "/cards/back"+value+imagePath+".gif"; //taking the value of the card from the file name
         this.value = value;
 
     }
@@ -18,6 +18,13 @@ public class Card {
     }
 
     public int getValue() {
-        return value;
+    	
+    	if (this.value> 10){
+    		
+    		return
+    		this.value=10;
+    	}
+    	else
+    		return value;
     }
 }
