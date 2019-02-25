@@ -14,12 +14,9 @@ public class Hand {
 		return this.aceValue;
 	}
 	
-	// determines if there is an ace on the hand
-	// set during first deal
-	
-	//private
-	public void setAceValue(boolean aceValue) {
-		this.aceValue = aceValue;
+	//
+	private void setAceValue() {
+		this.aceValue = true;
 	}
 	
 	// get the cards on the hand
@@ -29,17 +26,23 @@ public class Hand {
 	
 	// add cards to the hand
 	public void addCards(Card card) {
-		// setAceValue()
+		// if the card value is 11 then there is an ace on the hand
+		if (card.getValue() == 11)
+			setAceValue();
+		
 		this.hand.add(card);
+		
+		addCardValues(card);
 	}
 	
 	public int getHandValue() {
 		return this.handValue;
 	}
 	
-	//Add the values of all the cards in the hand
+	// Add the values of all the cards in the hand
 	// if there is an ace then it can be either 1 or 11 depending on the rules
 	public void addHandValue(ArrayList<Card> cards) {
+		
 		int totalValue = 0;
 		for (Card card: cards ) {
 			
@@ -49,13 +52,38 @@ public class Hand {
 			}
 			else
 			{
+				// add the values of the cards.
 				totalValue  += card.getValue();
-				//just add the cards
-//				totalValue += card.value;
 			}
 		
 		}
 		this.handValue = totalValue;
+	}
+	
+	// the each card value to the hand value. Use per hand
+	private void addCardValues(Card card) {
+		
+		//int totalValue = 0;
+		
+		// the card is an ace
+		if (getAceValue() == true)
+		{
+			// hand value is 11 or over, ace is treated as 1 or you bust
+			if(this.handValue >= 11) {
+				this.handValue  += 1;
+			}
+			else {
+				this.handValue  += card.getValue();
+			}
+			// there is an ace! do something special
+		}
+		else
+		{
+			// add the values of the cards.
+			this.handValue  += card.getValue();
+		}
+		
+		//this.handValue = totalValue;
 	}
 	
 	public int getBet() {
@@ -64,5 +92,11 @@ public class Hand {
 	
 	public void setBet(int bet) {
 		this.bet = bet;
+	}
+	
+	@Override
+	public String toString() {
+	
+		return "Hand Value: " + this.handValue + " " + this.aceValue;
 	}
 }

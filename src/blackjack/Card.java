@@ -1,6 +1,5 @@
 package blackjack;
 
-import javax.swing.*;
 
 public class Card {
     private String imagePath;
@@ -9,7 +8,6 @@ public class Card {
     public Card(Character imagePath, int value) {
         this.imagePath = "/cards/back"+value+imagePath+".gif"; //taking the value of the card from the file name
         this.value = value;
-
     }
 
     public String getImagePath() {
@@ -26,5 +24,11 @@ public class Card {
     	}
     	else
     		return value;
+    }
+    
+    @Override
+    public String toString() {
+		return "Card Path: " + getImagePath() + " Value: " + getValue();
+    	
     }
 }

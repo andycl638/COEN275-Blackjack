@@ -21,6 +21,7 @@ public class Deck {
             }
         System.out.println("Created deck of "+deckOfCards.size()+" cards");
     }
+    
     public Card deal() throws Exception {
         if(this.deckOfCards.size()<1){
             System.out.println("Deck is empty !!");
@@ -28,6 +29,12 @@ public class Deck {
         }
 
         int randomNum = ThreadLocalRandom.current().nextInt(0, this.deckOfCards.size() + 1);
+       // System.out.println(this.deckOfCards.get(randomNum));
         return this.deckOfCards.remove(randomNum);
+    }
+    
+    @Override
+    public String toString() {
+    	return "Deck size: " + this.deckOfCards.size();
     }
 }
