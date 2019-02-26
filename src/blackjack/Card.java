@@ -7,6 +7,16 @@ public class Card {
 
     public Card(Character imagePath, int value) {
         this.imagePath = "/cards/back"+value+imagePath+".gif"; //taking the value of the card from the file name
+        if(value==1) {
+        	
+        	this.value=11;
+        }
+        
+        if(value>10) {
+        	
+        	this.value=10;
+        }
+        
         this.value = value;
     }
 
@@ -17,13 +27,9 @@ public class Card {
 
     public int getValue() {
     	
-    	if (this.value> 10){
-    		
-    		return
-    		this.value=10;
-    	}
-    	else
+    	   		
     		return value;
+    	
     }
     
     @Override

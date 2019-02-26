@@ -5,6 +5,7 @@ public class Dealer {
 	Deck deck;
 	Player player;
 	private int counter = 0;
+	private boolean splitFlag=false;
 	
 	// Andy
 	// Constructor..set up game
@@ -28,7 +29,20 @@ public class Dealer {
 	
 	// Mohak, Niranjan
 	public void stand() {
-		//dealer hits and compareHands
+		dealersHand=new Hand();
+		if(splitFlag==true) {
+			while(dealersHand.getHandValue()<=player.getHand().get(0).getHandValue()||dealersHand.getHandValue()<=player.getHand().get(1).getHandValue()) {
+				hit(); //dealer hits till the time he reaches greater than or equal to the players hand value
+			}
+		}
+		
+		else { //happens when the player hand is not split
+			while(dealersHand.getHandValue()<=player.getHand().get(0).getHandValue()) {
+				hit();
+			} 
+		}
+		endGame();
+				
 	}
 	
 	//Andy 
@@ -46,15 +60,20 @@ public class Dealer {
 	// Mohak, Niranjan
 	//first time
 	public void surrender() {
-		//calculate bets
+		player.setBalance(player.getBalance()+(player.getPlayerBet()/2)); // the player gets half of his bet amount back and it is added to the balance
 	}
 	
 	// Mohak, Niranjan
 	//first time
-	public void split() {
+	public void split(Card card) {
 		//add a new hand to player
-//		player.addHand();
-		//double bet
+		Hand newHand=new Hand(); //creating a new hand object 
+		newHand.addCards(card); //adding the previous card to the new hand  
+		player.addHand(newHand); //adding the new hand to the player
+		//need to call the method here which removes the card after splitting from the original hand
+		
+		doubleDown(); //double bet in total
+		splitFlag=true;
 	}
 	
 	// Andy
@@ -77,7 +96,7 @@ public class Dealer {
 	//	0 for tie
 	//	-1 for lose
 	public int compareHands() {
-		//comapre dealers and player's hands total value.
+		//compare dealers and player's hands total value.
 		//return a win, lose or tie.
 		int playerWin=0;
 		int playerLose=0;
