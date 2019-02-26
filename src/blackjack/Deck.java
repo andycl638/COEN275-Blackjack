@@ -10,10 +10,10 @@ public class Deck {
 
     public Deck() {
         HashMap<Integer, Character> intSuitMapping=new HashMap<Integer, Character>();
-        intSuitMapping.put(0,'s');
-        intSuitMapping.put(1,'h');
-        intSuitMapping.put(2,'c');
-        intSuitMapping.put(3,'d');
+        intSuitMapping.put(0,'s'); //spade card
+        intSuitMapping.put(1,'h'); //heart card
+        intSuitMapping.put(2,'c'); //club card
+        intSuitMapping.put(3,'d'); //diamond card
         for (int i=0 ; i<4;i++){
                 for (int j=1; j<14;j++){
                     this.deckOfCards.add(new Card(intSuitMapping.get(i),j));
