@@ -40,6 +40,7 @@ public class Dealer {
 	// first time
 	public void doubleDown() {
 		//double the bet
+		player.setPlayerBet(2*player.getPlayerBet(),player.getPlayerBet());
 	}
 	
 	// Mohak, Niranjan
@@ -52,6 +53,7 @@ public class Dealer {
 	//first time
 	public void split() {
 		//add a new hand to player
+//		player.addHand();
 		//double bet
 	}
 	
@@ -65,8 +67,8 @@ public class Dealer {
 	
 	// Mohak, Niranjan
 	public void endGame() {
-		//call to compareHands()
-		//calculateBets()
+		int result=compareHands();//call to compareHands()
+		calculateBets(result);//calculateBets()
 	}
 	
 	// Mohak, Niranjan
@@ -77,12 +79,39 @@ public class Dealer {
 	public int compareHands() {
 		//comapre dealers and player's hands total value.
 		//return a win, lose or tie.
-		return 0;
+		int playerWin=0;
+		int playerLose=0;
+		int tie=0;
+		for(int i=0;i<player.getHand().size();i++){
+			if(this.dealersHand.getHandValue()==player.getHand().get(i).getHandValue()){
+				tie=1;
+			}else if(this.dealersHand.getHandValue()<player.getHand().get(i).getHandValue()){
+				playerWin=1;
+
+			}else if (this.dealersHand.getHandValue()>player.getHand().get(i).getHandValue()){
+				playerLose=-1;
+			}
+		}
+		if (playerWin==1){
+			return playerWin;// if Player wins return 1
+		}else if (tie==1){// If there is a tie return 0
+			return 0;
+		}
+		return playerLose;// If player lose return -1
 	}
 	
 	//Andy
 	//NOTE: Do we need a method to calculateBets?
-	public int calculateBets() {
-		return 0;
+	public int calculateBets(int result) {
+		if (result==1){ // If player wins he gets twice his bet back
+			player.setBalance(player.getBalance()+(2*player.getPlayerBet()));
+			return player.getBalance();
+		}else if (result==-1){ // If player lose , while setting the bet , bet has already been subtracted from balance
+			return player.getBalance();
+		}
+		// if there is tie , player gets his bet back
+		player.setBalance(player.getBalance()+player.getPlayerBet());
+		return player.getBalance();
+
 	}
 }
