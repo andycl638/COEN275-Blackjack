@@ -9,6 +9,12 @@ public class Player {
 	private ArrayList<Hand> playersHand;
 	private int playerBet=0;// added player bet for calculating calculateBet() in Dealer class
 
+	public Player(String name) {
+		this.balance = 0;
+		this.name = name;
+		playersHand = new ArrayList<>();
+	}
+	
 	public int getPlayerBet() {
 		return playerBet;
 	}
@@ -24,12 +30,6 @@ public class Player {
 		setBalance(getBalance()-oldBet);
 	}
 
-	public Player(String name) {
-		this.balance = 0;
-		this.name = name;
-		playersHand = new ArrayList<>();
-	}
-	
 	public String getName() {
 		return this.name;
 	}
