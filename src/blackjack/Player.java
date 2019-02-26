@@ -7,9 +7,14 @@ public class Player {
 	private String name;
 	private int balance;
 	private ArrayList<Hand> playersHand;
-<<<<<<< HEAD
 	private int playerBet=0;// added player bet for calculating calculateBet() in Dealer class
 
+	public Player(String name) {
+		this.balance = 0;
+		this.name = name;
+		playersHand = new ArrayList<>();
+	}
+	
 	public int getPlayerBet() {
 		return playerBet;
 	}
@@ -23,15 +28,6 @@ public class Player {
 	public void setPlayerBet(int playerBet,int oldBet) {
 		this.playerBet = playerBet;
 		setBalance(getBalance()-oldBet);
-	}
-
-=======
-	
->>>>>>> refs/remotes/origin/master
-	public Player(String name) {
-		this.balance = 0;
-		this.name = name;
-		playersHand = new ArrayList<>();
 	}
 	
 	public String getName() {

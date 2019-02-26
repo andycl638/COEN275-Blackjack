@@ -101,12 +101,12 @@ public class Dealer {
 		// check if hand got 21
 		if (blackjack(hand)) {
 			System.out.println("won!");
-			calculateBet(hand.getBet());
+			//calculateBet(hand.getBet());
 		}
 		// check if hand bust
 		else if(bust(hand)){
 			System.out.println("BUST");
-			calculateBet(-hand.getBet());
+			//calculateBet(-hand.getBet());
 		}
 		//draw cards and check for busts
 	}
@@ -137,7 +137,7 @@ public class Dealer {
 		//check for an ace and a 10-value card just after the cards are dealt
 		if (playerHand.hasAceValue() && playerHand.getHandValue() == 21) {
 			// bet won
-			calculateBet(playerHand.getBet());
+			//calculateBet(playerHand.getBet());
 			return true;
 		}
 		return false;
@@ -148,7 +148,7 @@ public class Dealer {
 		// hand value greater than 21 is a bust
 		if (playerHand.getHandValue() > 21) {
 			// bet lost
-			calculateBet(-playerHand.getBet());
+			//calculateBet(-playerHand.getBet());
 			return true;
 		}
 		return false;
