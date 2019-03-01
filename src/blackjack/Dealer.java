@@ -4,10 +4,8 @@ public class Dealer {
     private Hand dealersHand = new Hand();
     private Deck deck;
     private Player player;
-    private int counter = 0;
-    private boolean splitFlag = false;
+    private boolean playerStand = false;
 
-    // Andy
     // this is called at the beginning of the game. It sets up the game
     // shuffle deck
     // deal hand to player and dealer
@@ -51,183 +49,157 @@ public class Dealer {
         }
 
         // check if player got blackjack
-        if (blackjack(playerHand)) {
+        if (is21(playerHand)) {
             System.out.println("BLACKJACK!");
+            double amount = playerHand.getBet() * 1.5;
+            endGame(amount, 1);
+            // need to end game since player won
         }
-        // check if player bust
-        else if (bust(playerHand)) {
-            System.out.println("BUST");
-        }
-        // no blackjack nor bust, continue with game
+        // no blackjack, continue with game
         else {
-            System.out.println("No blackjack or bust, continue with play");
+            System.out.println("No blackjack, continue with play");
         }
 
     }
 
-    //not required, happens in the event handler
-    public void pDecision() {
-        //switch case for calling methods corresponding to player's decisions
-    }
-
-    // Mohak, Niranjan
-    public void dDecision() {
-        //switch case for calling methods corresponding to dealer's decisions
-        //switch case needs to be called in a loop until game is won or
-        //dealer busts.
-
+    public void dDecision(Hand playerHand) {
+        int result = 0;
+        
+        while (true) {
+        	result = compareHands(playerHand);
+        	
+        	if (result == 0){
+        		endGame(0, result); // tie, hand values are 18 or higher
+        		break;
+        	}
+        	else if (result == -1) {
+        		endGame(-playerHand.getBet(), result); // player lost, dealer has higher hand value
+        		break;
+        	}
+        	else if (result == 1) {
+        		hit(this.dealersHand); // deal a card to dealer hand 
+        		
+            	if(bust(this.dealersHand)) {
+            		endGame(playerHand.getBet(), result); // player wins because dealer busted
+            		break;
+            	}
+        	}
+        	else {
+    			System.out.println("game broke");
+    			break;
+    		}
+        		
+        	
+        		
+        }
+        
         // need to check if it's the start of the game
         // need to deal twice and check for blackjack
     }
 
-    // Mohak, Niranjan
-    public void stand() {
-        dealersHand = new Hand();
-        if (splitFlag == true) {
-            while (dealersHand.getHandValue() <= player.getHand().get(0).getHandValue() || dealersHand.getHandValue() <= player.getHand().get(1).getHandValue()) {
-                hit(dealersHand); //dealer hits till the time he reaches greater than or equal to the players hand value
-            }
-        } else { //happens when the player hand is not split
-            while (dealersHand.getHandValue() <= player.getHand().get(0).getHandValue()) {
-                hit(dealersHand);
-            }
-        }
-        endGame();
-
-    }
-
-    //Andy
     // Param: Hand, can be player or dealer
     public void hit(Hand hand) {
         try {
             hand.addCards(this.deck.deal());
             System.out.println("player: second card");
-
-
         } catch (Exception e) {
-
             e.printStackTrace();
             System.out.println(e.getMessage());
         }
-
-        // check if hand got 21
-        if (blackjack(hand)) {
-            System.out.println("won!");
-            //calculateBet(hand.getBet());
-        }
-        // check if hand bust
-        else if (bust(hand)) {
-            System.out.println("BUST");
-            //calculateBet(-hand.getBet());
-        }
-        //draw cards and check for busts
     }
-
-    // Mohak, Niranjan
+    
     // first time
-    public void doubleDown() {
+    public void doubleDown(Hand playerHand) {
         //double the bet
-        player.setPlayerBet(2 * player.getPlayerBet(), player.getPlayerBet());
+        playerHand.setBet(playerHand.getBet() * 2);
     }
 
-    // Mohak, Niranjan
     //first time
-    public void surrender() {
-        player.setBalance(player.getBalance() + (player.getPlayerBet() / 2)); // the player gets half of his bet amount back and it is added to the balance
+    public void surrender(Hand playerHand) {
+        double amount = -(playerHand.getBet() / 2);
+    	 // the player gets half of his bet amount back and it is added to the balance
+        endGame(amount, -1);
     }
 
-    // Mohak, Niranjan
     //first time
-    public void split(Card card) {
+    public void split(Hand playerHand) {
         //add a new hand to player
         Hand newHand = new Hand(); //creating a new hand object
-        newHand.addCards(card); //adding the previous card to the new hand
-        this.player.addHand(newHand); //adding the new hand to the player
-        //need to call the method here which removes the card after splitting from the original hand
-
-        doubleDown(); //double bet in total
-        splitFlag = true;
+        Card splitCard = playerHand.getHand().remove(0);
+        
+        newHand.addCards(splitCard); //adding the previous card to the new hand
+        
+        try {
+        	// dealing a new card to both hands
+			newHand.addCards(this.deck.deal());
+			playerHand.addCards(this.deck.deal());
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+        
+        this.player.addHand(newHand); //adding the new hand to the player 
     }
 
-    // Andy
-    private boolean blackjack(Hand playerHand) {
-        //check for an ace and a 10-value card just after the cards are dealt
-        if (playerHand.hasAceValue() && playerHand.getHandValue() == 21) {
-            // bet won
-            //calculateBet(playerHand.getBet());
-            return true;
+    private boolean is21(Hand hand) {
+        if (hand.getHandValue() == 21) {
+           return true;
         }
         return false;
     }
 
-    // Andy - complete
-    private boolean bust(Hand playerHand) {
+
+    private boolean bust(Hand hand) {
         // hand value greater than 21 is a bust
-        if (playerHand.getHandValue() > 21) {
-            // bet lost
-            //calculateBet(-playerHand.getBet());
+        if (hand.getHandValue() > 21) {
             return true;
         }
         return false;
     }
 
-    // Mohak, Niranjan
-    public void endGame() {
-        int result = compareHands();//call to compareHands()
-        calculateBets(result);//calculateBets()
-    }
-
-    // Mohak, Niranjan
     //Can return:
-    //	1 for win
+    //	1 for continue
     //	0 for tie
-    //	-1 for lose
-    public int compareHands() {
+    //	-1 for stop
+    // this is only called by the dealer
+    private int compareHands(Hand playerHand) {
         //compare dealers and player's hands total value.
-        //return a win, lose or tie.
-        int playerWin = 0;
-        int playerLose = 0;
-        int tie = 0;
-        for (int i = 0; i < player.getHand().size(); i++) {
-            if (this.dealersHand.getHandValue() == player.getHand().get(i).getHandValue()) {
-                tie = 1;
-            } else if (this.dealersHand.getHandValue() < player.getHand().get(i).getHandValue()) {
-                playerWin = 1;
-            } else if (this.dealersHand.getHandValue() > player.getHand().get(i).getHandValue()) {
-                playerLose = -1;
-            }
+        //return whether dealer needs to continue playing or not.
+        int result = 0;
+       
+        // dealer will stand if both hand values are the same and dealer's hand value is greater than or equal to 18
+        if (this.dealersHand.getHandValue() == playerHand.getHandValue() && this.dealersHand.getHandValue() >=18) {
+            result = 0; // tie
+        } else if (this.dealersHand.getHandValue() <= playerHand.getHandValue()) {
+            result = 1; // dealer continues
+        } else if (this.dealersHand.getHandValue() > playerHand.getHandValue()) {
+            result = -1; // dealer stops
         }
-
-        if (playerWin == 1) {
-            return playerWin;// if Player wins return 1
-        } else if (tie == 1) {// If there is a tie return 0
-            return 0;
-        }
-        return playerLose;// If player lose return -1
+        
+        return result;
     }
 
-
-    //Andy - complete
     // the amount won or lost should be calculated in each function else
     // pass in + or - amount so the balance can get set.
-	/*private void calculateBet(int bet) {
-		// surrender - loose half the bet
-		// double - double the bet
-		this.player.setBalance(this.player.getBalance() + bet);
-  }*/
-
-    //Andy
-    //NOTE: Do we need a method to calculateBets?
-    public int calculateBets(int result) {
-        if (result == 1) { // If player wins he gets twice his bet back
-            player.setBalance(player.getBalance() + (2 * player.getPlayerBet()));
-            return player.getBalance();
-        } else if (result == -1) { // If player lose , while setting the bet , bet has already been subtracted from balance
-            return player.getBalance();
-        }
-        // if there is tie , player gets his bet back
-        player.setBalance(player.getBalance() + player.getPlayerBet());
-        return player.getBalance();
-
-    }
+	private void updateBalance(double amount) {
+		this.player.setBalance(this.player.getBalance() + amount);
+	}
+	
+	public void endGame(double amount, int result) {
+		updateBalance(amount);
+		
+		if (result == 0) {
+			System.out.println("It's a tie"); 
+		}
+		else if (result == 1) {
+			System.out.println("Player Won: $" + amount); 
+		} else if (result == -1) {
+			System.out.println("Player Lost: $" + amount); 
+		}
+		else {
+			System.out.println("game broke");
+		}
+		
+		// show dialog box with result and give user option to play again
+	}
 }

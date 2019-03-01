@@ -41,7 +41,7 @@ public class BlackjackMain {
 		Dealer dealer = new Dealer(player, bet, deck);
 		
 		BlackjackMain tester = new BlackjackMain();
-		tester.testDeckAndHand();
+	//	tester.testDeckAndHand();
 		
 		// the dealer is passed in to the GUI/event handler
 	}
