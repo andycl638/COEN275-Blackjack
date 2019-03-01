@@ -41,30 +41,9 @@ public class Hand {
 	
 	// Add the values of all the cards in the hand
 	// if there is an ace then it can be either 1 or 11 depending on the rules
-	public void addHandValue(ArrayList<Card> cards) {
-		
-		int totalValue = 0;
-		for (Card card: cards ) {
-			
-			if (hasAceValue() == true)
-			{
-				// there is an ace! do something special
-			}
-			else
-			{
-				// add the values of the cards.
-				totalValue  += card.getValue();
-			}
-		
-		}
-		this.handValue = totalValue;
-	}
 	
 	// the each card value to the hand value. Use per hand
 	private void addCardValues(Card card) {
-		
-		//int totalValue = 0;
-		
 		// the card is an ace
 		if (hasAceValue() == true)
 		{
@@ -82,8 +61,6 @@ public class Hand {
 			// add the values of the cards.
 			this.handValue  += card.getValue();
 		}
-		
-		//this.handValue = totalValue;
 	}
 	
 	public int getBet() {
