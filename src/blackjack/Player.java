@@ -29,7 +29,7 @@ public class Player {
 		this.playerBet = playerBet;
 		setBalance(getBalance()-oldBet);
 	}
-	
+
 	public String getName() {
 		return this.name;
 	}
