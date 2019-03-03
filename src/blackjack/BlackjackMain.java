@@ -1,7 +1,14 @@
 package blackjack;
 
-public class BlackjackMain {
+import blackjack.GUI.*;
 
+public class BlackjackMain {
+	private BlackjackGui window;
+	
+	public BlackjackMain() {
+		window = new BlackjackGui();
+	}
+	
 	public void testDeckAndHand() {
 		//Currently this is a tester class. We can use it to test backend functionality
 		Deck deck = new Deck();
