@@ -21,29 +21,23 @@ public class DealerPanel extends GamePanel{
 	
 	//Declare main components
 	private Container contentPane;
-	private JPanel deckPanel;
+	private JPanel deckPanel, controlPanel;
+	private CustomButton deck, exit, rules;
 	private HandPanel dealerHandPanel;
+	private JLabel dealerLabel, playerBalance;
 	
 	//initialize dimensions and padding
 	private int pRightDeck = 100;
 	private int pTopDeck = 50;
 	private int pLeftLabel = 20;
-	private int deckPanelHeight = 100;
-	private int deckPanelWidth = 90;
-	
-	private JLabel card4;
-	private int special_x;
-	private int special_y;
-	boolean isSpecialAnimating;
-	
+	private int pControlPanel = 10;
 	
 	public DealerPanel(Container contentPane) {
 		LOGGER.info("In Dealer Panel");
 		this.contentPane = contentPane;
+		
 		initialize();
 	}
-	
-	
 	
 	public void initialize() {
 		LOGGER.info("In init Dealer Panel");
@@ -51,14 +45,31 @@ public class DealerPanel extends GamePanel{
 		//dealerPanel.setBounds(0, 0, dPanelDim.width-10, (dPanelDim.height/2)-10);
 		//contentPane.add(dealerPanel);
 		
+		playerBalance = new JLabel("Balance: $1000");
+		playerBalance.setForeground(super.paleYellow);
+		playerBalance.setHorizontalAlignment(SwingConstants.CENTER);
+		playerBalance.setVerticalAlignment(SwingConstants.CENTER);
+		playerBalance.setFont(new Font("Monospace", Font.BOLD+Font.ITALIC, 30));
+		this.add(playerBalance);
+		
+		//Initialize player name
+		dealerLabel = new JLabel("Dealer");
+		dealerLabel.setForeground(super.paleYellow);
+		dealerLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		dealerLabel.setVerticalAlignment(SwingConstants.CENTER);
+		dealerLabel.setFont(new Font("Helvetica Neue",Font.PLAIN, 16));
+		this.add(dealerLabel);
+		
 		//Creating Deck Panel
 		deckPanel = new JPanel();
-		deckPanel.setBackground(new Color(0, 128, 0));
+		deckPanel.setOpaque(false);
+		//deckPanel.setBackground(super.panelBackground);
 		
 		deckPanel.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				dealerHandPanel.addCard("/cards/qs.gif");
+				placeAndResizeComponents();
 				repaint();
 			}
 			@Override
@@ -72,72 +83,72 @@ public class DealerPanel extends GamePanel{
 		});
 		this.add(deckPanel);
 		
-		JLabel deckLbl = new JLabel();
-		deckPanel.add(deckLbl);
-		deckLbl.setIcon(new ImageIcon(new ImageIcon(getClass().getResource("/cards/back.gif")).getImage()));
+		deck = new CustomButton("resources/cards/back2.png");
+		deckPanel.add(deck);
 		
-		JLabel dealerLbl = new JLabel("Dealer");
-		dealerLbl.setBounds(6, 6, 60, 16);
-		this.add(dealerLbl);
+		initializeControlPanel();
+		initializeHandPanel();
+	}
+	
+	public void initializeControlPanel() {
+		controlPanel = new JPanel();
+		controlPanel.setLayout(null);
+		controlPanel.setOpaque(false);
+		this.add(controlPanel);
 		
+		rules = new CustomButton("Rules", false);
+		controlPanel.add(rules);
+		
+		exit = new CustomButton("Exit", false);
+		controlPanel.add(exit);
+	}
+	
+	public void initializeHandPanel() {
 		//Dealer Hand Panel
 		dealerHandPanel = new HandPanel();
 		LOGGER.info("Size of the Dealer Panel is: "+this.getSize().toString());
 		dealerHandPanel.setBackground(dealerHandPanel.c1);
 		this.add(dealerHandPanel);
 		dealerHandPanel.setLayout(null);
-		dealerHandPanel.setBorder(BorderFactory.createBevelBorder(1));
 		
 		dealerHandPanel.addCard("/cards/qs.gif");
 		dealerHandPanel.addCard("/cards/tc.gif");
-
-	}
-	
-	public void startAnimation() {
-		int startX = card4.getLocation().x;
-		int endX = 213;
-		
-		special_x = startX;
-		System.out.println(startX);
-		
-		/**Timer smallAnimation = new Timer(100, new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				isSpecialAnimating = true;
-				System.out.println(special_x);
-				special_x = special_x - 10;
-				if(special_x < endX) {
-					Timer currentTimer = (Timer)arg0.getSource();
-					currentTimer.stop();
-				}
-				repaint();
-			}
-			
-		});
-		smallAnimation.start();**/
 	}
 	
 	public void placeAndResizeComponents() {
 		System.out.println("Dealer Panel Size" + this.getSize());
-
-		dealerHandPanel.setBounds((this.getWidth()-dealerHandPanel.width)/2, (this.getHeight()-dealerHandPanel.height)/2, dealerHandPanel.width, dealerHandPanel.height);
-		deckPanel.setBounds((this.getWidth()-pRightDeck), (this.getHeight()-deckPanelHeight)/2, deckPanelWidth, deckPanelHeight);
-
-		// Animation Effect
-		if(!isSpecialAnimating)
-			special_x = this.getWidth() - 2*(pRightDeck) - 73;
-		special_y = (this.getHeight() - 97)/2;
-		//card4.setBounds(special_x, special_y, 73, 97);
 		
+		playerBalance.setLocation(0,0);
+		playerBalance.setSize(playerBalance.getPreferredSize());
+		
+		rules.setSize((int)rules.getPreferredSize().getWidth()+pControlPanel,(int)rules.getPreferredSize().getHeight()+pControlPanel);
+		rules.setLocation(0,0);
+		exit.setSize(rules.getWidth(), (int)exit.getPreferredSize().getHeight()+pControlPanel);
+		exit.setLocation(rules.getWidth()+pControlPanel, 0);
+		controlPanel.setSize(rules.getWidth()+exit.getWidth()+pControlPanel, rules.getHeight());
+		int controlPanelHeight = (this.getHeight()-rules.getHeight()-exit.getHeight()-pControlPanel*2)/2;
+		controlPanel.setLocation(this.getWidth()-controlPanel.getWidth(), 0);
+		
+		dealerHandPanel.setLocation((this.getWidth()-dealerHandPanel.width)/2, (this.getHeight()-dealerHandPanel.height)/2);
+		dealerHandPanel.setSize(dealerHandPanel.width, dealerHandPanel.height);
+		dealerHandPanel.placeAndResizeComponents();
+		
+		deck.setLocation(0,0);
+		deck.setSize(120,120);
+		int deckPanel_X = this.getWidth()-pRightDeck-deck.getWidth();
+		int deckPanel_Y = (this.getHeight()-deck.getHeight())/2;
+		deckPanel.setLocation(deckPanel_X, deckPanel_Y);
+		deckPanel.setSize(deck.getSize());
+		
+		dealerLabel.setSize(dealerLabel.getPreferredSize());
+		dealerLabel.setLocation((this.getWidth()-dealerLabel.getWidth())/2,(this.getHeight()-(int)deckPanel.getLocation().getY()+10));
+		LOGGER.info(dealerLabel.getBounds().toString());
+		LOGGER.info(deckPanel.getBounds().toString());
+		LOGGER.info(this.getBounds().toString());	
 	}
 	
-	//public void initializeChildComponents() {}
-	
 	public void paint(Graphics g) {
-		placeAndResizeComponents();
+		//placeAndResizeComponents();
 		super.paint(g);
-		//Graphics2D g2d = (Graphics2D) g;
-		//super.paintChildren(g);
 	}
 }
