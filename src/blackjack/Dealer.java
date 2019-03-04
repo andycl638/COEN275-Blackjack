@@ -61,6 +61,10 @@ public class Dealer {
         }
 
     }
+    
+    public Hand getDealerHand() {
+    	return this.dealersHand;
+    }
 
     public void dDecision(Hand playerHand) {
         int result = 0;
@@ -141,7 +145,7 @@ public class Dealer {
         this.player.addHand(newHand); //adding the new hand to the player 
     }
 
-    private boolean is21(Hand hand) {
+    public boolean is21(Hand hand) {
         if (hand.getHandValue() == 21) {
            return true;
         }
@@ -149,7 +153,7 @@ public class Dealer {
     }
 
 
-    private boolean bust(Hand hand) {
+    public boolean bust(Hand hand) {
         // hand value greater than 21 is a bust
         if (hand.getHandValue() > 21) {
             return true;
