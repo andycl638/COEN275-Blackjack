@@ -10,6 +10,8 @@ import java.util.logging.Logger;
 
 import javax.swing.*;
 
+import blackjack.Card;
+
 /**
  * 
  * @author Aparna Gangwar
@@ -31,6 +33,7 @@ public class DealerPanel extends GamePanel{
 	private int pTopDeck = 50;
 	private int pLeftLabel = 20;
 	private int pControlPanel = 10;
+
 	
 	public DealerPanel(Container contentPane) {
 		LOGGER.info("In Dealer Panel");
@@ -68,7 +71,7 @@ public class DealerPanel extends GamePanel{
 		deckPanel.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				dealerHandPanel.addCard("/cards/qs.gif");
+				dealerHandPanel.addCard("/cards/10s.gif");
 				placeAndResizeComponents();
 				repaint();
 			}
@@ -111,8 +114,12 @@ public class DealerPanel extends GamePanel{
 		this.add(dealerHandPanel);
 		dealerHandPanel.setLayout(null);
 		
-		dealerHandPanel.addCard("/cards/qs.gif");
-		dealerHandPanel.addCard("/cards/tc.gif");
+		//dealerHandPanel.addCard("/cards/qs.gif");
+		dealerHandPanel.addCard("/cards/10c.gif");
+		for (Card c: BlackjackGui.dealer.getDealerHand().getHand()) {
+			dealerHandPanel.addCard(c.getImagePath());
+		}
+
 	}
 	
 	public void placeAndResizeComponents() {

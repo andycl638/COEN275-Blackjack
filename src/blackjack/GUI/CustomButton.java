@@ -10,6 +10,7 @@ public class CustomButton extends JLabel {
 	final private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 		
 	private CustomImage img;
+
 	private Color paleYellow = new Color(230,232,233); //button borders
 	private Color grey = new Color(65,79,88,100); //Translucent grey color for buttons
 	private Color darkgrey = new Color(65,79,88,200);
@@ -17,6 +18,7 @@ public class CustomButton extends JLabel {
 	private boolean isImage = true;
 	private String text;
 	private boolean isHighlighted, isPressed;
+	private int value = 0;
 	
 	public CustomButton(String path) {
 		System.out.println(path);
@@ -32,6 +34,12 @@ public class CustomButton extends JLabel {
 		this.setVerticalAlignment(SwingConstants.CENTER);
 		this.setHorizontalAlignment(SwingConstants.CENTER);
 		addMouseListener(null);
+	}
+	
+	public CustomButton(String path, int value) {
+		System.out.println(path);
+		img = new CustomImage(path);
+		this.value = value;
 	}
 	
 	public void setSize(int width, int height) {
@@ -126,5 +134,8 @@ public class CustomButton extends JLabel {
 		});
 	}
 	
+	public int getValue() {
+		return this.value;
+	}
 }
 		

@@ -5,6 +5,12 @@ import java.awt.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.*;
+
+import blackjack.BlackjackEventHandler;
+import blackjack.Dealer;
+import blackjack.Deck;
+import blackjack.Player;
+
 import java.awt.event.*;
 import java.io.File;
 import java.util.logging.Level;
@@ -36,6 +42,13 @@ public class BlackjackGui extends JFrame {
 	protected int gap = 10;
 	protected int pheight, pwidth; //Panels width and height
 	
+	// Declare Event Handler
+	protected BlackjackEventHandler eventHandler = new BlackjackEventHandler();
+	
+	// Declare backend objects
+	protected static Dealer dealer;
+	protected Player player;
+	protected static Deck deck;
 
 	/**
 	 * Launch the application.
@@ -58,9 +71,12 @@ public class BlackjackGui extends JFrame {
 	/**
 	 * Create the main frame.
 	 */
-	public BlackjackGui() {
+	public BlackjackGui(Dealer dealer, Player player, Deck deck) {
 		super("BlackJack- COEN 275");
 		try {
+			BlackjackGui.dealer = dealer;
+			this.player = player;
+			BlackjackGui.deck = deck;
 			JFrame window = this;
 			initialize();
 			window.setVisible(true);
@@ -121,7 +137,7 @@ public class BlackjackGui extends JFrame {
 		LOGGER.info("Initializing Dealer");
 		dealerPanel = new DealerPanel(getContentPane());
 		LOGGER.info("Initializing Player");
-		playerPanel = new PlayerPanel(getContentPane());
+		playerPanel = new PlayerPanel(getContentPane(), this.player);
 		placeAndResizeComponents();
 		//((DealerPanel) dealerPanel).startAnimation();
 		//contentPane.setLayout(null); // For Absolute positioning

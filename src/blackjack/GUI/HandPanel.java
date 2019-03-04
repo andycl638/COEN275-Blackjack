@@ -25,6 +25,7 @@ public class HandPanel extends JPanel{
 		JLabel card = new JLabel();
 		card.setHorizontalAlignment(SwingConstants.TRAILING);
 		card.setBounds(0, 0, 73, 97);
+		System.out.println(path);
 		card.setIcon(new ImageIcon(new ImageIcon(getClass().getResource(path)).getImage()));
 		this.cards.add(card);
 		add(card);
