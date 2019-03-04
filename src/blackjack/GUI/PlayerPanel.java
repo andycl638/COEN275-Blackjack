@@ -20,6 +20,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 
+import blackjack.Card;
+import blackjack.Hand;
+import blackjack.Player;
+
 /**
  * 
  * @author Aparna Gangwar
@@ -48,10 +52,12 @@ public class PlayerPanel extends GamePanel {
 	private CustomButton hit, stand, doubleDown, split, surrender;
 	
 	private Container contentPane;
+	private Player player;
 	
-	public PlayerPanel(Container contentPane) {
+	public PlayerPanel(Container contentPane, Player player) {
 		LOGGER.info("In Player Panel");
 		this.contentPane = contentPane;
+		this.player = player;
 		initialize();
 	}
 	
@@ -69,12 +75,21 @@ public class PlayerPanel extends GamePanel {
 		playerHandPanel.setBackground(super.panelBackground);
 		//this.add(playerHandPanel);
 		
-		playerHandPanel.addCard("/cards/qs.gif");
-		playerHandPanel.addCard("/cards/tc.gif");
+		for (Card c : this.player.getHand().get(0).getHand()) {
+			playerHandPanel.addCard(c.getImagePath());
+		}
+		
 		this.add(playerHandPanel);
 		
 		initializeBetPanel();
 		initializeOptionsPanel();
+		
+		// this will be used to manage all the bets and options the player uses
+//		for(Hand hand : player.getHand()) {
+//			while (hand != null) {
+				playerActions(player.getHand().get(0));
+//			}
+//		}
 	}
 	
 	public void initializePlayerDetailsPanel() {
@@ -94,29 +109,30 @@ public class PlayerPanel extends GamePanel {
 	}
 	
 	public void initializeBetPanel() {
+		
 		betPanel = new JPanel();
 		
 		betPanel.setBackground(super.panelBackground);
 		this.add(betPanel);
 		betPanel.setLayout(null);
 		
-		betOne = new CustomButton("resources/chips/bet1.png");
+		betOne = new CustomButton("resources/chips/bet1.png", 1);
 		betOne.setSize(50, 50);
 		betOne.setLocation(0, 0);
 		
-		betFive = new CustomButton("resources/chips/bet5.png");
+		betFive = new CustomButton("resources/chips/bet5.png", 5);
 		betFive.setSize(50, 50);
 		betFive.setLocation(55, 0);
 		
-		betTen = new CustomButton("resources/chips/bet10.png");
+		betTen = new CustomButton("resources/chips/bet10.png", 10);
 		betTen.setSize(50, 50);
 		betTen.setLocation(0, 55);
 		
-		betTwentyFive = new CustomButton("resources/chips/bet25.png");
+		betTwentyFive = new CustomButton("resources/chips/bet25.png", 25);
 		betTwentyFive.setSize(50, 50);
 		betTwentyFive.setLocation(55, 55);
 		
-		betFifty = new CustomButton("resources/chips/bet50.png");
+		betFifty = new CustomButton("resources/chips/bet50.png", 50);
 		betFifty.setSize(50, 50);
 		betFifty.setLocation(0, 110);
 		
@@ -165,21 +181,6 @@ public class PlayerPanel extends GamePanel {
 		surrenderBtn.setFont(new Font("Lucida Grande", Font.PLAIN, 10));**/
 		
 		hit = new CustomButton("resources/buttons/hit.png");
-		hit.addMouseListener(new MouseListener() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				playerHandPanel.addCard("/cards/qs.gif");
-				repaint();
-			}
-			@Override
-			public void mouseEntered(MouseEvent arg0) {}
-			@Override
-			public void mouseExited(MouseEvent arg0) {}
-			@Override
-			public void mousePressed(MouseEvent arg0) {}
-			@Override
-			public void mouseReleased(MouseEvent arg0) {}
-		});
 		hit.setSize(70, 30);
 		hit.setLocation(0, 0);
 		
@@ -205,6 +206,136 @@ public class PlayerPanel extends GamePanel {
 		optionsPanel.add(split);
 		optionsPanel.add(doubleDown);
 		optionsPanel.add(surrender);
+	}
+	
+	private void playerActions(Hand hand) {
+		betOne.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				int currentBet = player.getHand().get(0).getBet();
+				hand.setBet(currentBet + betOne.getValue());
+				repaint();
+				System.out.println("BET before click:" + currentBet);
+				System.out.println("BET after click:" + hand.getBet());
+			}
+			@Override
+			public void mouseEntered(MouseEvent arg0) {}
+			@Override
+			public void mouseExited(MouseEvent arg0) {}
+			@Override
+			public void mousePressed(MouseEvent arg0) {}
+			@Override
+			public void mouseReleased(MouseEvent arg0) {}
+		});
+		
+		betFive.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				int currentBet = player.getHand().get(0).getBet();
+				hand.setBet(currentBet + betFive.getValue());
+				repaint();
+				System.out.println("BET before click:" + currentBet);
+				System.out.println("BET after click:" + hand.getBet());
+			}
+			@Override
+			public void mouseEntered(MouseEvent arg0) {}
+			@Override
+			public void mouseExited(MouseEvent arg0) {}
+			@Override
+			public void mousePressed(MouseEvent arg0) {}
+			@Override
+			public void mouseReleased(MouseEvent arg0) {}
+		});
+	
+		betTen.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				int currentBet = player.getHand().get(0).getBet();
+				hand.setBet(currentBet + betTen.getValue());
+				repaint();
+				System.out.println("BET before click:" + currentBet);
+				System.out.println("BET after click:" + hand.getBet());
+			}
+			@Override
+			public void mouseEntered(MouseEvent arg0) {}
+			@Override
+			public void mouseExited(MouseEvent arg0) {}
+			@Override
+			public void mousePressed(MouseEvent arg0) {}
+			@Override
+			public void mouseReleased(MouseEvent arg0) {}
+		});
+		
+		betTwentyFive.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				int currentBet = player.getHand().get(0).getBet();
+				hand.setBet(currentBet + betTwentyFive.getValue());
+				repaint();
+				System.out.println("BET before click:" + currentBet);
+				System.out.println("BET after click:" + hand.getBet());
+			}
+			@Override
+			public void mouseEntered(MouseEvent arg0) {}
+			@Override
+			public void mouseExited(MouseEvent arg0) {}
+			@Override
+			public void mousePressed(MouseEvent arg0) {}
+			@Override
+			public void mouseReleased(MouseEvent arg0) {}
+		});
+		
+		betFifty.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				int currentBet = player.getHand().get(0).getBet();
+				hand.setBet(currentBet + betFifty.getValue());
+				repaint();
+				System.out.println("BET before click:" + currentBet);
+				System.out.println("BET after click:" + hand.getBet());
+			}
+			@Override
+			public void mouseEntered(MouseEvent arg0) {}
+			@Override
+			public void mouseExited(MouseEvent arg0) {}
+			@Override
+			public void mousePressed(MouseEvent arg0) {}
+			@Override
+			public void mouseReleased(MouseEvent arg0) {}
+		});
+		
+		hit.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				
+				
+				try {
+					System.out.println("player hand value: " + hand.getHandValue());
+					Card c = BlackjackGui.deck.deal();
+					System.out.println(c.toString());
+					hand.addCards(c);
+					playerHandPanel.addCard(c.getImagePath()); 
+					System.out.println("player hand value: " + hand.getHandValue());
+					if(BlackjackGui.dealer.bust(hand))
+					{
+						BlackjackGui.dealer.endGame(-hand.getBet(), -1);
+					}
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				repaint();
+			}
+			@Override
+			public void mouseEntered(MouseEvent arg0) {}
+			@Override
+			public void mouseExited(MouseEvent arg0) {}
+			@Override
+			public void mousePressed(MouseEvent arg0) {}
+			@Override
+			public void mouseReleased(MouseEvent arg0) {}
+		});
 	}
 	
 	public void placeAndResizeComponents() {
