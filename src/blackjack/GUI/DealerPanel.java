@@ -25,7 +25,7 @@ public class DealerPanel extends GamePanel{
 	private Container contentPane;
 	private JPanel deckPanel, controlPanel;
 	private CustomButton deck, exit, rules;
-	private HandPanel dealerHandPanel;
+	public static HandPanel dealerHandPanel;
 	private JLabel dealerLabel, playerBalance;
 	
 	//initialize dimensions and padding
@@ -114,8 +114,7 @@ public class DealerPanel extends GamePanel{
 		this.add(dealerHandPanel);
 		dealerHandPanel.setLayout(null);
 		
-		//dealerHandPanel.addCard("/cards/qs.gif");
-		dealerHandPanel.addCard("/cards/10c.gif");
+		// displaying initial two cards
 		for (Card c: BlackjackGui.dealer.getDealerHand().getHand()) {
 			dealerHandPanel.addCard(c.getImagePath());
 		}
