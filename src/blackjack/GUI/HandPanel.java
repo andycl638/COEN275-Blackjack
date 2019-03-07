@@ -8,7 +8,7 @@ public class HandPanel extends JPanel{
 	
 	public ArrayList<JLabel> cards = new ArrayList<JLabel>(); 
 	public int height = 97;
-	public int width = 365;
+	public int width = 0;
 	public int gap = 10;
 	public Color c1 = new Color(0, 128, 0); //green background color
 	
@@ -25,9 +25,11 @@ public class HandPanel extends JPanel{
 		JLabel card = new JLabel();
 		card.setHorizontalAlignment(SwingConstants.TRAILING);
 		card.setBounds(0, 0, 73, 97);
+		System.out.println(path);
 		card.setIcon(new ImageIcon(new ImageIcon(getClass().getResource(path)).getImage()));
 		this.cards.add(card);
 		add(card);
+		placeAndResizeComponents();
 		return card;
 	}
 	
@@ -48,7 +50,8 @@ public class HandPanel extends JPanel{
 	}
 	
 	public void paint(Graphics g) {
-		placeAndResizeComponents();
+		//LOGGER.info("Painting HandPanel");
+		//placeAndResizeComponents();
 		super.paint(g);
 	}
 }

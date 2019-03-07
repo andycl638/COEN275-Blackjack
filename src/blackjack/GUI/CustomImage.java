@@ -38,7 +38,9 @@ public class CustomImage {
 	public ImageIcon getImageIcon() {
 		return new ImageIcon(image.getScaledInstance(width, height, Image.SCALE_SMOOTH));
 	}
-	
+	public Image getImage() {
+		return image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+	}
 	public CustomImage setSize(Dimension dimension) {
 		height = dimension.height;
 		width = dimension.width;
