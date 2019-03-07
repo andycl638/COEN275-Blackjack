@@ -13,7 +13,7 @@ public class BlackjackMain {
 		Deck deck = new Deck(); //pass to dealer param
 		Dealer dealer = new Dealer(player, bet, deck);
 		
-		window = new BlackjackGui(dealer, player, deck);
+		window = BlackjackGui.getInstance(dealer, player, deck);
 	}
 	
 	public void testDeckAndHand() {

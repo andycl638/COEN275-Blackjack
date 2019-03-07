@@ -16,12 +16,12 @@ public class CustomButton extends JLabel {
 	private Color darkgrey = new Color(65,79,88,200);
 	
 	private boolean isImage = true;
-	private String text;
+	private String text, path;
 	private boolean isHighlighted, isPressed;
 	private int value = 0;
 	
 	public CustomButton(String path) {
-		System.out.println(path);
+		this.path = path;
 		img = new CustomImage(path);
 	}
 	
@@ -37,7 +37,6 @@ public class CustomButton extends JLabel {
 	}
 	
 	public CustomButton(String path, int value) {
-		System.out.println(path);
 		img = new CustomImage(path);
 		this.value = value;
 	}
@@ -45,6 +44,14 @@ public class CustomButton extends JLabel {
 	public void setSize(int width, int height) {
 		super.setSize(width, height);
 		if(isImage) {
+			if(width == 0 || height == 0) {
+				try {
+					throw new Exception();
+				} catch(Exception e) {
+					System.out.println(path);
+					e.printStackTrace();
+				}
+			}
 			this.setIcon(img.setSize(width, height).getImageIcon());
 			this.repaint();
 		}
@@ -117,7 +124,6 @@ public class CustomButton extends JLabel {
 					CustomButton cb = (CustomButton)e.getSource();
 					cb.isHighlighted = true;
 					cb.setFont(new Font("Monospaced", Font.BOLD+Font.ITALIC, 14));
-					LOGGER.info(cb.getFont().toString());
 					cb.repaint();
 				}
 			}

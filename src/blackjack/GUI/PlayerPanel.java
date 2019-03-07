@@ -54,22 +54,16 @@ public class PlayerPanel extends GamePanel {
 	private CustomButton hit, stand, doubleDown, split, surrender;
 	private JLabel playerName, playerBet;
 	
-	private Container contentPane;
 	private Player player;
 	
-	public PlayerPanel(Container contentPane, Player player) {
-		LOGGER.info("In Player Panel");
-		this.contentPane = contentPane;
+	public PlayerPanel(Player player) {
 		this.player = player;
 		initialize();
 	}
 	
 	public void initialize() {
-		LOGGER.info("In init Player method");
-		
-		this.setBorder(new BevelBorder(10));
-		//this.setBackground(super.panelBackground);
-		this.setLayout(null);
+
+		//this.setLayout(null);
 		
 		//Initialize Player details
 		initializePlayerDetailsPanel();
@@ -103,12 +97,6 @@ public class PlayerPanel extends GamePanel {
 		playerName.setVerticalAlignment(SwingConstants.CENTER);
 		playerDetailsPanel.add(playerName);
 		
-		/**balance = new JLabel("Balance: $1000");
-		balance.setForeground(Color.WHITE);
-		balance.setHorizontalAlignment(SwingConstants.CENTER);
-		balance.setVerticalAlignment(SwingConstants.CENTER);
-		playerDetailsPanel.add(balance);
-		**/
 		this.add(playerDetailsPanel);
 	}
 	
@@ -348,9 +336,6 @@ public class PlayerPanel extends GamePanel {
 	}
 	
 	public void placeAndResizeComponents() {
-		
-		System.out.println("Player Panel Size" + this.getSize());
-		
 		playerName.setSize(playerName.getPreferredSize());
 		playerName.setLocation(0,0);
 		playerDetailsPanel.setLocation((this.getWidth()-playerName.getWidth())/2, 0);
@@ -442,8 +427,5 @@ public class PlayerPanel extends GamePanel {
 		optionsPanel.setLocation(this.getWidth()-surrender.getWidth()-pOptionsPanelRight,pOptionsPanelTop);
 	}
 	
-	public void paint(Graphics g) {
-		//placeAndResizeComponents();
-		super.paint(g);
-	}
+	
 }
