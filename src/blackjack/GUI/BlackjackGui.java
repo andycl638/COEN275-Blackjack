@@ -57,24 +57,6 @@ public class BlackjackGui extends JFrame {
 	protected static Deck deck;
 
 	/**
-	 * Launch the application.
-	 */
-	/**public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					LOGGER.info("In try");
-					//JWindow window = new BlackjackGui();
-					JFrame window = new BlackjackGui();
-					window.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}**/
-
-	/**
 	 * Create the main frame.
 	 */
 	private BlackjackGui(Dealer dealer, Player player, Deck deck) {
@@ -158,7 +140,7 @@ public class BlackjackGui extends JFrame {
 		mainContent = new JPanel() {
 			public void paint(Graphics g) {
 				super.paint(g);
-				g.drawImage(background.setSize(getSize().width, getSize().height).getImage(), 0, 0, null);
+				g.drawImage(background.getImage(), 0, 0, null);
 				super.paintChildren(g);
 			}
 		};
@@ -191,11 +173,6 @@ public class BlackjackGui extends JFrame {
 		LOGGER.info("Initializing game panels");
 		startPanel.setVisible(false);
 		mainContent.setVisible(true);
-		
-		//contentPane.add(layeredPane);
-		//layeredPane.add(mainContentPane, JLayeredPane.DEFAULT_LAYER)
-		//Use layered pane to show components like dialog box(on popup pane) over the base content(which is on default layer).
-		//placeAndResizeComponents();
 	}
 	
 	public void showRulesScreen() {
@@ -208,6 +185,10 @@ public class BlackjackGui extends JFrame {
 		this.repaint();
 	}
 	
+	public void exitGame() {
+		System.exit(0);
+	}
+	
 	public void placeAndResizeComponents() {
 		LOGGER.info("Size of main frame: "+this.getSize().toString());
 		
@@ -215,6 +196,7 @@ public class BlackjackGui extends JFrame {
 		
 		startPanel.setSize(layeredPane.getWidth(), layeredPane.getHeight());
 		mainContent.setSize(layeredPane.getWidth(), layeredPane.getHeight());
+		background.setSize(mainContent.getSize());
 		rulesPanel.setSize(layeredPane.getWidth(), layeredPane.getHeight());
 		
 		Dimension dPanelDim = contentPane.getSize();

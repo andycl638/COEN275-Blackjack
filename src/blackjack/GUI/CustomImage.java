@@ -12,6 +12,7 @@ import javax.imageio.ImageIO;
 public class CustomImage {
 	private String filename;
 	private BufferedImage image = null;
+	private Image resizedImage;
 	private int width;
 	private int height;
 	
@@ -38,18 +39,22 @@ public class CustomImage {
 	public ImageIcon getImageIcon() {
 		return new ImageIcon(image.getScaledInstance(width, height, Image.SCALE_SMOOTH));
 	}
+	
 	public Image getImage() {
-		return image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+		return resizedImage;
 	}
+	
 	public CustomImage setSize(Dimension dimension) {
 		height = dimension.height;
 		width = dimension.width;
+		resizedImage = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
 		return this;
 	}
 	
 	public CustomImage setSize(int width, int height) {
 		this.height = height;
 		this.width = width;
+		resizedImage = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
 		return this;
 	}
 }

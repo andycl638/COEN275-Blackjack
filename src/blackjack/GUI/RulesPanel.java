@@ -24,28 +24,35 @@ public class RulesPanel extends GamePanel{
 	private CustomButton close;
 	private JScrollPane scrollPane; 
 	private JLabel label;
+	private JTextField name;
 	
 	private Color overlayColor = new Color(0,0,0,100);
-	
 	private String rulesFile = "resources/rules.html";
+	
 	//declare component configuration
 	private int padding = 10;
+	private String option = "rules";
 	
 	public RulesPanel() {
-		LOGGER.info("In constructor for rules panel");
+		LOGGER.info("In constructor 1 for rules panel");
 		this.setBackground(overlayColor);
 		this.setOpaque(true);
-		//switch(options) {
-		//case "rules":
-		//case "playerName":
-		//case "":
-		//}
+		
 		initialize();
 	}
 	
-	@Override
+	public RulesPanel(String option) {
+		LOGGER.info("In constructor 2 for rules panel");
+		this.option = option;
+		
+		this.setBackground(overlayColor);
+		this.setOpaque(true);
+		
+		initialize();
+		
+	}
+
 	public void initialize() {
-		LOGGER.info("in initialize");
 		dialogBox = new JPanel();
 		/*{
 			public void paint(Graphics g) {
@@ -60,8 +67,8 @@ public class RulesPanel extends GamePanel{
 		dialogBox.setLayout(null);
 		dialogBox.setBackground(super.grey);
 		dialogBox.setOpaque(true);
-		
-		label = getContentLabel();
+		label = new JLabel();
+		label.setForeground(super.paleYellow);
 		scrollPane = new JScrollPane(label);
 		//scrollPane.setOpaque(false);
 		//scrollPane.getViewport().setOpaque(false);
@@ -92,6 +99,22 @@ public class RulesPanel extends GamePanel{
 		dialogControl.setLayout(null);
 		dialogControl.setBackground(super.greyAlpha);
 		
+		switch(option) {
+			case "rules":
+				initializeRules();
+				break;
+			case "playerName":
+				intializePlayerName();
+			case "endGame":
+				initializeEndGame();
+		}
+	}
+	
+	public void initializeRules() {
+		LOGGER.info("in initializeRules");
+		
+		label.setText(getRulesText());
+			
 		close = new CustomButton("Close", false);
 		dialogControl.add(close);
 		
@@ -99,10 +122,27 @@ public class RulesPanel extends GamePanel{
 		
 		this.add(dialogControl);
 		this.add(dialogBox);
-		this.addListeners();
 	}
-
+	
+	private void intializePlayerName() {
+		LOGGER.info("in initializePlayerName");
+		name = new JTextField();
+		
+	}
+	
+	private void initializeEndGame() {
+		
+	}
+	
 	private void addListener() {
+		RulesPanel that = this;
+		this.addMouseListener(new MouseListener() {
+			public void mouseClicked(MouseEvent arg0) {}
+			public void mouseEntered(MouseEvent arg0) {}
+			public void mouseExited(MouseEvent arg0)  {}
+			public void mousePressed(MouseEvent arg0) {}
+			public void mouseReleased(MouseEvent arg0) {}});
+		
 		close.addMouseListener(new MouseListener() {
 			public void mouseClicked(MouseEvent arg0) {
 				BlackjackGui.getInstance().hideRulesScreen();
@@ -111,15 +151,6 @@ public class RulesPanel extends GamePanel{
 			public void mouseExited(MouseEvent arg0) {}
 			public void mousePressed(MouseEvent arg0) {}
 			public void mouseReleased(MouseEvent arg0) {}});
-	}
-
-	private JLabel getContentLabel() {
-		String text = "";
-		JLabel temp = new JLabel();
-		
-		temp.setText(getRulesText());
-		temp.setForeground(super.paleYellow);
-		return temp;
 	}
 
 	@Override
@@ -144,16 +175,6 @@ public class RulesPanel extends GamePanel{
 		System.out.println("Bounds of dialog box are: "+dialogBox.getBounds().toString());
 		System.out.println("Bounds of close are: "+close.getBounds().toString());
 		System.out.println("Bounds of dialogControl are: "+dialogControl.getBounds().toString());
-	}
-	
-	public void addListeners() {
-		RulesPanel that = this;
-		this.addMouseListener(new MouseListener() {
-			public void mouseClicked(MouseEvent arg0) {}
-			public void mouseEntered(MouseEvent arg0) {}
-			public void mouseExited(MouseEvent arg0)  {}
-			public void mousePressed(MouseEvent arg0) {}
-			public void mouseReleased(MouseEvent arg0) {}});
 	}
 	
 	public String getRulesText() {

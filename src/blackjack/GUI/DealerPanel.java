@@ -39,9 +39,7 @@ public class DealerPanel extends GamePanel{
 	}
 	
 	public void initialize() {
-		//dealerPanel = new JPanel();
-		//dealerPanel.setBounds(0, 0, dPanelDim.width-10, (dPanelDim.height/2)-10);
-		
+		//Initialize player's current balance
 		playerBalance = new JLabel("Balance: $1000");
 		playerBalance.setForeground(super.paleYellow);
 		playerBalance.setHorizontalAlignment(SwingConstants.CENTER);
@@ -60,25 +58,7 @@ public class DealerPanel extends GamePanel{
 		//Creating Deck Panel
 		deckPanel = new JPanel();
 		deckPanel.setLayout(null);
-		deckPanel.setOpaque(false);
-		//deckPanel.setBackground(super.panelBackground);
-		
-		deckPanel.addMouseListener(new MouseListener() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				dealerHandPanel.addCard("/cards/10s.gif");
-				placeAndResizeComponents();
-				repaint();
-			}
-			@Override
-			public void mouseEntered(MouseEvent arg0) {}
-			@Override
-			public void mouseExited(MouseEvent arg0) {}
-			@Override
-			public void mousePressed(MouseEvent arg0) {}
-			@Override
-			public void mouseReleased(MouseEvent arg0) {}
-		});
+		deckPanel.setOpaque(false);	
 		this.add(deckPanel);
 		
 		deck = new CustomButton("resources/cards/back2.png");
@@ -95,75 +75,12 @@ public class DealerPanel extends GamePanel{
 		this.add(controlPanel);
 		
 		rules = new CustomButton("Rules", false);
-		rules.addMouseListener(new MouseListener() {
-
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-				showRules = true;
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseExited(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mousePressed(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-		});
 		controlPanel.add(rules);
 		
 		exit = new CustomButton("Exit", false);
-		exit.addMouseListener(new MouseListener() {
-
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-				System.exit(0);
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseExited(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mousePressed(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-		});
+		
+		addListener();
+		
 		controlPanel.add(exit);
 	}
 	
@@ -180,6 +97,29 @@ public class DealerPanel extends GamePanel{
 			dealerHandPanel.addCard(c.getImagePath());
 		}
 
+	}
+	
+	private void addListener() {
+		rules.addMouseListener(new MouseListener() {
+			public void mouseClicked(MouseEvent arg0) {
+				BlackjackGui.getInstance().showRulesScreen();
+			}
+			public void mouseEntered(MouseEvent arg0) {}
+			public void mouseExited(MouseEvent arg0)  {}
+			public void mousePressed(MouseEvent arg0) {}
+			public void mouseReleased(MouseEvent arg0) {}
+		});
+		
+		exit.addMouseListener(new MouseListener() {
+			public void mouseClicked(MouseEvent arg0) {
+				BlackjackGui.getInstance().exitGame();
+			}
+			public void mouseEntered(MouseEvent arg0) {}
+			public void mouseExited(MouseEvent arg0) {}
+			public void mousePressed(MouseEvent arg0) {}
+			public void mouseReleased(MouseEvent arg0) {}
+			
+		});
 	}
 	
 	public void placeAndResizeComponents() {		
