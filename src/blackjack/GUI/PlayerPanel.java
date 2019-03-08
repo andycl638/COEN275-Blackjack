@@ -53,7 +53,7 @@ public class PlayerPanel extends GamePanel {
 	private CustomButton betOne, betFive, betTen, betTwentyFive, betFifty;
 	private HandPanel playerHandPanel1, playerHandPanel2;
 	private CustomButton hit, stand, doubleDown, split, surrender;
-	private JLabel playerName, playerBet;
+	private JLabel playerName, playerBet, playerHandValue;
 	
 	private Container contentPane;
 	private Player player;
@@ -95,11 +95,12 @@ public class PlayerPanel extends GamePanel {
 		playerDetailsPanel.setOpaque(false);
 		playerDetailsPanel.setBorder(new BevelBorder(10));
 		
-		playerName = new JLabel("Michael Scott");
+		playerName = new JLabel("Michael Scott: ");
 		playerName.setForeground(super.paleYellow);
 		playerName.setFont(new Font("Helvetica Neue",Font.PLAIN, 16));
 		playerName.setHorizontalAlignment(SwingConstants.CENTER);
 		playerName.setVerticalAlignment(SwingConstants.CENTER);
+		playerName.setText("Michael Scott: " + player.getHand().get(0).getHandValue());
 		playerDetailsPanel.add(playerName);
 		
 		/**balance = new JLabel("Balance: $1000");
@@ -164,12 +165,7 @@ public class PlayerPanel extends GamePanel {
 		}
 				
 		playerHandPanel2 = new HandPanel();
-		/*playerHandPanel2.addCard("/cards/12s.gif");
-		playerHandPanel2.addCard("/cards/12d.gif");
-		for (Card c : this.player.getHand().get(0).getHand()) {
-			playerHandPanel2.addCard(c.getImagePath());
-		}
-		*/
+
 		//Add playerHandPanel 1 & 2 to playerHandsPanel
 		playerHandsPanel.add(playerHandPanel1);
 		playerHandsPanel.add(playerHandPanel2);
@@ -186,22 +182,6 @@ public class PlayerPanel extends GamePanel {
 		this.add(optionsPanel);
 		
 		hit = new CustomButton("hit", false);
-		/*hit.addMouseListener(new MouseListener() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				playerHandPanel1.addCard("/cards/12s.gif");
-				placeAndResizeComponents();
-				repaint();
-			}
-			@Override
-			public void mouseEntered(MouseEvent arg0) {}
-			@Override
-			public void mouseExited(MouseEvent arg0) {}
-			@Override
-			public void mousePressed(MouseEvent arg0) {}
-			@Override
-			public void mouseReleased(MouseEvent arg0) {}
-		});*/
 		stand = new CustomButton("STAND", false);
 		split = new CustomButton("SPLIT", false);
 		surrender = new CustomButton("SURRENDER", false);
@@ -220,6 +200,7 @@ public class PlayerPanel extends GamePanel {
 			public void mouseClicked(MouseEvent arg0) {
 				int currentBet = player.getHand().get(0).getBet();
 				hand.setBet(currentBet + betOne.getValue());
+				playerBet.setText("Bet: $" + hand.getBet());
 				repaint();
 				System.out.println("BET before click:" + currentBet);
 				System.out.println("BET after click:" + hand.getBet());
@@ -239,6 +220,7 @@ public class PlayerPanel extends GamePanel {
 			public void mouseClicked(MouseEvent arg0) {
 				int currentBet = player.getHand().get(0).getBet();
 				hand.setBet(currentBet + betFive.getValue());
+				playerBet.setText("Bet: $" + hand.getBet());
 				repaint();
 				System.out.println("BET before click:" + currentBet);
 				System.out.println("BET after click:" + hand.getBet());
@@ -258,6 +240,7 @@ public class PlayerPanel extends GamePanel {
 			public void mouseClicked(MouseEvent arg0) {
 				int currentBet = player.getHand().get(0).getBet();
 				hand.setBet(currentBet + betTen.getValue());
+				playerBet.setText("Bet: $" + hand.getBet());
 				repaint();
 				System.out.println("BET before click:" + currentBet);
 				System.out.println("BET after click:" + hand.getBet());
@@ -277,6 +260,7 @@ public class PlayerPanel extends GamePanel {
 			public void mouseClicked(MouseEvent arg0) {
 				int currentBet = player.getHand().get(0).getBet();
 				hand.setBet(currentBet + betTwentyFive.getValue());
+				playerBet.setText("Bet: $" + hand.getBet());
 				repaint();
 				System.out.println("BET before click:" + currentBet);
 				System.out.println("BET after click:" + hand.getBet());
@@ -296,6 +280,7 @@ public class PlayerPanel extends GamePanel {
 			public void mouseClicked(MouseEvent arg0) {
 				int currentBet = player.getHand().get(0).getBet();
 				hand.setBet(currentBet + betFifty.getValue());
+				playerBet.setText("Bet: $" + hand.getBet());
 				repaint();
 				System.out.println("BET before click:" + currentBet);
 				System.out.println("BET after click:" + hand.getBet());
@@ -322,6 +307,7 @@ public class PlayerPanel extends GamePanel {
 					//hand.addCards(c);
 					//TODO Add cards to the correct hand in case of a split
 					playerHandPanel1.addCard(c.getImagePath()); 
+					playerName.setText("Michael Scott: " + hand.getHandValue());
 					System.out.println("player hand value: " + hand.getHandValue());
 					placeAndResizeComponents();
 					repaint();
