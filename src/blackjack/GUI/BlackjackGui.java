@@ -27,16 +27,18 @@ public class BlackjackGui extends JFrame {
 	private Container contentPane;
 	private JLayeredPane layeredPane;
 	private JPanel mainContent;
+	private JPanel overlay;
 	private DealerPanel dealerPanel;
 	private PlayerPanel playerPanel;
 	private StartGamePanel startPanel;
-	private RulesPanel rulesPanel;
+	//private RulesPanel rulesPanel, playerNamePanel, endGamePanel;
 	
 	CustomImage background = new CustomImage("resources/background.jpg");
 	
 	//Declare background and foreground colors
 	private Color frameBackground = new Color(102, 0, 34); //brown color
 	private Color panelBackground = new Color(0, 102, 68); //green color
+	private Color overlayColor = new Color(0,0,0,100); //transparent grey
 	
 	//Dealer and Player panel dimensions
 	protected boolean isStart = true;
@@ -100,7 +102,7 @@ public class BlackjackGui extends JFrame {
 				startPanel.placeAndResizeComponents();
 				dealerPanel.placeAndResizeComponents();
 				playerPanel.placeAndResizeComponents();
-				rulesPanel.placeAndResizeComponents();
+				//rulesPanel.placeAndResizeComponents();
 			}
 			@Override public void componentShown(ComponentEvent arg0) {}
 		});
@@ -155,10 +157,15 @@ public class BlackjackGui extends JFrame {
 		mainContent.add(playerPanel);
 		
 		LOGGER.info("Initializing Rules");
-		rulesPanel = new RulesPanel();
+		/*rulesPanel = new RulesPanel("rules");
 		rulesPanel.setVisible(false);
 		
-		layeredPane.add(rulesPanel, 200);
+		playerNamePanel = new RulesPanel("playerName");
+		playerNamePanel.setVisible(false);
+		
+		endGamePanel = new RulesPanel("endGame");
+		endGamePanel.setVisible(false);*/
+
 		layeredPane.add(startPanel, 1);
 		layeredPane.add(mainContent, 1);
 	}
@@ -175,18 +182,64 @@ public class BlackjackGui extends JFrame {
 		mainContent.setVisible(true);
 	}
 	
+	public void showPlayerNameScreen() {
+		showOverlay();
+		//playerNamePanel.setVisible(true);
+		this.repaint();
+	}
+	
+	public void hidePlayerNameScreen() {
+		layeredPane.remove(overlay);
+		overlay = null;
+		//playerNamePanel.setVisible(false);
+		this.repaint();
+	}
+	
 	public void showRulesScreen() {
-		rulesPanel.setVisible(true);
+		showOverlay();
+		//rulesPanel.setVisible(true);
+		RulesPanel rp = new RulesPanel();
+		rp.setSize(rp.getPreferredSize());
+		rp.setLocation((getSize().width - rp.getSize().width)/2,
+				(getSize().height - rp.getSize().height)/2);
+		overlay.add(rp);
+		
+		
 		this.repaint();
 	}
 	
 	public void hideRulesScreen() {
-		rulesPanel.setVisible(false);
+		layeredPane.remove(overlay);
+		overlay = null;
+		//rulesPanel.setVisible(false);
+		this.repaint();
+	}
+	
+	public void showEndGameScreen() {
+		showOverlay();
+		//endGamePanel.setVisible(true);
+	}
+	
+	public void hideEndGameScreen() {
+		layeredPane.remove(overlay);
+		overlay = null;
+		//rulesPanel.setVisible(false);
 		this.repaint();
 	}
 	
 	public void exitGame() {
 		System.exit(0);
+	}
+	
+	public void showOverlay() {
+		overlay = new JPanel();
+		overlay.setLayout(null);
+		overlay.setOpaque(true);
+		overlay.setBackground(overlayColor);
+		overlay.setSize(getSize());
+		overlay.setLocation(0, 0);
+		layeredPane.add(overlay, 200);
+		layeredPane.moveToFront(overlay);
 	}
 	
 	public void placeAndResizeComponents() {
@@ -197,7 +250,6 @@ public class BlackjackGui extends JFrame {
 		startPanel.setSize(layeredPane.getWidth(), layeredPane.getHeight());
 		mainContent.setSize(layeredPane.getWidth(), layeredPane.getHeight());
 		background.setSize(mainContent.getSize());
-		rulesPanel.setSize(layeredPane.getWidth(), layeredPane.getHeight());
 		
 		Dimension dPanelDim = contentPane.getSize();
 		pwidth = (dPanelDim.width - pLeft - pRight);

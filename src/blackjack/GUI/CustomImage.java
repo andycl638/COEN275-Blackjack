@@ -28,6 +28,9 @@ public class CustomImage {
 			image = ImageIO.read(new File(filename));
 			height = image.getHeight();
 			width = image.getWidth();
+			if(height == 0 || width == 0) {
+				System.out.println("Culprit is " + filename);
+			}
 		} catch(IOException e) {
 			LOGGER.severe("Unable to read" + filename);
 			e.printStackTrace();
@@ -45,6 +48,7 @@ public class CustomImage {
 	}
 	
 	public CustomImage setSize(Dimension dimension) {
+		if(width == 0 || height == 0) return this;
 		height = dimension.height;
 		width = dimension.width;
 		resizedImage = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
@@ -52,6 +56,7 @@ public class CustomImage {
 	}
 	
 	public CustomImage setSize(int width, int height) {
+		if(width == 0 || height == 0) return this;
 		this.height = height;
 		this.width = width;
 		resizedImage = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);

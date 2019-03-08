@@ -51,8 +51,8 @@ public class StartGamePanel extends GamePanel{
 	private void addListener() {
 		startGame.addMouseListener(new MouseListener() {
 			public void mouseClicked(MouseEvent arg0) {
-				LOGGER.info("Rules Clicked");
-				BlackjackGui.getInstance().showGameScreen();
+				LOGGER.info("Start Game Clicked");
+				BlackjackGui.getInstance().showPlayerNameScreen();
 			}
 			public void mouseEntered(MouseEvent arg0) {}
 			public void mouseExited(MouseEvent arg0)  {}
