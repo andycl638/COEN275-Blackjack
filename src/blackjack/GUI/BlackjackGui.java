@@ -185,6 +185,15 @@ public class BlackjackGui extends JFrame {
 	public void showPlayerNameScreen() {
 		showOverlay();
 		//playerNamePanel.setVisible(true);
+		
+		PlayerNamePanel pnp = new PlayerNamePanel();
+		pnp.setSize(pnp.getPreferredSize());
+		pnp.setLocation((getSize().width - pnp.getSize().width)/2,
+				(getSize().height - pnp.getSize().height)/2);
+		pnp.setBackground(panelBackground);
+		pnp.setOpaque(true);
+		LOGGER.info(pnp.getBounds().toString());
+		overlay.add(pnp);
 		this.repaint();
 	}
 	
