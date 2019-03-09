@@ -24,7 +24,7 @@ public class DealerPanel extends GamePanel{
 	//Declare main components
 	private JPanel deckPanel, controlPanel;
 	private CustomButton deck, exit, rules;
-	private HandPanel dealerHandPanel;
+	public static HandPanel dealerHandPanel;
 	private JLabel dealerLabel, playerBalance;
 	
 	//initialize dimensions and padding
@@ -63,22 +63,6 @@ public class DealerPanel extends GamePanel{
 		deckPanel.setOpaque(false);
 		//deckPanel.setBackground(super.panelBackground);
 		
-		deckPanel.addMouseListener(new MouseListener() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				dealerHandPanel.addCard("/cards/10s.gif");
-				placeAndResizeComponents();
-				repaint();
-			}
-			@Override
-			public void mouseEntered(MouseEvent arg0) {}
-			@Override
-			public void mouseExited(MouseEvent arg0) {}
-			@Override
-			public void mousePressed(MouseEvent arg0) {}
-			@Override
-			public void mouseReleased(MouseEvent arg0) {}
-		});
 		this.add(deckPanel);
 		
 		deck = new CustomButton("resources/cards/back2.png");
@@ -174,8 +158,7 @@ public class DealerPanel extends GamePanel{
 		this.add(dealerHandPanel);
 		dealerHandPanel.setLayout(null);
 		
-		//dealerHandPanel.addCard("/cards/qs.gif");
-		dealerHandPanel.addCard("/cards/10c.gif");
+		// displaying initial two cards
 		for (Card c: BlackjackGui.dealer.getDealerHand().getHand()) {
 			dealerHandPanel.addCard(c.getImagePath());
 		}

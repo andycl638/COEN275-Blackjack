@@ -23,13 +23,15 @@ public class Deck {
     }
     
     public Card deal() throws Exception {
+    
         if(this.deckOfCards.size()<1){
             System.out.println("Deck is empty !!");
             throw new Exception();
         }
 
-        int randomNum = ThreadLocalRandom.current().nextInt(0, this.deckOfCards.size() + 1);
-       // System.out.println(this.deckOfCards.get(randomNum));
+        int randomNum = ThreadLocalRandom.current().nextInt(0, this.deckOfCards.size() - 1);
+        System.out.println("random Card num: " + (randomNum));
+        
         return this.deckOfCards.remove(randomNum);
     }
     
