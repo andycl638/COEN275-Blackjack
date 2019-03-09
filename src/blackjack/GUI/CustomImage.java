@@ -12,6 +12,7 @@ import javax.imageio.ImageIO;
 public class CustomImage {
 	private String filename;
 	private BufferedImage image = null;
+	private Image resizedImage;
 	private int width;
 	private int height;
 	
@@ -27,6 +28,9 @@ public class CustomImage {
 			image = ImageIO.read(new File(filename));
 			height = image.getHeight();
 			width = image.getWidth();
+			if(height == 0 || width == 0) {
+				System.out.println("Culprit is " + filename);
+			}
 		} catch(IOException e) {
 			LOGGER.severe("Unable to read" + filename);
 			e.printStackTrace();
@@ -38,18 +42,24 @@ public class CustomImage {
 	public ImageIcon getImageIcon() {
 		return new ImageIcon(image.getScaledInstance(width, height, Image.SCALE_SMOOTH));
 	}
+	
 	public Image getImage() {
-		return image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+		return resizedImage;
 	}
+	
 	public CustomImage setSize(Dimension dimension) {
+		if(width == 0 || height == 0) return this;
 		height = dimension.height;
 		width = dimension.width;
+		resizedImage = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
 		return this;
 	}
 	
 	public CustomImage setSize(int width, int height) {
+		if(width == 0 || height == 0) return this;
 		this.height = height;
 		this.width = width;
+		resizedImage = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
 		return this;
 	}
 }

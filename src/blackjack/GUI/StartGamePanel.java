@@ -49,6 +49,17 @@ public class StartGamePanel extends GamePanel{
 	}
 
 	private void addListener() {
+		startGame.addMouseListener(new MouseListener() {
+			public void mouseClicked(MouseEvent arg0) {
+				LOGGER.info("Start Game Clicked");
+				BlackjackGui.getInstance().showPlayerNameScreen();
+			}
+			public void mouseEntered(MouseEvent arg0) {}
+			public void mouseExited(MouseEvent arg0)  {}
+			public void mousePressed(MouseEvent arg0) {}
+			public void mouseReleased(MouseEvent arg0) {}
+		});
+		
 		rules.addMouseListener(new MouseListener() {
 			public void mouseClicked(MouseEvent arg0) {
 				LOGGER.info("Rules Clicked");
@@ -57,12 +68,25 @@ public class StartGamePanel extends GamePanel{
 			public void mouseEntered(MouseEvent arg0) {}
 			public void mouseExited(MouseEvent arg0)  {}
 			public void mousePressed(MouseEvent arg0) {}
-			public void mouseReleased(MouseEvent arg0) {}});
+			public void mouseReleased(MouseEvent arg0) {}
+		});
 		
+		exit.addMouseListener(new MouseListener() {
+			public void mouseClicked(MouseEvent arg0) {
+				BlackjackGui.getInstance().exitGame();
+			}
+			public void mouseEntered(MouseEvent arg0) {}
+			public void mouseExited(MouseEvent arg0) {}
+			public void mousePressed(MouseEvent arg0) {}
+			public void mouseReleased(MouseEvent arg0) {}
+			
+		});
 	}
+	
 	@Override
 	public void placeAndResizeComponents() {
 		// TODO Auto-generated method stub
+		background.setSize(this.getSize());
 		banner.setSize(this.getWidth()/2,this.getHeight()/7);
 		banner.setLocation((this.getWidth() - banner.getWidth())/2, pBannerTop);
 		
@@ -89,7 +113,7 @@ public class StartGamePanel extends GamePanel{
 	
 	public void paint(Graphics g) {
 		super.paint(g);
-		g.drawImage(background.setSize(getSize().width, getSize().height).getImage(), 0, 0, null);
+		g.drawImage(background.getImage(), 0, 0, null);
 		super.paintChildren(g);
 	}
 }

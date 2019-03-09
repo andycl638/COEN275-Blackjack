@@ -18,35 +18,26 @@ public class RulesPanel extends GamePanel{
 	final private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 		
 	//declare components
-	private JPanel overlay;
-	private JPanel dialogBox;
 	private JPanel dialogControl;
 	private CustomButton close;
 	private JScrollPane scrollPane; 
 	private JLabel label;
 	
-	private Color overlayColor = new Color(0,0,0,100);
-	
-	private String rulesFile = "resources/rules.html";
 	//declare component configuration
-	private int padding = 10;
+	int scrollBarWidth = 10;
+	private int width = 800;
+	private int height = 400;
 	
 	public RulesPanel() {
-		LOGGER.info("In constructor for rules panel");
-		this.setBackground(overlayColor);
+		LOGGER.info("In constructor 1 for rules panel");
+		this.setBackground(grey);
 		this.setOpaque(true);
-		//switch(options) {
-		//case "rules":
-		//case "playerName":
-		//case "":
-		//}
+		this.setLayout(null);
+		
 		initialize();
 	}
-	
-	@Override
+
 	public void initialize() {
-		LOGGER.info("in initialize");
-		dialogBox = new JPanel();
 		/*{
 			public void paint(Graphics g) {
 				super.paint(g);
@@ -57,28 +48,18 @@ public class RulesPanel extends GamePanel{
 				super.paintComponent(g);
 			}
 		};*/
-		dialogBox.setLayout(null);
-		dialogBox.setBackground(super.grey);
-		dialogBox.setOpaque(true);
-		
-		label = getContentLabel();
+		label = new JLabel();
+		label.setForeground(super.paleYellow);
 		scrollPane = new JScrollPane(label);
-		//scrollPane.setOpaque(false);
-		//scrollPane.getViewport().setOpaque(false);
-		//scrollPane.setBorder(BorderFactory.createLineBorder(Color.RED));
-		
-		int scrollBarWidth = 10;
+		scrollPane.setBorder(null);
+		scrollPane.getViewport().setOpaque(false);
+		scrollPane.setOpaque(false);
 		scrollPane.setHorizontalScrollBarPolicy(
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER
 				);
 		scrollPane.getVerticalScrollBar().setUnitIncrement(20);
-		scrollPane.setBorder(null);
-		scrollPane.getViewport().setOpaque(false);
-
-		scrollPane.setOpaque(false);
-
 		scrollPane.getVerticalScrollBar().setSize(
-				10,
+				this.scrollBarWidth, 
 				scrollPane.getVerticalScrollBar().getSize().height
 				);
 		scrollPane.getVerticalScrollBar().setOpaque(false);
@@ -86,23 +67,31 @@ public class RulesPanel extends GamePanel{
 		scrollPane.getVerticalScrollBar().setPreferredSize(
 				new Dimension(scrollBarWidth, 0)
 				);
-		dialogBox.add(scrollPane);
+		this.add(scrollPane);
 		
 		dialogControl = new JPanel();
 		dialogControl.setLayout(null);
 		dialogControl.setBackground(super.greyAlpha);
 		
+		initializeRules();
+	}
+	
+	public void initializeRules() {
+		LOGGER.info("in initializeRules");
+		
+		label.setText(getRulesText());
+			
 		close = new CustomButton("Close", false);
 		dialogControl.add(close);
 		
 		addListener();
 		
 		this.add(dialogControl);
-		this.add(dialogBox);
-		this.addListeners();
 	}
-
+	
 	private void addListener() {
+		RulesPanel that = this;
+		
 		close.addMouseListener(new MouseListener() {
 			public void mouseClicked(MouseEvent arg0) {
 				BlackjackGui.getInstance().hideRulesScreen();
@@ -113,47 +102,30 @@ public class RulesPanel extends GamePanel{
 			public void mouseReleased(MouseEvent arg0) {}});
 	}
 
-	private JLabel getContentLabel() {
-		String text = "";
-		JLabel temp = new JLabel();
-		
-		temp.setText(getRulesText());
-		temp.setForeground(super.paleYellow);
-		return temp;
+	public Dimension getPreferredSize() {
+		return new Dimension(width,height + close.getPreferredSize().height + 40);
 	}
-
+	
+	public void setSize(Dimension d) {
+		super.setSize(d);
+		placeAndResizeComponents();
+	}
 	@Override
 	public void placeAndResizeComponents() {
 		LOGGER.info("in placeandresizecomponents");
-		dialogBox.setSize((int)label.getPreferredSize().getWidth(), this.getHeight()/2);
-		dialogBox.setLocation((this.getWidth() - dialogBox.getWidth())/2, (this.getHeight()-dialogBox.getHeight())/2);
 		
 		int padding = 20;
-		label.setSize(dialogBox.getWidth() - padding, label.getPreferredSize().height);
+		label.setSize(getWidth() - padding, label.getPreferredSize().height);
 		label.setPreferredSize(label.getSize());
 		
 		//label.setLocation(padding/2,0);
-		scrollPane.setSize(dialogBox.getSize());
+		scrollPane.setSize(getSize().width, height);
 		scrollPane.setLocation(0, 0);
 
-		close.setSize(((int)(close.getPreferredSize().getWidth()+padding)), ((int)(close.getPreferredSize().getHeight()+padding)));
-		dialogControl.setSize(dialogBox.getWidth(), close.getHeight()+padding);
+		close.setSize(((int)(close.getPreferredSize().getWidth()+padding)), ((int)(close.getPreferredSize().getHeight() + 10)));
+		dialogControl.setSize(getWidth(), close.getHeight()+2*padding);
 		close.setLocation((dialogControl.getWidth()-close.getWidth())/2, (dialogControl.getHeight()-close.getHeight())/2);
-		dialogControl.setLocation(dialogBox.getX(), dialogBox.getY()+dialogBox.getHeight());
-		
-		System.out.println("Bounds of dialog box are: "+dialogBox.getBounds().toString());
-		System.out.println("Bounds of close are: "+close.getBounds().toString());
-		System.out.println("Bounds of dialogControl are: "+dialogControl.getBounds().toString());
-	}
-	
-	public void addListeners() {
-		RulesPanel that = this;
-		this.addMouseListener(new MouseListener() {
-			public void mouseClicked(MouseEvent arg0) {}
-			public void mouseEntered(MouseEvent arg0) {}
-			public void mouseExited(MouseEvent arg0)  {}
-			public void mousePressed(MouseEvent arg0) {}
-			public void mouseReleased(MouseEvent arg0) {}});
+		dialogControl.setLocation(0, height);
 	}
 	
 	public String getRulesText() {
