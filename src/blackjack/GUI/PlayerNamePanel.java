@@ -9,11 +9,13 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.logging.Logger;
 
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.border.Border;
 
 public class PlayerNamePanel extends GamePanel{
 	//Setup Logging
@@ -27,15 +29,16 @@ public class PlayerNamePanel extends GamePanel{
 		
 		//declare component configuration
 		int scrollBarWidth = 10;
-		private int width = 100;
-		private int height = 400;
+		private int width = 200;
+		private int height = 40;
 		private String placeholder = "Enter your name";
 		
 		public PlayerNamePanel() {
 			LOGGER.info("In constructor 1 for playername panel");
-			this.setBackground(new Color(0, 102, 68));
-			this.setOpaque(true);
+			this.setBackground(super.grey);
+			this.setOpaque(false);
 			this.setLayout(null);
+			//this.setBorder(BorderFactory.createLineBorder(new Color(100, 102, 68)));
 			
 			initialize();
 		}
@@ -51,7 +54,32 @@ public class PlayerNamePanel extends GamePanel{
 					super.paintComponent(g);
 				}
 			};*/
-			name = new JTextField();
+			name = new JTextField() {
+				private String placeholder = "Enter Your Name";
+				
+				public void paint(Graphics g) {
+					
+					g.setColor(Color.WHITE);
+					g.fillRoundRect(0, 0, getSize().width, getSize().height, 10, 10);
+					super.paint(g);
+					 //Don't foreget this
+					//Here will go that snippet
+					if(this.placeholder == null || this.placeholder.length() == 0 || name.getText().length() > 0) {
+						return;
+					} else {
+					
+						final Graphics2D g2 = (Graphics2D) g;
+				        g2.setRenderingHint(
+				            RenderingHints.KEY_ANTIALIASING,
+				            RenderingHints.VALUE_ANTIALIAS_ON);
+				        g2.setColor(new Color(150,150,150));
+				        g2.drawString(placeholder, getInsets().left, g.getFontMetrics()
+				            .getMaxAscent() + getInsets().top);
+					}
+				}
+			};
+			name.setOpaque(false);
+			name.setBorder(javax.swing.BorderFactory.createMatteBorder(2,2,2,2,new Color(0,0,0,0))); //No Color
 			/*scrollPane = new JScrollPane(label);
 			scrollPane.setBorder(null);
 			scrollPane.getViewport().setOpaque(false);
@@ -74,7 +102,7 @@ public class PlayerNamePanel extends GamePanel{
 			this.add(name);
 			dialogControl = new JPanel();
 			dialogControl.setLayout(null);
-			dialogControl.setBackground(super.greyAlpha);
+			dialogControl.setBackground(super.grey);
 			close = new CustomButton("Close", false);
 			dialogControl.add(close);
 			
@@ -102,6 +130,7 @@ public class PlayerNamePanel extends GamePanel{
 			close.addMouseListener(new MouseListener() {
 				public void mouseClicked(MouseEvent arg0) {
 					BlackjackGui.getInstance().hidePlayerNameScreen();
+					BlackjackGui.getInstance().showGameScreen();
 				}
 				public void mouseEntered(MouseEvent arg0) {}
 				public void mouseExited(MouseEvent arg0) {}
@@ -110,7 +139,7 @@ public class PlayerNamePanel extends GamePanel{
 		}
 
 		public Dimension getPreferredSize() {
-			return new Dimension(width,height + close.getPreferredSize().height + 40);
+			return new Dimension(width,height + close.getPreferredSize().height + 30);
 		}
 		
 		public void setSize(Dimension d) {
@@ -122,31 +151,29 @@ public class PlayerNamePanel extends GamePanel{
 		public void placeAndResizeComponents() {
 			LOGGER.info("in placeandresizecomponents");
 			
-			int padding = 20;
-			name.setSize(getWidth() - padding, name.getPreferredSize().height);
-			name.setPreferredSize(name.getSize());
+			int padding = 15;
+			name.setSize(getWidth() - 2*padding, name.getPreferredSize().height);
+			name.setLocation(padding, padding);
 			
 			//label.setLocation(padding/2,0);
-			this.setSize(getSize().width, height);
-			this.setLocation(0, 0);
+			//this.setSize(getSize().width, height);
+			//this.setLocation(0, 0);
 
 			close.setSize(((int)(close.getPreferredSize().getWidth()+padding)), ((int)(close.getPreferredSize().getHeight() + 10)));
-			dialogControl.setSize(getWidth(), close.getHeight()+2*padding);
+			dialogControl.setSize(getWidth(), close.getHeight()+padding);
 			close.setLocation((dialogControl.getWidth()-close.getWidth())/2, (dialogControl.getHeight()-close.getHeight())/2);
 			dialogControl.setLocation(0, height);
 		}
 		
 		public void paint(Graphics g) {
-			if(this.placeholder == null || this.placeholder.length() == 0 || name.getText().length() > 0) {
-				return;
-			}
+			super.paint(g); // This was missing
+			g.setColor(super.grey);
+			g.fillRoundRect(0, 0, getSize().width, getSize().height, 20, 20);
+			super.paintChildren(g);
+			g.setColor(Color.white);
+			g.drawRoundRect(0, 0, getSize().width, getSize().height, 20, 20);
 			
-			final Graphics2D g2 = (Graphics2D) g;
-	        g2.setRenderingHint(
-	            RenderingHints.KEY_ANTIALIASING,
-	            RenderingHints.VALUE_ANTIALIAS_ON);
-	        g2.setColor(new Color(0,0,0));
-	        g2.drawString(placeholder, getInsets().left, g.getFontMetrics()
-	            .getMaxAscent() + getInsets().top);
+			// Below paint method was for JTextField not here 
+			
 		}
 }

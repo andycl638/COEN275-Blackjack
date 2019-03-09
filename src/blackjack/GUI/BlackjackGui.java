@@ -190,8 +190,6 @@ public class BlackjackGui extends JFrame {
 		pnp.setSize(pnp.getPreferredSize());
 		pnp.setLocation((getSize().width - pnp.getSize().width)/2,
 				(getSize().height - pnp.getSize().height)/2);
-		pnp.setBackground(panelBackground);
-		pnp.setOpaque(true);
 		LOGGER.info(pnp.getBounds().toString());
 		overlay.add(pnp);
 		this.repaint();
@@ -206,13 +204,12 @@ public class BlackjackGui extends JFrame {
 	
 	public void showRulesScreen() {
 		showOverlay();
-		//rulesPanel.setVisible(true);
+		
 		RulesPanel rp = new RulesPanel();
 		rp.setSize(rp.getPreferredSize());
 		rp.setLocation((getSize().width - rp.getSize().width)/2,
 				(getSize().height - rp.getSize().height)/2);
-		overlay.add(rp);
-		
+		overlay.add(rp);		
 		
 		this.repaint();
 	}
@@ -226,7 +223,12 @@ public class BlackjackGui extends JFrame {
 	
 	public void showEndGameScreen() {
 		showOverlay();
-		//endGamePanel.setVisible(true);
+		EndGamePanel egp = new EndGamePanel();
+		egp.setSize(egp.getPreferredSize());
+		egp.setLocation((getSize().width - egp.getSize().width)/2,
+				(getSize().height - egp.getSize().height)/2);
+		overlay.add(egp);		
+		this.repaint();
 	}
 	
 	public void hideEndGameScreen() {
