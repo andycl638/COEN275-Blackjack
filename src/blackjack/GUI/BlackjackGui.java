@@ -20,20 +20,28 @@ public class BlackjackGui extends JFrame {
 	//Setup Logging
 	final private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	
+	private static BlackjackGui instance;
+	
 	//Declare components
 	private Dimension dimension;
 	private Container contentPane;
+	private JLayeredPane layeredPane;
+	private JPanel mainContent;
+	private JPanel overlay;
 	private DealerPanel dealerPanel;
 	private PlayerPanel playerPanel;
-	private JPanel startPanel;
+	private StartGamePanel startPanel;
+	//private RulesPanel rulesPanel, playerNamePanel, endGamePanel;
+	
 	CustomImage background = new CustomImage("resources/background.jpg");
 	
 	//Declare background and foreground colors
 	private Color frameBackground = new Color(102, 0, 34); //brown color
 	private Color panelBackground = new Color(0, 102, 68); //green color
+	private Color overlayColor = new Color(0,0,0,100); //transparent grey
 	
 	//Dealer and Player panel dimensions
-	protected boolean isStart = false;
+	protected boolean isStart = true;
 	private double fwidth, fheight; //Frame width and height
 	protected int pTop = 10;
 	protected int pLeft = 10;
@@ -51,27 +59,9 @@ public class BlackjackGui extends JFrame {
 	protected static Deck deck;
 
 	/**
-	 * Launch the application.
-	 */
-	/**public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					LOGGER.info("In try");
-					//JWindow window = new BlackjackGui();
-					JFrame window = new BlackjackGui();
-					window.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}**/
-
-	/**
 	 * Create the main frame.
 	 */
-	public BlackjackGui(Dealer dealer, Player player, Deck deck) {
+	private BlackjackGui(Dealer dealer, Player player, Deck deck) {
 		super("BlackJack- COEN 275");
 		try {
 			BlackjackGui.dealer = dealer;
@@ -85,7 +75,17 @@ public class BlackjackGui extends JFrame {
 			e.printStackTrace();
 		}
 	}
-
+	
+	public static BlackjackGui getInstance() {
+		return instance;
+	}
+	
+	public static BlackjackGui getInstance(Dealer dealer, Player player, Deck deck) {
+		if(instance == null)
+			instance = new BlackjackGui(dealer, player, deck);
+		return instance;
+	}
+	
 	/**
 	 * Configure the main frame and initialize the dealer and player panels
 	 */
@@ -93,13 +93,19 @@ public class BlackjackGui extends JFrame {
 		
 		//frame = new JFrame();
 		contentPane = this.getContentPane();
-		//background = Toolkit.getDefaultToolkit().createImage("resources/background.jpg");
-		//try {
-		//	this.setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("resources/background.jpg")))));
-		
-			LOGGER.info(background.toString());
-		//contentPane.setBackground(frameBackground);
-		
+		contentPane.addComponentListener(new ComponentListener() {
+			@Override public void componentHidden(ComponentEvent arg0) {}
+			@Override public void componentMoved(ComponentEvent arg0) {}
+			@Override public void componentResized(ComponentEvent arg0) {
+				// TODO Auto-generated method stub
+				placeAndResizeComponents();
+				startPanel.placeAndResizeComponents();
+				dealerPanel.placeAndResizeComponents();
+				playerPanel.placeAndResizeComponents();
+				//rulesPanel.placeAndResizeComponents();
+			}
+			@Override public void componentShown(ComponentEvent arg0) {}
+		});
 		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		fwidth = screenSize.getWidth();
@@ -110,83 +116,167 @@ public class BlackjackGui extends JFrame {
 		dimension.height = (int)fheight;
 		dimension.width = (int)fwidth;
 		
-		//Set Minimum Dimension of Application window, resizing below this 
-		//threshold will activate scroll bars
-		/*minDimension = new Dimension();
-		minDimension.height = 640;
-		minDimension.width = 800;*/
-		
 		// Configuration
 		this.setSize(dimension); //Frame Size
-		//contentPanel.setPreferredSize(minDimension); - Use this when using scroll pane
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		
-		this.setBackground(panelBackground);
+		//this.setBackground(panelBackground);
+		layeredPane = new JLayeredPane();
+		contentPane.add(layeredPane);
 		
 		initializeChildComponents();
 		if(!isStart) {
 			showGameScreen();
+			//showRulesScreen();
 		}
-		
+		else {
+			showStartScreen();
+		}
+		//placeAndResizeComponents();
 	}
 	
 	public void initializeChildComponents() {
-		LOGGER.info("Start screen");
-		startPanel = new JPanel();
-		LOGGER.info("Initializing Dealer");
-		dealerPanel = new DealerPanel(getContentPane());
-		LOGGER.info("Initializing Player");
-		playerPanel = new PlayerPanel(getContentPane(), this.player);
-		placeAndResizeComponents();
-		//((DealerPanel) dealerPanel).startAnimation();
-		//contentPane.setLayout(null); // For Absolute positioning
-	}
-	
-	public void startScreen() {
-		contentPane.removeAll();
-		contentPane.add(startPanel);
-
-	}
-	
-	public void showGameScreen() {
-		contentPane.removeAll();
-		JPanel mainContent = new JPanel() {
+		startPanel = new StartGamePanel();
+		startPanel.setVisible(false);
+		
+		mainContent = new JPanel() {
 			public void paint(Graphics g) {
 				super.paint(g);
-				g.drawImage(background.setSize(getSize().width, getSize().height).getImage(), 0, 0, null);
+				g.drawImage(background.getImage(), 0, 0, null);
 				super.paintChildren(g);
 			}
 		};
 		mainContent.setLayout(null);
-		contentPane.add(mainContent);
-		//contentPane.add(layeredPane);
-		//layeredPane.add(mainContentPane, JLayeredPane.DEFAULT_LAYER)
-		//Use layered pane to show components like dialog box(on popup pane) over the base content(which is on default layer).
-		mainContent.add(dealerPanel);
-		mainContent.add(playerPanel);
-	}
+		mainContent.setVisible(false);
 		
+		LOGGER.info("Initializing Dealer");
+		dealerPanel = new DealerPanel();
+		mainContent.add(dealerPanel);
+		LOGGER.info("Initializing Player");
+		playerPanel = new PlayerPanel(this.player);
+		mainContent.add(playerPanel);
+		
+		LOGGER.info("Initializing Rules");
+		/*rulesPanel = new RulesPanel("rules");
+		rulesPanel.setVisible(false);
+		
+		playerNamePanel = new RulesPanel("playerName");
+		playerNamePanel.setVisible(false);
+		
+		endGamePanel = new RulesPanel("endGame");
+		endGamePanel.setVisible(false);*/
+
+		layeredPane.add(startPanel, 1);
+		layeredPane.add(mainContent, 1);
+	}
+	
+	public void showStartScreen() {
+		LOGGER.info("Initializing start panel");
+		startPanel.setVisible(true);
+		mainContent.setVisible(false);
+	}
+	
+	public void showGameScreen() {
+		LOGGER.info("Initializing game panels");
+		startPanel.setVisible(false);
+		mainContent.setVisible(true);
+	}
+	
+	public void showPlayerNameScreen() {
+		showOverlay();
+		//playerNamePanel.setVisible(true);
+		
+		PlayerNamePanel pnp = new PlayerNamePanel();
+		pnp.setSize(pnp.getPreferredSize());
+		pnp.setLocation((getSize().width - pnp.getSize().width)/2,
+				(getSize().height - pnp.getSize().height)/2);
+		LOGGER.info(pnp.getBounds().toString());
+		overlay.add(pnp);
+		this.repaint();
+	}
+	
+	public void hidePlayerNameScreen() {
+		layeredPane.remove(overlay);
+		overlay = null;
+		//playerNamePanel.setVisible(false);
+		this.repaint();
+	}
+	
+	public void showRulesScreen() {
+		showOverlay();
+		
+		RulesPanel rp = new RulesPanel();
+		rp.setSize(rp.getPreferredSize());
+		rp.setLocation((getSize().width - rp.getSize().width)/2,
+				(getSize().height - rp.getSize().height)/2);
+		overlay.add(rp);		
+		
+		this.repaint();
+	}
+	
+	public void hideRulesScreen() {
+		layeredPane.remove(overlay);
+		overlay = null;
+		//rulesPanel.setVisible(false);
+		this.repaint();
+	}
+	
+	public void showEndGameScreen() {
+		showOverlay();
+		EndGamePanel egp = new EndGamePanel();
+		egp.setSize(egp.getPreferredSize());
+		egp.setLocation((getSize().width - egp.getSize().width)/2,
+				(getSize().height - egp.getSize().height)/2);
+		overlay.add(egp);		
+		this.repaint();
+	}
+	
+	public void hideEndGameScreen() {
+		layeredPane.remove(overlay);
+		overlay = null;
+		//rulesPanel.setVisible(false);
+		this.repaint();
+	}
+	
+	public void exitGame() {
+		System.exit(0);
+	}
+	
+	public void showOverlay() {
+		overlay = new JPanel();
+		overlay.setLayout(null);
+		overlay.setOpaque(true);
+		overlay.setBackground(overlayColor);
+		overlay.setSize(getSize());
+		overlay.setLocation(0, 0);
+		layeredPane.add(overlay, 200);
+		layeredPane.moveToFront(overlay);
+		
+		overlay.addMouseListener(new MouseListener() {
+			public void mouseClicked(MouseEvent arg0) {}
+			public void mouseEntered(MouseEvent arg0) {}
+			public void mouseExited(MouseEvent arg0) {}
+			public void mousePressed(MouseEvent arg0) {}
+			public void mouseReleased(MouseEvent arg0) {}			
+		});
+	}
+	
 	public void placeAndResizeComponents() {
+		LOGGER.info("Size of main frame: "+this.getSize().toString());
+		
+		layeredPane.setSize(getContentPane().getWidth(), getContentPane().getHeight());
+		
+		startPanel.setSize(layeredPane.getWidth(), layeredPane.getHeight());
+		mainContent.setSize(layeredPane.getWidth(), layeredPane.getHeight());
+		background.setSize(mainContent.getSize());
+		
 		Dimension dPanelDim = contentPane.getSize();
-		System.out.println(dPanelDim.toString());
 		pwidth = (dPanelDim.width - pLeft - pRight);
 		pheight = (dPanelDim.height - pTop - pBottom - gap)/2;
 		dealerPanel.setLocation(pTop, pLeft);
 		dealerPanel.setSize(pwidth,pheight);
-		System.out.println("Dealer Panel Size" + dealerPanel.getSize());
 		playerPanel.setLocation(pLeft, pTop + pheight + gap);
 		playerPanel.setSize(pwidth, pheight);
-		dealerPanel.placeAndResizeComponents();
-		playerPanel.placeAndResizeComponents();
 	}
 	
-	public void paint(Graphics g) {
-		LOGGER.info("Painting BlackJackGUI");
-		placeAndResizeComponents();
-		super.paint(g);
-		//g.drawImage(background, 0, 0, null);
-		//super.paintChildren(g);
-		//g.drawImage(background.setSize(getSize().width, getSize().height).getImage(), 0, 0, null);
-	}
 }

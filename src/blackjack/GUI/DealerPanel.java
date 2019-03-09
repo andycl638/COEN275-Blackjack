@@ -22,7 +22,6 @@ public class DealerPanel extends GamePanel{
 	final private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	
 	//Declare main components
-	private Container contentPane;
 	private JPanel deckPanel, controlPanel;
 	private CustomButton deck, exit, rules;
 	public static HandPanel dealerHandPanel;
@@ -33,21 +32,14 @@ public class DealerPanel extends GamePanel{
 	private int pTopDeck = 50;
 	private int pLeftLabel = 20;
 	private int pControlPanel = 10;
-
+	public boolean showRules = false;
 	
-	public DealerPanel(Container contentPane) {
-		LOGGER.info("In Dealer Panel");
-		this.contentPane = contentPane;
-		
+	public DealerPanel() {		
 		initialize();
 	}
 	
 	public void initialize() {
-		LOGGER.info("In init Dealer Panel");
-		//dealerPanel = new JPanel();
-		//dealerPanel.setBounds(0, 0, dPanelDim.width-10, (dPanelDim.height/2)-10);
-		//contentPane.add(dealerPanel);
-		
+		//Initialize player's current balance
 		playerBalance = new JLabel("Balance: $1000");
 		playerBalance.setForeground(super.paleYellow);
 		playerBalance.setHorizontalAlignment(SwingConstants.CENTER);
@@ -65,9 +57,9 @@ public class DealerPanel extends GamePanel{
 		
 		//Creating Deck Panel
 		deckPanel = new JPanel();
-		deckPanel.setOpaque(false);
-		//deckPanel.setBackground(super.panelBackground);
-		
+		deckPanel.setLayout(null);
+
+		deckPanel.setOpaque(false);	
 		this.add(deckPanel);
 		
 		deck = new CustomButton("resources/cards/back2.png");
@@ -87,13 +79,15 @@ public class DealerPanel extends GamePanel{
 		controlPanel.add(rules);
 		
 		exit = new CustomButton("Exit", false);
+		
+		addListener();
+		
 		controlPanel.add(exit);
 	}
 	
 	public void initializeHandPanel() {
 		//Dealer Hand Panel
 		dealerHandPanel = new HandPanel();
-		LOGGER.info("Size of the Dealer Panel is: "+this.getSize().toString());
 		dealerHandPanel.setBackground(dealerHandPanel.c1);
 		this.add(dealerHandPanel);
 		dealerHandPanel.setLayout(null);
@@ -105,9 +99,30 @@ public class DealerPanel extends GamePanel{
 
 	}
 	
-	public void placeAndResizeComponents() {
-		System.out.println("Dealer Panel Size" + this.getSize());
+	private void addListener() {
+		rules.addMouseListener(new MouseListener() {
+			public void mouseClicked(MouseEvent arg0) {
+				BlackjackGui.getInstance().showRulesScreen();
+			}
+			public void mouseEntered(MouseEvent arg0) {}
+			public void mouseExited(MouseEvent arg0)  {}
+			public void mousePressed(MouseEvent arg0) {}
+			public void mouseReleased(MouseEvent arg0) {}
+		});
 		
+		exit.addMouseListener(new MouseListener() {
+			public void mouseClicked(MouseEvent arg0) {
+				BlackjackGui.getInstance().exitGame();
+			}
+			public void mouseEntered(MouseEvent arg0) {}
+			public void mouseExited(MouseEvent arg0) {}
+			public void mousePressed(MouseEvent arg0) {}
+			public void mouseReleased(MouseEvent arg0) {}
+			
+		});
+	}
+	
+	public void placeAndResizeComponents() {		
 		playerBalance.setLocation(0,0);
 		playerBalance.setSize(playerBalance.getPreferredSize());
 		
@@ -132,13 +147,6 @@ public class DealerPanel extends GamePanel{
 		
 		dealerLabel.setSize(dealerLabel.getPreferredSize());
 		dealerLabel.setLocation((this.getWidth()-dealerLabel.getWidth())/2,(this.getHeight()-(int)deckPanel.getLocation().getY()+10));
-		LOGGER.info(dealerLabel.getBounds().toString());
-		LOGGER.info(deckPanel.getBounds().toString());
-		LOGGER.info(this.getBounds().toString());	
 	}
 	
-	public void paint(Graphics g) {
-		//placeAndResizeComponents();
-		super.paint(g);
-	}
 }

@@ -55,22 +55,16 @@ public class PlayerPanel extends GamePanel {
 	private CustomButton hit, stand, doubleDown, split, surrender;
 	private JLabel playerName, playerBet, playerHandValue;
 	
-	private Container contentPane;
 	private Player player;
 	
-	public PlayerPanel(Container contentPane, Player player) {
-		LOGGER.info("In Player Panel");
-		this.contentPane = contentPane;
+	public PlayerPanel(Player player) {
 		this.player = player;
 		initialize();
 	}
 	
 	public void initialize() {
-		LOGGER.info("In init Player method");
-		
-		this.setBorder(new BevelBorder(10));
-		//this.setBackground(super.panelBackground);
-		this.setLayout(null);
+
+		//this.setLayout(null);
 		
 		//Initialize Player details
 		initializePlayerDetailsPanel();
@@ -103,12 +97,6 @@ public class PlayerPanel extends GamePanel {
 		playerName.setText("Michael Scott: " + player.getHand().get(0).getHandValue());
 		playerDetailsPanel.add(playerName);
 		
-		/**balance = new JLabel("Balance: $1000");
-		balance.setForeground(Color.WHITE);
-		balance.setHorizontalAlignment(SwingConstants.CENTER);
-		balance.setVerticalAlignment(SwingConstants.CENTER);
-		playerDetailsPanel.add(balance);
-		**/
 		this.add(playerDetailsPanel);
 	}
 	
@@ -164,11 +152,11 @@ public class PlayerPanel extends GamePanel {
 			playerHandPanel1.addCard(c.getImagePath());
 		}
 				
-		playerHandPanel2 = new HandPanel();
+		//playerHandPanel2 = new HandPanel();
 
 		//Add playerHandPanel 1 & 2 to playerHandsPanel
 		playerHandsPanel.add(playerHandPanel1);
-		playerHandsPanel.add(playerHandPanel2);
+		//playerHandsPanel.add(playerHandPanel2);
 		
 		//Add playerHandsPanel to playerPanel
 		this.add(playerHandsPanel);
@@ -390,8 +378,6 @@ public class PlayerPanel extends GamePanel {
 		surrender.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				
-				
 				try {
 					System.out.println("player stops and gives control to dealer: " + hand.getHandValue());
 					BlackjackGui.dealer.surrender(hand);
@@ -442,9 +428,6 @@ public class PlayerPanel extends GamePanel {
 	}
 	
 	public void placeAndResizeComponents() {
-		
-		System.out.println("Player Panel Size" + this.getSize());
-		
 		playerName.setSize(playerName.getPreferredSize());
 		playerName.setLocation(0,0);
 		playerDetailsPanel.setLocation((this.getWidth()-playerName.getWidth())/2, 0);
@@ -461,14 +444,17 @@ public class PlayerPanel extends GamePanel {
 		playerHandPanel1.setLocation(0, 0);
 		playerHandPanel1.placeAndResizeComponents();
 		
-		playerHandPanel2.setSize(playerHandPanel2.width, playerHandPanel2.height);
+		/*playerHandPanel2.setSize(playerHandPanel2.width, playerHandPanel2.height);
 		playerHandPanel2.setLocation(playerHandPanel1.width + (isSplit ? playerHandsGap : 0), 0);		
 		playerHandPanel2.placeAndResizeComponents();
+		LOGGER.info(playerHandPanel2.getBounds()+"");
+		LOGGER.info(playerHandPanel1.getBounds()+"");*/
 		
-		int playerHandsPanelWidth =  playerHandPanel1.width+playerHandPanel2.width+(isSplit ? playerHandsGap : 0);
+		int playerHandsPanelWidth =  playerHandPanel1.width;
 		int playerHandsPanelHeight = playerHandPanel1.height;
 		playerHandsPanel.setLocation((this.getWidth()-playerHandsPanelWidth)/2, (this.getHeight()-playerHandsPanelHeight-pBottom)/2);
 		playerHandsPanel.setSize(playerHandsPanelWidth, playerHandsPanelHeight);
+		LOGGER.info(playerHandsPanel.getBounds()+"");
 	}
 	
 	public void placeBetPanel() {
@@ -536,8 +522,5 @@ public class PlayerPanel extends GamePanel {
 		optionsPanel.setLocation(this.getWidth()-surrender.getWidth()-pOptionsPanelRight,pOptionsPanelTop);
 	}
 	
-	public void paint(Graphics g) {
-		//placeAndResizeComponents();
-		super.paint(g);
-	}
+	
 }

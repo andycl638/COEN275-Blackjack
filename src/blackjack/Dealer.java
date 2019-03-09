@@ -10,6 +10,8 @@ public class Dealer {
     private static Deck deck;
     private Player player;
     private boolean playerStand = false;
+    private boolean isBlackJack = false;
+    private int result = Integer.MIN_VALUE;
 
     // this is called at the beginning of the game. It sets up the game
     // shuffle deck
@@ -60,6 +62,7 @@ public class Dealer {
             double amount = playerHand.getBet() * 1.5;
             endGame(amount, 1);
             JOptionPane.showMessageDialog(null, "BLACKJACK!");
+            
             // need to end game since player won
         }
         // no blackjack, continue with game

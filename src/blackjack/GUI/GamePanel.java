@@ -21,6 +21,7 @@ public abstract class GamePanel extends JPanel {
 	protected Color panelBackground = new Color(0, 102, 68);
 	protected Color paleYellow = new Color(230,232,233);
 	protected Color grey = new Color(65,79,88);
+	protected Color greyAlpha = new Color(65,79,88,250);
 	
 	public GamePanel() {
 		//this.setBackground(panelBackground);

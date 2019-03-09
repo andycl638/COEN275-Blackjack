@@ -25,7 +25,6 @@ public class HandPanel extends JPanel{
 		JLabel card = new JLabel();
 		card.setHorizontalAlignment(SwingConstants.TRAILING);
 		card.setBounds(0, 0, 73, 97);
-		System.out.println(path);
 		card.setIcon(new ImageIcon(new ImageIcon(getClass().getResource(path)).getImage()));
 		this.cards.add(card);
 		add(card);
@@ -49,9 +48,5 @@ public class HandPanel extends JPanel{
 		}
 	}
 	
-	public void paint(Graphics g) {
-		//LOGGER.info("Painting HandPanel");
-		//placeAndResizeComponents();
-		super.paint(g);
-	}
+
 }
