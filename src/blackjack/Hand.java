@@ -5,7 +5,7 @@ import java.util.ArrayList;
 // limit of two hands
 public class Hand {
 	private ArrayList<Card> hand = new ArrayList<Card>();
-	private boolean aceValue = false;
+	private int aceValue =0;
 	private int handValue = 0;
 	private int bet = 0; // each hand has it's own bet
 	
@@ -13,13 +13,13 @@ public class Hand {
 		this.bet = 10;
 	}
 	// returns if there is an ace on the hand
-	public boolean hasAceValue() {
+	public int hasAceValue() {
 		return this.aceValue;
 	}
 	
 	//
-	private void setAceValue() {
-		this.aceValue = true;
+	private void setAceValue(int count) {
+		this.aceValue+= count;
 	}
 	
 	// get the cards on the hand
@@ -31,7 +31,7 @@ public class Hand {
 	public void addCards(Card card) {
 		// if the card value is 11 then there is an ace on the hand
 		if (card.getValue() == 11)
-			setAceValue();
+			setAceValue(1);
 
 		this.hand.add(card);
 		
@@ -49,10 +49,10 @@ public class Hand {
 	private void addCardValues(Card card) {
 		// the card is an ace
 		int temp = this.handValue + card.getValue();
-		if (hasAceValue() == true && temp > 21) {		
+		if (hasAceValue() >0 && temp > 21) {		
 			// hand value is 11 or over, ace is treated as 1 or you bust
 			this.handValue  = temp - 10;
-			this.aceValue = false;	
+			setAceValue(-1);;	
 		}
 		else {
 			// add the values of the cards.

@@ -7,6 +7,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Deck {
     private ArrayList<Card> deckOfCards = new ArrayList<Card>();
+    int counter = 0;
 
     public Deck() {
         HashMap<Integer, Character> intSuitMapping=new HashMap<Integer, Character>();
@@ -28,8 +29,24 @@ public class Deck {
             System.out.println("Deck is empty !!");
             throw new Exception();
         }
-
-        int randomNum = ThreadLocalRandom.current().nextInt(0, this.deckOfCards.size() - 1);
+        int randomNum = 0;
+    //    int randomNum = ThreadLocalRandom.current().nextInt(0, this.deckOfCards.size() - 1);
+        if (counter == 0) {
+        	 randomNum = 0;
+        	 counter++;
+        }
+        else if (counter == 1) {
+       	 randomNum = 12;
+       	 counter++;
+       }
+        else if (counter == 2) {
+       	 randomNum = 24;
+       	 counter++;
+       }
+        else if (counter == 3) {
+        	randomNum = 9;
+        	counter++;
+        }
         System.out.println("random Card num: " + (randomNum));
         
         return this.deckOfCards.remove(randomNum);
