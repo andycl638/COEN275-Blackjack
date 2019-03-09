@@ -251,6 +251,14 @@ public class BlackjackGui extends JFrame {
 		overlay.setLocation(0, 0);
 		layeredPane.add(overlay, 200);
 		layeredPane.moveToFront(overlay);
+		
+		overlay.addMouseListener(new MouseListener() {
+			public void mouseClicked(MouseEvent arg0) {}
+			public void mouseEntered(MouseEvent arg0) {}
+			public void mouseExited(MouseEvent arg0) {}
+			public void mousePressed(MouseEvent arg0) {}
+			public void mouseReleased(MouseEvent arg0) {}			
+		});
 	}
 	
 	public void placeAndResizeComponents() {

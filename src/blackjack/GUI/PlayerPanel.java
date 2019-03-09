@@ -152,11 +152,11 @@ public class PlayerPanel extends GamePanel {
 			playerHandPanel1.addCard(c.getImagePath());
 		}
 				
-		playerHandPanel2 = new HandPanel();
+		//playerHandPanel2 = new HandPanel();
 
 		//Add playerHandPanel 1 & 2 to playerHandsPanel
 		playerHandsPanel.add(playerHandPanel1);
-		playerHandsPanel.add(playerHandPanel2);
+		//playerHandsPanel.add(playerHandPanel2);
 		
 		//Add playerHandsPanel to playerPanel
 		this.add(playerHandsPanel);
@@ -378,8 +378,6 @@ public class PlayerPanel extends GamePanel {
 		surrender.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				
-				
 				try {
 					System.out.println("player stops and gives control to dealer: " + hand.getHandValue());
 					BlackjackGui.dealer.surrender(hand);
@@ -446,14 +444,17 @@ public class PlayerPanel extends GamePanel {
 		playerHandPanel1.setLocation(0, 0);
 		playerHandPanel1.placeAndResizeComponents();
 		
-		playerHandPanel2.setSize(playerHandPanel2.width, playerHandPanel2.height);
+		/*playerHandPanel2.setSize(playerHandPanel2.width, playerHandPanel2.height);
 		playerHandPanel2.setLocation(playerHandPanel1.width + (isSplit ? playerHandsGap : 0), 0);		
 		playerHandPanel2.placeAndResizeComponents();
+		LOGGER.info(playerHandPanel2.getBounds()+"");
+		LOGGER.info(playerHandPanel1.getBounds()+"");*/
 		
-		int playerHandsPanelWidth =  playerHandPanel1.width+playerHandPanel2.width+(isSplit ? playerHandsGap : 0);
+		int playerHandsPanelWidth =  playerHandPanel1.width;
 		int playerHandsPanelHeight = playerHandPanel1.height;
 		playerHandsPanel.setLocation((this.getWidth()-playerHandsPanelWidth)/2, (this.getHeight()-playerHandsPanelHeight-pBottom)/2);
 		playerHandsPanel.setSize(playerHandsPanelWidth, playerHandsPanelHeight);
+		LOGGER.info(playerHandsPanel.getBounds()+"");
 	}
 	
 	public void placeBetPanel() {

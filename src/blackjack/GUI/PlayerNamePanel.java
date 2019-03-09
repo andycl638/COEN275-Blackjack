@@ -103,7 +103,7 @@ public class PlayerNamePanel extends GamePanel{
 			dialogControl = new JPanel();
 			dialogControl.setLayout(null);
 			dialogControl.setBackground(super.grey);
-			close = new CustomButton("Close", false);
+			close = new CustomButton("Start Playing", false);
 			dialogControl.add(close);
 			
 			addListener();
