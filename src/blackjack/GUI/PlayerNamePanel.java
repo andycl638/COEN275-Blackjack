@@ -9,13 +9,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.logging.Logger;
 
-import javax.swing.BorderFactory;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.border.Border;
+
+import blackjack.BlackjackMain;
+import blackjack.Player;
 
 public class PlayerNamePanel extends GamePanel{
 	//Setup Logging
@@ -32,6 +31,7 @@ public class PlayerNamePanel extends GamePanel{
 		private int width = 200;
 		private int height = 40;
 		private String placeholder = "Enter your name";
+		private String playerInputName = "";
 		
 		public PlayerNamePanel() {
 			LOGGER.info("In constructor 1 for playername panel");
@@ -129,7 +129,13 @@ public class PlayerNamePanel extends GamePanel{
 		private void addListener() {
 			close.addMouseListener(new MouseListener() {
 				public void mouseClicked(MouseEvent arg0) {
+					
 					BlackjackGui.getInstance().hidePlayerNameScreen();
+					
+					BlackjackMain.getInstance().initializeGame();
+					Player.getInstance().setName(name.getText());
+					LOGGER.info("Second initialize");
+					BlackjackGui.getInstance().initialize();
 					BlackjackGui.getInstance().showGameScreen();
 				}
 				public void mouseEntered(MouseEvent arg0) {}

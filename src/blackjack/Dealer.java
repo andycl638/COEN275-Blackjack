@@ -3,21 +3,17 @@ package blackjack;
 import javax.swing.JOptionPane;
 
 import blackjack.GUI.DealerPanel;
-import java.awt.Component;
 
 public class Dealer {
     private Hand dealersHand = new Hand();
     private static Deck deck;
     private Player player;
-    private boolean playerStand = false;
-    private boolean isBlackJack = false;
-    private int result = Integer.MIN_VALUE;
 
     // this is called at the beginning of the game. It sets up the game
     // shuffle deck
     // deal hand to player and dealer
     // check if there is a blackjack or bust right away
-    public Dealer(Player player, int bet, Deck deck) {
+    public Dealer(Player player, Deck deck) {
         // constructs the deck and "shuffle"
         this.deck = deck;
 

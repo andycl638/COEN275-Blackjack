@@ -1,22 +1,11 @@
 package blackjack.GUI;
 
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
+
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.logging.Logger;
-import java.util.*;
 
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -295,7 +284,7 @@ public class PlayerPanel extends GamePanel {
 					//hand.addCards(c);
 					//TODO Add cards to the correct hand in case of a split
 					playerHandPanel1.addCard(c.getImagePath()); 
-					playerName.setText("Michael Scott: " + hand.getHandValue());
+					playerName.setText(player.getName() + ": "+ hand.getHandValue());
 					System.out.println("player hand value: " + hand.getHandValue());
 					placeAndResizeComponents();
 					repaint();

@@ -1,6 +1,5 @@
 package blackjack;
 
-
 public class Card {
     private String imagePath;
     private int value;

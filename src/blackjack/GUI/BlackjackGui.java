@@ -2,9 +2,7 @@ package blackjack.GUI;
 
 import java.awt.*;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.event.*;
 
 import blackjack.BlackjackEventHandler;
 import blackjack.Dealer;
@@ -12,8 +10,7 @@ import blackjack.Deck;
 import blackjack.Player;
 
 import java.awt.event.*;
-import java.io.File;
-import java.util.logging.Level;
+
 import java.util.logging.Logger;
 
 public class BlackjackGui extends JFrame {
@@ -55,12 +52,18 @@ public class BlackjackGui extends JFrame {
 	
 	// Declare backend objects
 	protected static Dealer dealer;
-	protected Player player;
+	protected static Player player;
 	protected static Deck deck;
 
 	/**
 	 * Create the main frame.
 	 */
+	private BlackjackGui() {
+		JFrame window = this;
+		initialize();
+		window.setVisible(true);
+	}
+	
 	private BlackjackGui(Dealer dealer, Player player, Deck deck) {
 		super("BlackJack- COEN 275");
 		try {
@@ -77,19 +80,25 @@ public class BlackjackGui extends JFrame {
 	}
 	
 	public static BlackjackGui getInstance() {
+		if(instance == null)
+			instance = new BlackjackGui();
 		return instance;
 	}
 	
 	public static BlackjackGui getInstance(Dealer dealer, Player player, Deck deck) {
+		BlackjackGui.dealer = dealer;
+		BlackjackGui.player = player;
+		BlackjackGui.deck = deck;
+		
 		if(instance == null)
-			instance = new BlackjackGui(dealer, player, deck);
+			instance = new BlackjackGui();
 		return instance;
 	}
 	
 	/**
 	 * Configure the main frame and initialize the dealer and player panels
 	 */
-	private void initialize() {
+	public void initialize() {
 		
 		//frame = new JFrame();
 		contentPane = this.getContentPane();
@@ -100,8 +109,11 @@ public class BlackjackGui extends JFrame {
 				// TODO Auto-generated method stub
 				placeAndResizeComponents();
 				startPanel.placeAndResizeComponents();
-				dealerPanel.placeAndResizeComponents();
-				playerPanel.placeAndResizeComponents();
+				if(dealer != null && player!= null) {
+					dealerPanel.placeAndResizeComponents();
+					playerPanel.placeAndResizeComponents();
+				}
+				
 				//rulesPanel.placeAndResizeComponents();
 			}
 			@Override public void componentShown(ComponentEvent arg0) {}
@@ -149,12 +161,16 @@ public class BlackjackGui extends JFrame {
 		mainContent.setLayout(null);
 		mainContent.setVisible(false);
 		
-		LOGGER.info("Initializing Dealer");
-		dealerPanel = new DealerPanel();
-		mainContent.add(dealerPanel);
-		LOGGER.info("Initializing Player");
-		playerPanel = new PlayerPanel(this.player);
-		mainContent.add(playerPanel);
+		if(dealer != null && player != null) {
+			LOGGER.info("Initializing Dealer");
+			dealerPanel = new DealerPanel();
+			mainContent.add(dealerPanel);
+			LOGGER.info("Initializing Player");
+			playerPanel = new PlayerPanel(this.player);
+			mainContent.add(playerPanel);
+		}
+		else
+			LOGGER.info("dealer and player are null");
 		
 		LOGGER.info("Initializing Rules");
 		/*rulesPanel = new RulesPanel("rules");
@@ -273,10 +289,13 @@ public class BlackjackGui extends JFrame {
 		Dimension dPanelDim = contentPane.getSize();
 		pwidth = (dPanelDim.width - pLeft - pRight);
 		pheight = (dPanelDim.height - pTop - pBottom - gap)/2;
-		dealerPanel.setLocation(pTop, pLeft);
-		dealerPanel.setSize(pwidth,pheight);
-		playerPanel.setLocation(pLeft, pTop + pheight + gap);
-		playerPanel.setSize(pwidth, pheight);
+		
+		if (dealer != null && player != null) {
+			dealerPanel.setLocation(pTop, pLeft);
+			dealerPanel.setSize(pwidth,pheight);
+			playerPanel.setLocation(pLeft, pTop + pheight + gap);
+			playerPanel.setSize(pwidth, pheight);
+		}
 	}
 	
 }
