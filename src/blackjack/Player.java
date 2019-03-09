@@ -9,7 +9,7 @@ public class Player {
 	private ArrayList<Hand> playersHand;
 
 	public Player(String name) {
-		this.balance = 0;
+		this.balance = 1000;
 		this.name = name;
 		playersHand = new ArrayList<>();
 	}

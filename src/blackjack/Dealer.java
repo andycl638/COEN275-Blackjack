@@ -1,8 +1,13 @@
 package blackjack;
 
+import javax.swing.JOptionPane;
+
+import blackjack.GUI.DealerPanel;
+import java.awt.Component;
+
 public class Dealer {
     private Hand dealersHand = new Hand();
-    private Deck deck;
+    private static Deck deck;
     private Player player;
     private boolean playerStand = false;
 
@@ -19,7 +24,8 @@ public class Dealer {
 
         //create player hand and set the bet
         Hand playerHand = new Hand();
-        playerHand.setBet(bet);
+        
+        playerHand.setBet(10);
 
         //deal two hards to player
         try {
@@ -53,6 +59,7 @@ public class Dealer {
             System.out.println("BLACKJACK!");
             double amount = playerHand.getBet() * 1.5;
             endGame(amount, 1);
+            JOptionPane.showMessageDialog(null, "BLACKJACK!");
             // need to end game since player won
         }
         // no blackjack, continue with game
@@ -66,6 +73,7 @@ public class Dealer {
     	return this.dealersHand;
     }
 
+    // pass in arraylist to compare both player hands and give result
     public void dDecision(Hand playerHand) {
         int result = 0;
         
@@ -74,27 +82,37 @@ public class Dealer {
         	
         	if (result == 0){
         		endGame(0, result); // tie, hand values are 18 or higher
+        		System.out.println("dDecision: tie");
         		break;
         	}
         	else if (result == -1) {
         		endGame(-playerHand.getBet(), result); // player lost, dealer has higher hand value
+        		System.out.println("dDecision: dealer win");
         		break;
         	}
         	else if (result == 1) {
-        		hit(this.dealersHand); // deal a card to dealer hand 
+        		Card c = hit(this.dealersHand); // deal a card to dealer hand 
+        		System.out.println("dDecision: dealer hits");
+        		DealerPanel.dealerHandPanel.addCard(c.getImagePath());
+        		System.out.println("new dealer value: " + this.dealersHand.getHandValue());
+        		
+        		DealerPanel.dealerHandPanel.placeAndResizeComponents();
+        		
+        		System.out.println("display card: " + c.getImagePath());
+        		DealerPanel.dealerHandPanel.repaint();
         		
             	if(bust(this.dealersHand)) {
             		endGame(playerHand.getBet(), result); // player wins because dealer busted
+            		System.out.println("dDecision: dealer bust");
             		break;
             	}
+            	
         	}
         	else {
     			System.out.println("game broke");
     			break;
     		}
-        		
-        	
-        		
+	
         }
         
         // need to check if it's the start of the game
@@ -102,14 +120,18 @@ public class Dealer {
     }
 
     // Param: Hand, can be player or dealer
-    public void hit(Hand hand) {
+    public static Card hit(Hand hand) {
+    	Card c = null;
         try {
-            hand.addCards(this.deck.deal());
-            System.out.println("player: second card");
+        	c = deck.deal();
+            hand.addCards(c);
+          
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
         }
+        
+        return c;
     }
     
     // first time
@@ -174,11 +196,14 @@ public class Dealer {
         // dealer will stand if both hand values are the same and dealer's hand value is greater than or equal to 18
         if (this.dealersHand.getHandValue() == playerHand.getHandValue() && this.dealersHand.getHandValue() >=18) {
             result = 0; // tie
+           
         } else if (this.dealersHand.getHandValue() <= playerHand.getHandValue()) {
             result = 1; // dealer continues
         } else if (this.dealersHand.getHandValue() > playerHand.getHandValue()) {
             result = -1; // dealer stops
         }
+        System.out.println("dealer hand: " + this.dealersHand.getHandValue());
+        System.out.println("player hand: " + playerHand.getHandValue());
         
         return result;
     }
@@ -191,19 +216,24 @@ public class Dealer {
 	
 	public void endGame(double amount, int result) {
 		updateBalance(amount);
-		
+		String message = "";
 		if (result == 0) {
 			System.out.println("It's a tie"); 
+			message = "It's a tie";
 		}
 		else if (result == 1) {
 			System.out.println("Player Won: $" + amount); 
+			message = "Player Won: $" + amount;
 		} else if (result == -1) {
 			System.out.println("Player Lost: $" + amount); 
+			message = "Player Lost: $" + amount;
 		}
 		else {
 			System.out.println("game broke");
+			message = "Game broke. Please start a new game.";
 		}
 		
 		// show dialog box with result and give user option to play again
+		JOptionPane.showMessageDialog(null, message);
 	}
 }
