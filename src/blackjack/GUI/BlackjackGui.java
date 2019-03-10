@@ -55,7 +55,7 @@ public class BlackjackGui extends JFrame {
 	
 	// Declare backend objects
 	protected static Dealer dealer;
-	protected Player player;
+	protected static Player player;
 	protected static Deck deck;
 
 	/**
@@ -65,11 +65,18 @@ public class BlackjackGui extends JFrame {
 		super("BlackJack- COEN 275");
 		try {
 			BlackjackGui.dealer = dealer;
-			this.player = player;
+			BlackjackGui.player = player;
 			BlackjackGui.deck = deck;
 			JFrame window = this;
 			initialize();
 			window.setVisible(true);
+			
+			/*if (BlackjackGui.dealer.getIsBlackjack()) {
+				double amount = this.player.getHand().get(0).getBet() * 1.5;
+	           
+				BlackjackGui.dealer.endGame(amount, 1);
+	            JOptionPane.showMessageDialog(null, "BLACKJACK!");
+			}*/
 			
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -127,6 +134,7 @@ public class BlackjackGui extends JFrame {
 		initializeChildComponents();
 		if(!isStart) {
 			showGameScreen();
+
 			//showRulesScreen();
 		}
 		else {
@@ -193,6 +201,8 @@ public class BlackjackGui extends JFrame {
 		LOGGER.info(pnp.getBounds().toString());
 		overlay.add(pnp);
 		this.repaint();
+
+		
 	}
 	
 	public void hidePlayerNameScreen() {

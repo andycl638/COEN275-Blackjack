@@ -93,9 +93,10 @@ public class DealerPanel extends GamePanel{
 		dealerHandPanel.setLayout(null);
 		
 		// displaying initial two cards
-		for (Card c: BlackjackGui.dealer.getDealerHand().getHand()) {
-			dealerHandPanel.addCard(c.getImagePath());
-		}
+	//	for (Card c: BlackjackGui.dealer.getDealerHand().getHand()) {
+	//		dealerHandPanel.addCard(c.getImagePath());
+	//	}
+		
 
 	}
 	

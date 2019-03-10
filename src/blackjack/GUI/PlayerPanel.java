@@ -18,6 +18,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
@@ -52,7 +53,7 @@ public class PlayerPanel extends GamePanel {
 	private JPanel playerDetailsPanel, betPanel, optionsPanel, playerHandsPanel;
 	private CustomButton betOne, betFive, betTen, betTwentyFive, betFifty;
 	private HandPanel playerHandPanel1, playerHandPanel2;
-	private CustomButton hit, stand, doubleDown, split, surrender;
+	private CustomButton hit, stand, doubleDown, deal, surrender;
 	private JLabel playerName, playerBet, playerHandValue;
 	
 	private Player player;
@@ -94,7 +95,7 @@ public class PlayerPanel extends GamePanel {
 		playerName.setFont(new Font("Helvetica Neue",Font.PLAIN, 16));
 		playerName.setHorizontalAlignment(SwingConstants.CENTER);
 		playerName.setVerticalAlignment(SwingConstants.CENTER);
-		playerName.setText("Michael Scott: " + player.getHand().get(0).getHandValue());
+		playerName.setText("Michael Scott: ");
 		playerDetailsPanel.add(playerName);
 		
 		this.add(playerDetailsPanel);
@@ -148,15 +149,14 @@ public class PlayerPanel extends GamePanel {
 		
 		playerHandPanel1 = new HandPanel();
 
-		for (Card c : this.player.getHand().get(0).getHand()) {
+		/*for (Card c : this.player.getHand().get(0).getHand()) {
 			playerHandPanel1.addCard(c.getImagePath());
-		}
+		}*/
 				
-		//playerHandPanel2 = new HandPanel();
 
 		//Add playerHandPanel 1 & 2 to playerHandsPanel
-		playerHandsPanel.add(playerHandPanel1);
-		//playerHandsPanel.add(playerHandPanel2);
+		//playerHandsPanel.add(playerHandPanel1);
+
 		
 		//Add playerHandsPanel to playerPanel
 		this.add(playerHandsPanel);
@@ -171,13 +171,13 @@ public class PlayerPanel extends GamePanel {
 		
 		hit = new CustomButton("hit", false);
 		stand = new CustomButton("STAND", false);
-		split = new CustomButton("SPLIT", false);
+		deal = new CustomButton("DEAL", false);
 		surrender = new CustomButton("SURRENDER", false);
 		doubleDown = new CustomButton("DOUBLE", false);
 		
+		optionsPanel.add(deal);
 		optionsPanel.add(stand);
 		optionsPanel.add(hit);
-		optionsPanel.add(split);
 		optionsPanel.add(doubleDown);
 		optionsPanel.add(surrender);
 	}
@@ -287,7 +287,6 @@ public class PlayerPanel extends GamePanel {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				
-				
 				try {
 					System.out.println("player hand value: " + hand.getHandValue());
 					Card c = Dealer.hit(hand);
@@ -346,29 +345,52 @@ public class PlayerPanel extends GamePanel {
 			public void mouseReleased(MouseEvent arg0) {}
 		});
 		
-		split.addMouseListener(new MouseListener() {
+		deal.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				
 				
 				try {
-					System.out.println("player stops and gives control to dealer: " + hand.getHandValue());
-					BlackjackGui.dealer.dDecision(hand);
+					System.out.println("show cards " + hand.getHandValue());
 					
-					// disable buttons on player panel
-					//check bust for dealer hand
+					for (Card c : player.getHand().get(0).getHand()) {
+						playerHandPanel1.addCard(c.getImagePath());
+					}
+
+					//Add playerHandPanel 1 & 2 to playerHandsPanel
+					playerHandsPanel.add(playerHandPanel1);
+					//playerHandsPanel.add(playerHandPanel2);
+					
+					playerName.setText("Michael Scott: " + player.getHand().get(0).getHandValue());
+					
+					// displaying initial two cards
+					for (Card c: BlackjackGui.dealer.getDealerHand().getHand()) {
+						DealerPanel.dealerHandPanel.addCard(c.getImagePath());
+					}
+					
+					DealerPanel.dealerHandPanel.placeAndResizeComponents();
+					DealerPanel.dealerHandPanel.repaint();
+					placeAndResizeComponents();
+					repaint();
 					
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				placeAndResizeComponents();
-				repaint();
+				if (BlackjackGui.dealer.getIsBlackjack()) {
+					double amount = BlackjackGui.player.getHand().get(0).getBet() * 1.5;
+		           
+					BlackjackGui.dealer.endGame(amount, 1);
+		            JOptionPane.showMessageDialog(null, "BLACKJACK!");
+				}
+				
+				
 			}
 			@Override
 			public void mouseEntered(MouseEvent arg0) {}
 			@Override
-			public void mouseExited(MouseEvent arg0) {}
+			public void mouseExited(MouseEvent arg0) {
+			}
 			@Override
 			public void mousePressed(MouseEvent arg0) {}
 			@Override
@@ -504,15 +526,15 @@ public class PlayerPanel extends GamePanel {
 		hit.setSize(surrender.getSize());
 		stand.setSize(surrender.getSize());
 		doubleDown.setSize(surrender.getSize());
-		split.setSize(surrender.getSize());
+		deal.setSize(surrender.getSize());
 		
 		//set button locations
-		hit.setLocation(0,0);
+		deal.setLocation(0,0);
 		optionsPanelHeight += (hit.getHeight()+padding);
-		stand.setLocation(0, optionsPanelHeight);
+		hit.setLocation(0, optionsPanelHeight);
 		optionsPanelHeight += (stand.getHeight()+padding);
-		split.setLocation(0, optionsPanelHeight);
-		optionsPanelHeight += (split.getHeight()+padding);
+		stand.setLocation(0, optionsPanelHeight);
+		optionsPanelHeight += (deal.getHeight()+padding);
 		doubleDown.setLocation(0, optionsPanelHeight);
 		optionsPanelHeight += (doubleDown.getHeight()+padding);
 		surrender.setLocation(0, optionsPanelHeight);
