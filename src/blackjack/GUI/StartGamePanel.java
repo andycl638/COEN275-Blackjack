@@ -53,7 +53,6 @@ public class StartGamePanel extends GamePanel{
 			public void mouseClicked(MouseEvent arg0) {
 				LOGGER.info("Start Game Clicked");
 				BlackjackGui.getInstance().showPlayerNameScreen();
-				
 			}
 			public void mouseEntered(MouseEvent arg0) {}
 			public void mouseExited(MouseEvent arg0)  {}

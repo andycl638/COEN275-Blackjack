@@ -148,16 +148,7 @@ public class PlayerPanel extends GamePanel {
 		//playerHandsPanel.setBackground(super.panelBackground);
 		
 		playerHandPanel1 = new HandPanel();
-
-		/*for (Card c : this.player.getHand().get(0).getHand()) {
-			playerHandPanel1.addCard(c.getImagePath());
-		}*/
-				
-
-		//Add playerHandPanel 1 & 2 to playerHandsPanel
-		//playerHandsPanel.add(playerHandPanel1);
-
-		
+	
 		//Add playerHandsPanel to playerPanel
 		this.add(playerHandsPanel);
 	}
@@ -364,12 +355,13 @@ public class PlayerPanel extends GamePanel {
 					playerName.setText("Michael Scott: " + player.getHand().get(0).getHandValue());
 					
 					// displaying initial two cards
-					for (Card c: BlackjackGui.dealer.getDealerHand().getHand()) {
+				/*	for (Card c: BlackjackGui.dealer.getDealerHand().getHand()) {
 						DealerPanel.dealerHandPanel.addCard(c.getImagePath());
 					}
 					
 					DealerPanel.dealerHandPanel.placeAndResizeComponents();
 					DealerPanel.dealerHandPanel.repaint();
+					*/
 					placeAndResizeComponents();
 					repaint();
 					
@@ -389,8 +381,7 @@ public class PlayerPanel extends GamePanel {
 			@Override
 			public void mouseEntered(MouseEvent arg0) {}
 			@Override
-			public void mouseExited(MouseEvent arg0) {
-			}
+			public void mouseExited(MouseEvent arg0) {}
 			@Override
 			public void mousePressed(MouseEvent arg0) {}
 			@Override

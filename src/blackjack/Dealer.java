@@ -59,12 +59,8 @@ public class Dealer {
         // check if player got blackjack
         if (is21(playerHand)) {
             System.out.println("BLACKJACK!");
-          //  double amount = playerHand.getBet() * 1.5;
+        
             isBlackjack = true;
-           // endGame(amount, 1);
-           // JOptionPane.showMessageDialog(null, "BLACKJACK!");
-            
-            // need to end game since player won
         }
         // no blackjack, continue with game
         else {

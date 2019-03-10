@@ -131,8 +131,7 @@ public class PlayerNamePanel extends GamePanel{
 			close.addMouseListener(new MouseListener() {
 				public void mouseClicked(MouseEvent arg0) {
 					BlackjackGui.getInstance().hidePlayerNameScreen();
-					BlackjackGui.getInstance().showGameScreen();
-					
+					BlackjackGui.getInstance().showGameScreen();	
 				}
 				public void mouseEntered(MouseEvent arg0) {}
 				public void mouseExited(MouseEvent arg0) {}
