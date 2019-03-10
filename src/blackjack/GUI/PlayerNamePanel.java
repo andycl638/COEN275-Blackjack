@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -130,7 +131,7 @@ public class PlayerNamePanel extends GamePanel{
 			close.addMouseListener(new MouseListener() {
 				public void mouseClicked(MouseEvent arg0) {
 					BlackjackGui.getInstance().hidePlayerNameScreen();
-					BlackjackGui.getInstance().showGameScreen();
+					BlackjackGui.getInstance().showGameScreen();	
 				}
 				public void mouseEntered(MouseEvent arg0) {}
 				public void mouseExited(MouseEvent arg0) {}

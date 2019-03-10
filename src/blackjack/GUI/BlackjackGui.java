@@ -55,7 +55,7 @@ public class BlackjackGui extends JFrame {
 	
 	// Declare backend objects
 	protected static Dealer dealer;
-	protected Player player;
+	protected static Player player;
 	protected static Deck deck;
 
 	/**
@@ -65,7 +65,7 @@ public class BlackjackGui extends JFrame {
 		super("BlackJack- COEN 275");
 		try {
 			BlackjackGui.dealer = dealer;
-			this.player = player;
+			BlackjackGui.player = player;
 			BlackjackGui.deck = deck;
 			JFrame window = this;
 			initialize();

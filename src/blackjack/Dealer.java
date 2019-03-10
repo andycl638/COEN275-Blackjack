@@ -10,7 +10,7 @@ public class Dealer {
     private static Deck deck;
     private Player player;
     private boolean playerStand = false;
-    private boolean isBlackJack = false;
+    private boolean isBlackjack = false;
     private int result = Integer.MIN_VALUE;
 
     // this is called at the beginning of the game. It sets up the game
@@ -59,17 +59,18 @@ public class Dealer {
         // check if player got blackjack
         if (is21(playerHand)) {
             System.out.println("BLACKJACK!");
-            double amount = playerHand.getBet() * 1.5;
-            endGame(amount, 1);
-            JOptionPane.showMessageDialog(null, "BLACKJACK!");
-            
-            // need to end game since player won
+        
+            isBlackjack = true;
         }
         // no blackjack, continue with game
         else {
             System.out.println("No blackjack, continue with play");
         }
 
+    }
+    
+    public boolean getIsBlackjack() {
+    	return this.isBlackjack;
     }
     
     public Hand getDealerHand() {
