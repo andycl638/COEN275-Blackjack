@@ -80,7 +80,7 @@ public class Dealer {
     // pass in arraylist to compare both player hands and give result
     public void dDecision(Hand playerHand) {
         int result = 0;
-        
+        int count=2;
         while (true) {
         	result = compareHands(playerHand);
         	
@@ -97,13 +97,15 @@ public class Dealer {
         	else if (result == 1) {
         		Card c = hit(this.dealersHand); // deal a card to dealer hand 
         		System.out.println("dDecision: dealer hits");
-        		DealerPanel.dealerHandPanel.addCard(c.getImagePath());
+//        		DealerPanel.dealerHandPanel.addCard(getDealerHand().getHand().get(count).getImagePath());
+//        		count++;
+//        		DealerPanel.dealerHandPanel.addCard(c.getImagePath());
         		System.out.println("new dealer value: " + this.dealersHand.getHandValue());
         		
-        		DealerPanel.dealerHandPanel.placeAndResizeComponents();
+//        		DealerPanel.dealerHandPanel.placeAndResizeComponents();
         		
-        		System.out.println("display card: " + c.getImagePath());
-        		DealerPanel.dealerHandPanel.repaint();
+//        		System.out.println("display card: " + c.getImagePath());
+//        		DealerPanel.dealerHandPanel.repaint();
         		
             	if(bust(this.dealersHand)) {
             		endGame(playerHand.getBet(), result); // player wins because dealer busted
@@ -219,6 +221,30 @@ public class Dealer {
 	}
 	
 	public void endGame(double amount, int result) {
+//		System.out.println("Dealer hand panel size before removing back card:"+DealerPanel.dealerHandPanel.cards.size());
+		for(int i=0;i<getDealerHand().getHand().size();i++) {
+			System.out.println("Card num: "+i+" value: "+getDealerHand().getHand().get(i).getValue());
+		}
+		DealerPanel.dealerHandPanel.cards.clear();
+		DealerPanel.dealerHandPanel.removeAll();
+		System.out.println("Size of cards arraylist:"+ DealerPanel.dealerHandPanel.cards.size());
+		System.out.println("No of components in dealer hand panel"+DealerPanel.dealerHandPanel.countComponents());
+		for(Card c: getDealerHand().getHand()) {
+			System.out.println(c.getImagePath()+"");
+			//System.out.println("Card value: "+c.getValue());
+			DealerPanel.dealerHandPanel.addCard(c.getImagePath());
+			DealerPanel.dealerHandPanel.placeAndResizeComponents();
+			DealerPanel.dealerHandPanel.repaint();
+		}
+//		System.out.println("Dealer hand panel size after removing back card:"+DealerPanel.dealerHandPanel.cards.size());
+		
+		
+		//DealerPanel.dealerHandPanel.addCard(getDealerHand().getHand().get(0).getImagePath());
+		//for(int i=0;i<getDealerHand().getHand().size();i++) {
+		//	System.out.println("Card num: "+i+" value: "+getDealerHand().getHand().get(i).getValue());
+		//}
+		
+//		System.out.println("Dealer hand size after adding hidden card:"+DealerPanel.dealerHandPanel.cards.size());
 		updateBalance(amount);
 		String message = "";
 		if (result == 0) {
