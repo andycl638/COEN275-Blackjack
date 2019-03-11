@@ -186,12 +186,14 @@ public class PlayerPanel extends GamePanel {
 		betOne.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				int currentBet = player.getHand().get(0).getBet();
-				hand.setBet(currentBet + betOne.getValue());
-				playerBet.setText("Bet: $" + hand.getBet());
-				repaint();
-				System.out.println("BET before click:" + currentBet);
-				System.out.println("BET after click:" + hand.getBet());
+				if(hand.getHand().size()<=2) {
+					int currentBet = player.getHand().get(0).getBet();
+					hand.setBet(currentBet + betOne.getValue());
+					playerBet.setText("Bet: $" + hand.getBet());
+					repaint();
+					System.out.println("BET before click:" + currentBet);
+					System.out.println("BET after click:" + hand.getBet());
+				}	
 			}
 			@Override
 			public void mouseEntered(MouseEvent arg0) {}
@@ -206,12 +208,14 @@ public class PlayerPanel extends GamePanel {
 		betFive.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				int currentBet = player.getHand().get(0).getBet();
-				hand.setBet(currentBet + betFive.getValue());
-				playerBet.setText("Bet: $" + hand.getBet());
-				repaint();
-				System.out.println("BET before click:" + currentBet);
-				System.out.println("BET after click:" + hand.getBet());
+				if(hand.getHand().size()<=2) {
+					int currentBet = player.getHand().get(0).getBet();
+					hand.setBet(currentBet + betFive.getValue());
+					playerBet.setText("Bet: $" + hand.getBet());
+					repaint();
+					System.out.println("BET before click:" + currentBet);
+					System.out.println("BET after click:" + hand.getBet());
+				}	
 			}
 			@Override
 			public void mouseEntered(MouseEvent arg0) {}
@@ -226,12 +230,14 @@ public class PlayerPanel extends GamePanel {
 		betTen.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				int currentBet = player.getHand().get(0).getBet();
-				hand.setBet(currentBet + betTen.getValue());
-				playerBet.setText("Bet: $" + hand.getBet());
-				repaint();
-				System.out.println("BET before click:" + currentBet);
-				System.out.println("BET after click:" + hand.getBet());
+				if(hand.getHand().size()<=2) {
+					int currentBet = player.getHand().get(0).getBet();
+					hand.setBet(currentBet + betTen.getValue());
+					playerBet.setText("Bet: $" + hand.getBet());
+					repaint();
+					System.out.println("BET before click:" + currentBet);
+					System.out.println("BET after click:" + hand.getBet());
+				}	
 			}
 			@Override
 			public void mouseEntered(MouseEvent arg0) {}
@@ -246,12 +252,14 @@ public class PlayerPanel extends GamePanel {
 		betTwentyFive.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				int currentBet = player.getHand().get(0).getBet();
-				hand.setBet(currentBet + betTwentyFive.getValue());
-				playerBet.setText("Bet: $" + hand.getBet());
-				repaint();
-				System.out.println("BET before click:" + currentBet);
-				System.out.println("BET after click:" + hand.getBet());
+				if(hand.getHand().size()<=2) {
+					int currentBet = player.getHand().get(0).getBet();
+					hand.setBet(currentBet + betTwentyFive.getValue());
+					playerBet.setText("Bet: $" + hand.getBet());
+					repaint();
+					System.out.println("BET before click:" + currentBet);
+					System.out.println("BET after click:" + hand.getBet());
+				}	
 			}
 			@Override
 			public void mouseEntered(MouseEvent arg0) {}
@@ -266,12 +274,14 @@ public class PlayerPanel extends GamePanel {
 		betFifty.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				int currentBet = player.getHand().get(0).getBet();
-				hand.setBet(currentBet + betFifty.getValue());
-				playerBet.setText("Bet: $" + hand.getBet());
-				repaint();
-				System.out.println("BET before click:" + currentBet);
-				System.out.println("BET after click:" + hand.getBet());
+				if(hand.getHand().size()<=2) {
+					int currentBet = player.getHand().get(0).getBet();
+					hand.setBet(currentBet + betFifty.getValue());
+					playerBet.setText("Bet: $" + hand.getBet());
+					repaint();
+					System.out.println("BET before click:" + currentBet);
+					System.out.println("BET after click:" + hand.getBet());
+				}	
 			}
 			@Override
 			public void mouseEntered(MouseEvent arg0) {}
@@ -298,6 +308,14 @@ public class PlayerPanel extends GamePanel {
 					playerName.setText("Michael Scott: " + hand.getHandValue());
 					System.out.println("player hand value: " + hand.getHandValue());
 					placeAndResizeComponents();
+					
+					doubleDown.setEnabled(false);
+					surrender.setEnabled(false);
+					betOne.setEnabled(false);
+					betFive.setEnabled(false);
+					betTen.setEnabled(false);
+					betTwentyFive.setEnabled(false);
+					betFifty.setEnabled(false);
 					repaint();
 					if(BlackjackGui.dealer.bust(hand))
 					{
@@ -379,9 +397,10 @@ public class PlayerPanel extends GamePanel {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				try {
-					System.out.println("player stops and gives control to dealer: " + hand.getHandValue());
-					BlackjackGui.dealer.surrender(hand);
-					
+					if(hand.getHand().size()<=2) {
+						System.out.println("player stops and gives control to dealer: " + hand.getHandValue());
+						BlackjackGui.dealer.surrender(hand);
+					}
 					// disable buttons on player panel
 					//check bust for dealer hand
 					
@@ -405,12 +424,16 @@ public class PlayerPanel extends GamePanel {
 			public void mouseClicked(MouseEvent arg0) {
 					
 				try {
-					System.out.println("player doubles bet(before): " + hand.getBet());
-					BlackjackGui.dealer.doubleDown(hand);
-					System.out.println("player doubles bet(after): " + hand.getBet());
-					// disable buttons on player panel
-					//check bust for dealer hand
-					
+					if(hand.getHand().size()<=2) {
+						System.out.println("player doubles bet(before): " + hand.getBet());
+						BlackjackGui.dealer.doubleDown(hand);
+						playerBet.setText("Bet: $" + hand.getBet());
+						repaint();
+
+						System.out.println("player doubles bet(after): " + hand.getBet());
+						// disable buttons on player panel
+						//check bust for dealer hand
+					}
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

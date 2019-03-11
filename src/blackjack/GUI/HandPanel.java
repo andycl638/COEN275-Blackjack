@@ -1,10 +1,13 @@
 package blackjack.GUI;
 
 import java.util.*;
+import java.util.logging.Logger;
 import java.awt.*;
 import javax.swing.*;
 
 public class HandPanel extends JPanel{
+	//Setup Logging
+	final private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	
 	public ArrayList<JLabel> cards = new ArrayList<JLabel>(); 
 	public int height = 97;
@@ -23,10 +26,26 @@ public class HandPanel extends JPanel{
 	
 	public JLabel addCard(String path) {
 		JLabel card = new JLabel();
-		card.setHorizontalAlignment(SwingConstants.TRAILING);
+		//card.setHorizontalAlignment(SwingConstants.TRAILING);
 		card.setBounds(0, 0, 73, 97);
 		card.setIcon(new ImageIcon(new ImageIcon(getClass().getResource(path)).getImage()));
 		this.cards.add(card);
+		add(card);
+		placeAndResizeComponents();
+		return card;
+	}
+	
+	public JLabel addBackCard(String path) {
+//		JLabel card = new JLabel();
+//		LOGGER.info("For baack card: "+img.getImageIcon().getIconWidth()+", "+img.getImageIcon().getIconHeight());
+//		img.setSize(120,120);
+//		LOGGER.info("For baack card: "+img.getImageIcon().getIconWidth()+", "+img.getImageIcon().getIconHeight());
+//		card.setIcon(img.getImageIcon());
+//		card.setBounds(0,0,120,120);
+//		this.cards.add(card);
+		JLabel card = new JLabel();
+		card.setBounds(0, 0, 73, 97);
+		card.setIcon(new ImageIcon(new ImageIcon(getClass().getResource(path)).getImage()));
 		add(card);
 		placeAndResizeComponents();
 		return card;
