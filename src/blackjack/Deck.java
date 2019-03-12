@@ -30,6 +30,7 @@ public class Deck {
         }
 
         int randomNum = ThreadLocalRandom.current().nextInt(0, this.deckOfCards.size() - 1);
+
         System.out.println("random Card num: " + (randomNum));
         
         return this.deckOfCards.remove(randomNum);

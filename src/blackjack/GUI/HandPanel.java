@@ -12,6 +12,7 @@ public class HandPanel extends JPanel{
 	public int gap = 10;
 	public Color c1 = new Color(0, 128, 0); //green background color
 	
+	
 	HandPanel() {
 		initialize();
 	}
@@ -27,9 +28,15 @@ public class HandPanel extends JPanel{
 		card.setBounds(0, 0, 73, 97);
 		card.setIcon(new ImageIcon(new ImageIcon(getClass().getResource(path)).getImage()));
 		this.cards.add(card);
-		add(card);
+		//this could be the the issue
+		this.add(card);
 		placeAndResizeComponents();
 		return card;
+	}
+	
+	
+	public String toString() {
+		return "hand size: " + this.cards.size();
 	}
 	
 	public void placeAndResizeComponents() {

@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import javax.swing.*;
@@ -24,7 +25,7 @@ public class DealerPanel extends GamePanel{
 	//Declare main components
 	private JPanel deckPanel, controlPanel;
 	private CustomButton deck, exit, rules;
-	public static HandPanel dealerHandPanel;
+	private static HandPanel dealerHandPanel;
 	private JLabel dealerLabel, playerBalance;
 	
 	//initialize dimensions and padding
@@ -87,18 +88,60 @@ public class DealerPanel extends GamePanel{
 	
 	public void initializeHandPanel() {
 		//Dealer Hand Panel
+		LOGGER.info("INITIALIZING DEALER HAND PANEL");
+		
 		dealerHandPanel = new HandPanel();
+		System.out.println(dealerHandPanel.getBackground());
 		dealerHandPanel.setBackground(dealerHandPanel.c1);
 		this.add(dealerHandPanel);
 		dealerHandPanel.setLayout(null);
-		
+		System.out.println(dealerHandPanel.getBackground());
+		System.out.println(DealerPanel.getDealerHand().toString());
 		// displaying initial two cards
-		for (Card c: BlackjackGui.dealer.getDealerHand().getHand()) {
-			dealerHandPanel.addCard(c.getImagePath());
-		}
+		//for (Card c: BlackjackGui.dealer.getDealerHand().getHand()) {
+		//	dealerHandPanel.addCard(c.getImagePath());
+		//}
+		dealerHandPanel.addCard("/cards/back.gif");
+		dealerHandPanel.addCard(BlackjackGui.dealer.getDealerHand().getHand().get(1).getImagePath());
+		dealerHandPanel.setVisible(false);
+		
 
 	}
 	
+	public static void initializeHandPanel2() {
+		//Dealer Hand Panel
+		System.out.println(DealerPanel.getDealerHand().getSize().toString());
+		DealerPanel.getDealerHand().removeAll();
+		dealerHandPanel.removeAll();
+		
+		dealerHandPanel.cards = new ArrayList<JLabel>();
+		LOGGER.info("INITIALIZING DEALER HAND PANEL");
+	
+		System.out.println(DealerPanel.getDealerHand().toString());
+		//displaying initial two cards
+		for (Card c: BlackjackGui.dealer.getDealerHand().getHand()) {
+			dealerHandPanel.addCard(c.getImagePath());
+		}
+		System.out.println(DealerPanel.getDealerHand().getSize().toString());
+		DealerPanel.getDealerHand().revalidate();
+		
+		// this will show 1 more card
+		DealerPanel.getDealerHand().setSize(new Dimension(312, 97));
+		DealerPanel.getDealerHand().repaint();
+		
+		System.out.println(DealerPanel.getDealerHand().toString());
+		dealerHandPanel.setVisible(true);
+
+	}
+	
+	public static HandPanel getDealerHand() {
+		return dealerHandPanel;
+	}
+	
+	public static void addDealerCards() {
+		dealerHandPanel.addCard("/cards/back.gif");
+		dealerHandPanel.setVisible(true);
+	}
 	private void addListener() {
 		rules.addMouseListener(new MouseListener() {
 			public void mouseClicked(MouseEvent arg0) {

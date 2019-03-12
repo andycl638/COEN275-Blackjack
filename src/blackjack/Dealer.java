@@ -10,7 +10,7 @@ public class Dealer {
     private static Deck deck;
     private Player player;
     private boolean playerStand = false;
-    private boolean isBlackJack = false;
+    private boolean isBlackjack = false;
     private int result = Integer.MIN_VALUE;
 
     // this is called at the beginning of the game. It sets up the game
@@ -59,17 +59,18 @@ public class Dealer {
         // check if player got blackjack
         if (is21(playerHand)) {
             System.out.println("BLACKJACK!");
-            double amount = playerHand.getBet() * 1.5;
-            endGame(amount, 1);
-            JOptionPane.showMessageDialog(null, "BLACKJACK!");
-            
-            // need to end game since player won
+        
+            isBlackjack = true;
         }
         // no blackjack, continue with game
         else {
             System.out.println("No blackjack, continue with play");
         }
 
+    }
+    
+    public boolean getIsBlackjack() {
+    	return this.isBlackjack;
     }
     
     public Hand getDealerHand() {
@@ -96,30 +97,26 @@ public class Dealer {
         	else if (result == 1) {
         		Card c = hit(this.dealersHand); // deal a card to dealer hand 
         		System.out.println("dDecision: dealer hits");
-        		DealerPanel.dealerHandPanel.addCard(c.getImagePath());
+        		DealerPanel.getDealerHand().addCard(c.getImagePath());
+        		System.out.println(DealerPanel.getDealerHand().toString());
         		System.out.println("new dealer value: " + this.dealersHand.getHandValue());
         		
-        		DealerPanel.dealerHandPanel.placeAndResizeComponents();
+        		//DealerPanel.getDealerHand().placeAndResizeComponents();
         		
         		System.out.println("display card: " + c.getImagePath());
-        		DealerPanel.dealerHandPanel.repaint();
+        		//DealerPanel.getDealerHand().repaint();
         		
             	if(bust(this.dealersHand)) {
             		endGame(playerHand.getBet(), result); // player wins because dealer busted
             		System.out.println("dDecision: dealer bust");
             		break;
             	}
-            	
         	}
         	else {
     			System.out.println("game broke");
     			break;
     		}
-	
         }
-        
-        // need to check if it's the start of the game
-        // need to deal twice and check for blackjack
     }
 
     // Param: Hand, can be player or dealer
