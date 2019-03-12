@@ -28,8 +28,8 @@ public class BlackjackGui extends JFrame {
 	private JLayeredPane layeredPane;
 	private JPanel mainContent;
 	private JPanel overlay;
-	private DealerPanel dealerPanel;
-	private PlayerPanel playerPanel;
+	protected DealerPanel dealerPanel;
+	protected PlayerPanel playerPanel;
 	private StartGamePanel startPanel;
 	//private RulesPanel rulesPanel, playerNamePanel, endGamePanel;
 	
@@ -157,14 +157,6 @@ public class BlackjackGui extends JFrame {
 		mainContent.add(playerPanel);
 		
 		LOGGER.info("Initializing Rules");
-		/*rulesPanel = new RulesPanel("rules");
-		rulesPanel.setVisible(false);
-		
-		playerNamePanel = new RulesPanel("playerName");
-		playerNamePanel.setVisible(false);
-		
-		endGamePanel = new RulesPanel("endGame");
-		endGamePanel.setVisible(false);*/
 
 		layeredPane.add(startPanel, 1);
 		layeredPane.add(mainContent, 1);

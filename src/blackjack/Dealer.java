@@ -1,9 +1,8 @@
 package blackjack;
 
-import javax.swing.JOptionPane;
-
 import blackjack.GUI.DealerPanel;
-import java.awt.Component;
+
+import javax.swing.*;
 
 public class Dealer {
     private Hand dealersHand = new Hand();
@@ -17,7 +16,7 @@ public class Dealer {
     // shuffle deck
     // deal hand to player and dealer
     // check if there is a blackjack or bust right away
-    public Dealer(Player player, int bet, Deck deck) {
+    public Dealer(Player player, Deck deck) {
         // constructs the deck and "shuffle"
         this.deck = deck;
 
@@ -78,21 +77,23 @@ public class Dealer {
     }
 
     // pass in arraylist to compare both player hands and give result
-    public void dDecision(Hand playerHand) {
+    public int dDecision(Hand playerHand) {
         int result = 0;
         
         while (true) {
         	result = compareHands(playerHand);
         	
         	if (result == 0){
-        		endGame(0, result); // tie, hand values are 18 or higher
+        		//endGame(0, result); // tie, hand values are 18 or higher
         		System.out.println("dDecision: tie");
-        		break;
+        		return result;
+        		//break;
         	}
         	else if (result == -1) {
-        		endGame(-playerHand.getBet(), result); // player lost, dealer has higher hand value
+        		//endGame(-playerHand.getBet(), result); // player lost, dealer has higher hand value
         		System.out.println("dDecision: dealer win");
-        		break;
+        		return result;
+        		//break;
         	}
         	else if (result == 1) {
         		Card c = hit(this.dealersHand); // deal a card to dealer hand 
@@ -107,14 +108,16 @@ public class Dealer {
         		//DealerPanel.getDealerHand().repaint();
         		
             	if(bust(this.dealersHand)) {
-            		endGame(playerHand.getBet(), result); // player wins because dealer busted
+            		//endGame(playerHand.getBet(), result); // player wins because dealer busted
             		System.out.println("dDecision: dealer bust");
-            		break;
+            		return result;
+            		//break;
             	}
         	}
         	else {
-    			System.out.println("game broke");
-    			break;
+    			//System.out.println("game broke");
+    			return -2;
+    			//break;
     		}
         }
     }
@@ -222,11 +225,11 @@ public class Dealer {
 			message = "It's a tie";
 		}
 		else if (result == 1) {
-			System.out.println("Player Won: $" + amount); 
-			message = "Player Won: $" + amount;
+			System.out.println("Player Won: $" + amount);
+			message = "Congartulations!! You Won: $" + amount;
 		} else if (result == -1) {
 			System.out.println("Player Lost: $" + amount); 
-			message = "Player Lost: $" + amount;
+			message = "You lost: $" + amount;
 		}
 		else {
 			System.out.println("game broke");
@@ -235,5 +238,5 @@ public class Dealer {
 		
 		// show dialog box with result and give user option to play again
 		JOptionPane.showMessageDialog(null, message);
-	}
+    }
 }
