@@ -164,7 +164,7 @@ public class PlayerPanel extends GamePanel {
 		betOne.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				if(hand.getHand().size()<=2) {
+				if(deal.isEnabled()) {
 					int currentBet = player.getHand().get(0).getBet();
 					hand.setBet(currentBet + betOne.getValue());
 					playerBet.setText("Bet: $" + hand.getBet());
@@ -186,7 +186,7 @@ public class PlayerPanel extends GamePanel {
 		betFive.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				if(hand.getHand().size()<=2) {
+				if(deal.isEnabled()) {
 					int currentBet = player.getHand().get(0).getBet();
 					hand.setBet(currentBet + betFive.getValue());
 					playerBet.setText("Bet: $" + hand.getBet());
@@ -208,7 +208,7 @@ public class PlayerPanel extends GamePanel {
 		betTen.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				if(hand.getHand().size()<=2) {
+				if(deal.isEnabled()) {
 					int currentBet = player.getHand().get(0).getBet();
 					hand.setBet(currentBet + betTen.getValue());
 					playerBet.setText("Bet: $" + hand.getBet());
@@ -230,7 +230,7 @@ public class PlayerPanel extends GamePanel {
 		betTwentyFive.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				if(hand.getHand().size()<=2) {
+				if(deal.isEnabled()) {
 					int currentBet = player.getHand().get(0).getBet();
 					hand.setBet(currentBet + betTwentyFive.getValue());
 					playerBet.setText("Bet: $" + hand.getBet());
@@ -252,7 +252,7 @@ public class PlayerPanel extends GamePanel {
 		betFifty.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				if(hand.getHand().size()<=2) {
+				if(deal.isEnabled()) {
 					int currentBet = player.getHand().get(0).getBet();
 					hand.setBet(currentBet + betFifty.getValue());
 					playerBet.setText("Bet: $" + hand.getBet());
@@ -276,32 +276,29 @@ public class PlayerPanel extends GamePanel {
 			public void mouseClicked(MouseEvent arg0) {
 				
 				try {
-					System.out.println("Disable bets and doubledown and surrender button");
-				
-					doubleDown.setEnabled(false);
-					surrender.setEnabled(false);
-					betOne.setEnabled(false);
-					betFive.setEnabled(false);
-					betTen.setEnabled(false);
-					betTwentyFive.setEnabled(false);
-					betFifty.setEnabled(false);
-					
-					System.out.println("player hand value: " + hand.getHandValue());
-					Card c = Dealer.hit(hand);
-					System.out.println(c.toString());
-			
-				
-					playerHandPanel1.addCard(c.getImagePath()); 
-					playerName.setText(player.getName() + ": " + hand.getHandValue());
-					System.out.println("player hand value: " + hand.getHandValue());
-					placeAndResizeComponents();
-					repaint();
-					if(BlackjackGui.dealer.bust(hand))
-					{
-						BlackjackGui.dealer.endGame(-hand.getBet(), -1);
-						BlackjackGui.getInstance().dealerPanel.setBalance();
-						
+					if (deal.isEnabled()==false){
+						System.out.println("Disable bets and doubledown and surrender button");
+
+						doubleDown.setEnabled(false);
+						surrender.setEnabled(false);
+
+						System.out.println("player hand value: " + hand.getHandValue());
+						Card c = Dealer.hit(hand);
+						System.out.println(c.toString());
+
+
+						playerHandPanel1.addCard(c.getImagePath());
+						playerName.setText(player.getName() + ": " + hand.getHandValue());
+						System.out.println("player hand value: " + hand.getHandValue());
+						placeAndResizeComponents();
+						repaint();
+						if(BlackjackGui.dealer.bust(hand))
+						{
+							BlackjackGui.dealer.endGame(-hand.getBet(), -1);
+              BlackjackGui.getInstance().dealerPanel.setBalance();
+						}
 					}
+
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -324,18 +321,25 @@ public class PlayerPanel extends GamePanel {
 				
 				
 				try {
-					betOne.setEnabled(false);
-					betFive.setEnabled(false);
-					betTen.setEnabled(false);
-					betTwentyFive.setEnabled(false);
-					betFifty.setEnabled(false);
-					
-					System.out.println("player stops and gives control to dealer: " + hand.getHandValue());
-					BlackjackGui.dealer.dDecision(hand);
-					BlackjackGui.getInstance().dealerPanel.setBalance();
-					System.out.println("show dealer hand");
-					DealerPanel.initializeHandPanel2();
-	
+
+					if (deal.isEnabled()==false){
+						System.out.println("player stops and gives control to dealer: " + hand.getHandValue());
+						int result=BlackjackGui.dealer.dDecision(hand);
+
+						System.out.println("show dealer hand");
+						DealerPanel.initializeHandPanel2();
+						if (result == 0){
+							BlackjackGui.dealer.endGame(0, result);	// tie, hand values are 18 or higher
+						}else if (result == -1) {
+							BlackjackGui.dealer.endGame(-player.getHand().get(0).getBet(), result); // player lost, dealer has higher hand value
+						}else if (result == 1){
+							BlackjackGui.dealer.endGame(player.getHand().get(0).getBet(), result);// dealer bust
+						}else {
+							BlackjackGui.dealer.endGame(0, result);	//System.out.println("Game Broke");
+						}
+					}
+          BlackjackGui.getInstance().dealerPanel.setBalance();
+
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -357,12 +361,19 @@ public class PlayerPanel extends GamePanel {
 				
 				
 				try {
-					System.out.println("show cards " + hand.getHandValue());
-					deal.setEnabled(false);
-					for (Card c : player.getHand().get(0).getHand()) {
-						playerHandPanel1.addCard(c.getImagePath());
-					}
+					if(deal.isEnabled()){
+						System.out.println("show cards " + hand.getHandValue());
+						deal.setEnabled(false);
+						betOne.setEnabled(false);
+						betFive.setEnabled(false);
+						betTen.setEnabled(false);
+						betTwentyFive.setEnabled(false);
+						betFifty.setEnabled(false);
+						for (Card c : player.getHand().get(0).getHand()) {
+							playerHandPanel1.addCard(c.getImagePath());
+						}
 
+						
 					//Add playerHandPanel 1 & 2 to playerHandsPanel
 					playerHandsPanel.add(playerHandPanel1);
 					
@@ -372,17 +383,16 @@ public class PlayerPanel extends GamePanel {
 					DealerPanel.getDealerHand().setVisible(true);
 					
 					placeAndResizeComponents();
-					repaint();
-					
-				} catch (Exception e) {
+					repaint();				
+       } catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				if (BlackjackGui.dealer.getIsBlackjack()) {
 					double amount = BlackjackGui.player.getHand().get(0).getBet() * 1.5;
-		           
+					JOptionPane.showMessageDialog(null, "Congratulations it's a BLACKJACK!");
 					BlackjackGui.dealer.endGame(amount, 1);
-		            JOptionPane.showMessageDialog(null, "BLACKJACK!");
+
 				}
 				
 				
@@ -401,11 +411,15 @@ public class PlayerPanel extends GamePanel {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				try {
-					System.out.println("player stops and gives control to dealer: " + hand.getHandValue());
-					BlackjackGui.dealer.surrender(hand);
-					
-					// disable buttons on player panel
-					//check bust for dealer hand
+					if (deal.isEnabled()==false && player.getHand().get(0).getHand().size()<=2 ){
+						//System.out.println("Player hand size:"+player.getHand().get(0).getHand().size();
+						System.out.println("player stops and gives control to dealer: " + hand.getHandValue());
+						BlackjackGui.dealer.surrender(hand);
+
+						// disable buttons on player panel
+						//check bust for dealer hand
+					}
+
 					
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
@@ -427,20 +441,19 @@ public class PlayerPanel extends GamePanel {
 			public void mouseClicked(MouseEvent arg0) {
 					
 				try {
-					betOne.setEnabled(false);
-					betFive.setEnabled(false);
-					betTen.setEnabled(false);
-					betTwentyFive.setEnabled(false);
-					betFifty.setEnabled(false);
-					
-					if(hand.getHand().size()<=2) {
-						System.out.println("player doubles bet(before): " + hand.getBet());
-						BlackjackGui.dealer.doubleDown(hand);
-						System.out.println("player doubles bet(after): " + hand.getBet());
+					if(deal.isEnabled()==false && player.getHand().get(0).getHand().size()<=2){
+							if(hand.getHand().size()<=2) {
+							System.out.println("player doubles bet(before): " + hand.getBet());
+							BlackjackGui.dealer.doubleDown(hand);
+							playerBet.setText("Bet: $" + hand.getBet());
+							repaint();
+							System.out.println("player doubles bet(after): " + hand.getBet());
+						}
+						// disable buttons on player panel
+						//check bust for dealer hand
+
 					}
-					// disable buttons on player panel
-					//check bust for dealer hand
-					
+
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

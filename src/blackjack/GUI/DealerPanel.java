@@ -1,19 +1,16 @@
 package blackjack.GUI;
 
+import blackjack.Card;
+
+import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
-import javax.swing.*;
-
 import blackjack.Card;
 import blackjack.Player;
-
 /**
  * 
  * @author Aparna Gangwar
@@ -101,8 +98,7 @@ public class DealerPanel extends GamePanel{
 		dealerHandPanel.setLayout(null);
 		System.out.println(dealerHandPanel.getBackground());
 		System.out.println(DealerPanel.getDealerHand().toString());
-
-		dealerHandPanel.addCard("/cards/back.gif");
+		dealerHandPanel.addCard("/cards/back1.png");
 		dealerHandPanel.addCard(BlackjackGui.dealer.getDealerHand().getHand().get(1).getImagePath());
 		dealerHandPanel.setVisible(false);
 		
