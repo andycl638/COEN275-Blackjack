@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import javax.swing.*;
 
 import blackjack.Card;
+import blackjack.Player;
 
 /**
  * 
@@ -41,7 +42,7 @@ public class DealerPanel extends GamePanel{
 	
 	public void initialize() {
 		//Initialize player's current balance
-		playerBalance = new JLabel("Balance: $1000");
+		playerBalance = new JLabel("Balance: $" + Player.getInstance().getBalance());
 		playerBalance.setForeground(super.paleYellow);
 		playerBalance.setHorizontalAlignment(SwingConstants.CENTER);
 		playerBalance.setVerticalAlignment(SwingConstants.CENTER);
@@ -68,6 +69,9 @@ public class DealerPanel extends GamePanel{
 		
 		initializeControlPanel();
 		initializeHandPanel();
+	}
+	public void setBalance() {
+		playerBalance.setText("Balance: $" + Player.getInstance().getBalance());
 	}
 	
 	public void initializeControlPanel() {
@@ -97,10 +101,7 @@ public class DealerPanel extends GamePanel{
 		dealerHandPanel.setLayout(null);
 		System.out.println(dealerHandPanel.getBackground());
 		System.out.println(DealerPanel.getDealerHand().toString());
-		// displaying initial two cards
-		//for (Card c: BlackjackGui.dealer.getDealerHand().getHand()) {
-		//	dealerHandPanel.addCard(c.getImagePath());
-		//}
+
 		dealerHandPanel.addCard("/cards/back.gif");
 		dealerHandPanel.addCard(BlackjackGui.dealer.getDealerHand().getHand().get(1).getImagePath());
 		dealerHandPanel.setVisible(false);

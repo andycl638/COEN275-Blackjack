@@ -17,7 +17,7 @@ public class Dealer {
     // shuffle deck
     // deal hand to player and dealer
     // check if there is a blackjack or bust right away
-    public Dealer(Player player, int bet, Deck deck) {
+    public Dealer(Player player, Deck deck) {
         // constructs the deck and "shuffle"
         this.deck = deck;
 
