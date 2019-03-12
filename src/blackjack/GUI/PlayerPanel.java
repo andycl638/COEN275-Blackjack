@@ -1,32 +1,16 @@
 package blackjack.GUI;
 
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.logging.Logger;
-import java.util.*;
-
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-import javax.swing.border.BevelBorder;
-
 import blackjack.Card;
 import blackjack.Dealer;
 import blackjack.Hand;
 import blackjack.Player;
+
+import javax.swing.*;
+import javax.swing.border.BevelBorder;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.logging.Logger;
 
 /**
  * 
@@ -380,7 +364,7 @@ public class PlayerPanel extends GamePanel {
 					playerName.setText("Michael Scott: " + player.getHand().get(0).getHandValue());
 					
 					// display dealers hand
-					DealerPanel.getDealerHand().setVisible(true);;
+					DealerPanel.getDealerHand().setVisible(true);
 					
 					placeAndResizeComponents();
 					repaint();
