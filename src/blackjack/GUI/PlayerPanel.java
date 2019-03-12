@@ -30,7 +30,6 @@ public class PlayerPanel extends GamePanel {
 	private int pBetPanelTop = 20;	//top padding for bet panel
 	private int playerHandsGap = 50; //gap between two hands in case of split
 	private int pBottom = 150;
-	private boolean isSplit = true;
 	
 	
 	//declaring components
@@ -74,15 +73,19 @@ public class PlayerPanel extends GamePanel {
 		playerDetailsPanel.setOpaque(false);
 		playerDetailsPanel.setBorder(new BevelBorder(10));
 		
-		playerName = new JLabel("Michael Scott: ");
+		playerName = new JLabel();
 		playerName.setForeground(super.paleYellow);
 		playerName.setFont(new Font("Helvetica Neue",Font.PLAIN, 16));
 		playerName.setHorizontalAlignment(SwingConstants.CENTER);
 		playerName.setVerticalAlignment(SwingConstants.CENTER);
-		playerName.setText("Michael Scott: ");
+		
 		playerDetailsPanel.add(playerName);
 		
 		this.add(playerDetailsPanel);
+	}
+	
+	public void setPlayerNameLabel(String inputName) {
+		playerName.setText(inputName + ": ");
 	}
 	
 	/**
@@ -285,13 +288,14 @@ public class PlayerPanel extends GamePanel {
 
 
 						playerHandPanel1.addCard(c.getImagePath());
-						playerName.setText("Michael Scott: " + hand.getHandValue());
+						playerName.setText(player.getName() + ": " + hand.getHandValue());
 						System.out.println("player hand value: " + hand.getHandValue());
 						placeAndResizeComponents();
 						repaint();
 						if(BlackjackGui.dealer.bust(hand))
 						{
 							BlackjackGui.dealer.endGame(-hand.getBet(), -1);
+              BlackjackGui.getInstance().dealerPanel.setBalance();
 						}
 					}
 
@@ -317,6 +321,7 @@ public class PlayerPanel extends GamePanel {
 				
 				
 				try {
+
 					if (deal.isEnabled()==false){
 						System.out.println("player stops and gives control to dealer: " + hand.getHandValue());
 						int result=BlackjackGui.dealer.dDecision(hand);
@@ -333,7 +338,7 @@ public class PlayerPanel extends GamePanel {
 							BlackjackGui.dealer.endGame(0, result);	//System.out.println("Game Broke");
 						}
 					}
-
+          BlackjackGui.getInstance().dealerPanel.setBalance();
 
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
@@ -368,20 +373,18 @@ public class PlayerPanel extends GamePanel {
 							playerHandPanel1.addCard(c.getImagePath());
 						}
 
-						//Add playerHandPanel 1 & 2 to playerHandsPanel
-						playerHandsPanel.add(playerHandPanel1);
-
-						playerName.setText("Michael Scott: " + player.getHand().get(0).getHandValue());
-
-						// display dealers hand
-						DealerPanel.getDealerHand().setVisible(true);
-
-						placeAndResizeComponents();
-						repaint();
-
-					}
-
-				} catch (Exception e) {
+						
+					//Add playerHandPanel 1 & 2 to playerHandsPanel
+					playerHandsPanel.add(playerHandPanel1);
+					
+					playerName.setText(player.getName() + ": " + player.getHand().get(0).getHandValue());
+					
+					// display dealers hand
+					DealerPanel.getDealerHand().setVisible(true);
+					
+					placeAndResizeComponents();
+					repaint();				
+       } catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}

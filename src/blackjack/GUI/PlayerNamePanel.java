@@ -18,6 +18,8 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.Border;
 
+import blackjack.Player;
+
 public class PlayerNamePanel extends GamePanel{
 	//Setup Logging
 		final private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -45,16 +47,6 @@ public class PlayerNamePanel extends GamePanel{
 		}
 
 		public void initialize() {
-			/*{
-				public void paint(Graphics g) {
-					super.paint(g);
-					Dimension d = dialogBox.getSize();
-					Point p = dialogBox.getLocation();
-					g.setColor(Color.RED);
-					g.drawRoundRect(p.x, p.y, d.width, d.height, 20, 20);
-					super.paintComponent(g);
-				}
-			};*/
 			name = new JTextField() {
 				private String placeholder = "Enter Your Name";
 				
@@ -81,24 +73,6 @@ public class PlayerNamePanel extends GamePanel{
 			};
 			name.setOpaque(false);
 			name.setBorder(javax.swing.BorderFactory.createMatteBorder(2,2,2,2,new Color(0,0,0,0))); //No Color
-			/*scrollPane = new JScrollPane(label);
-			scrollPane.setBorder(null);
-			scrollPane.getViewport().setOpaque(false);
-			scrollPane.setOpaque(false);
-			scrollPane.setHorizontalScrollBarPolicy(
-					ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER
-					);
-			scrollPane.getVerticalScrollBar().setUnitIncrement(20);
-			scrollPane.getVerticalScrollBar().setSize(
-					this.scrollBarWidth, 
-					scrollPane.getVerticalScrollBar().getSize().height
-					);
-			scrollPane.getVerticalScrollBar().setOpaque(false);
-			scrollPane.getVerticalScrollBar().setUI(new ScrollbarUI());
-			scrollPane.getVerticalScrollBar().setPreferredSize(
-					new Dimension(scrollBarWidth, 0)
-					);
-			this.add(scrollPane);*/
 			
 			this.add(name);
 			dialogControl = new JPanel();
@@ -111,27 +85,18 @@ public class PlayerNamePanel extends GamePanel{
 			
 			this.add(dialogControl);
 			
-			//initializeRules();
+			
 		}
-		
-		/*public void initializeRules() {
-			LOGGER.info("in initializeRules");
-			
-			label.setText(getRulesText());
-				
-			close = new CustomButton("Close", false);
-			dialogControl.add(close);
-			
-			addListener();
-			
-			this.add(dialogControl);
-		}*/
 		
 		private void addListener() {
 			close.addMouseListener(new MouseListener() {
 				public void mouseClicked(MouseEvent arg0) {
 					BlackjackGui.getInstance().hidePlayerNameScreen();
-					BlackjackGui.getInstance().showGameScreen();	
+					
+					Player.getInstance().setName(name.getText());
+					
+					BlackjackGui.getInstance().playerPanel.setPlayerNameLabel(name.getText());
+					BlackjackGui.getInstance().showGameScreen();
 				}
 				public void mouseEntered(MouseEvent arg0) {}
 				public void mouseExited(MouseEvent arg0) {}
@@ -155,10 +120,6 @@ public class PlayerNamePanel extends GamePanel{
 			int padding = 15;
 			name.setSize(getWidth() - 2*padding, name.getPreferredSize().height);
 			name.setLocation(padding, padding);
-			
-			//label.setLocation(padding/2,0);
-			//this.setSize(getSize().width, height);
-			//this.setLocation(0, 0);
 
 			close.setSize(((int)(close.getPreferredSize().getWidth()+padding)), ((int)(close.getPreferredSize().getHeight() + 10)));
 			dialogControl.setSize(getWidth(), close.getHeight()+padding);
