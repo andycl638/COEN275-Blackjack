@@ -361,7 +361,7 @@ public class PlayerPanel extends GamePanel {
 				
 				
 				try {
-					if(deal.isEnabled()){
+					if(deal.isEnabled()) {
 						System.out.println("show cards " + hand.getHandValue());
 						deal.setEnabled(false);
 						betOne.setEnabled(false);
@@ -373,18 +373,19 @@ public class PlayerPanel extends GamePanel {
 							playerHandPanel1.addCard(c.getImagePath());
 						}
 
-						
-					//Add playerHandPanel 1 & 2 to playerHandsPanel
-					playerHandsPanel.add(playerHandPanel1);
-					
-					playerName.setText(player.getName() + ": " + player.getHand().get(0).getHandValue());
-					
-					// display dealers hand
-					DealerPanel.getDealerHand().setVisible(true);
-					
-					placeAndResizeComponents();
-					repaint();				
-       } catch (Exception e) {
+
+						//Add playerHandPanel 1 & 2 to playerHandsPanel
+						playerHandsPanel.add(playerHandPanel1);
+
+						playerName.setText(player.getName() + ": " + player.getHand().get(0).getHandValue());
+
+						// display dealers hand
+						DealerPanel.getDealerHand().setVisible(true);
+
+						placeAndResizeComponents();
+						repaint();
+					}
+       			} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
