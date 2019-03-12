@@ -345,7 +345,7 @@ public class PlayerPanel extends GamePanel {
 					BlackjackGui.dealer.dDecision(hand);
 					
 					System.out.println("show dealer hand");
-					DealerPanel.initializeHandPanel2();
+					DealerPanel.getInstance().initializeHandPanel2();
 	
 				} catch (Exception e) {
 					// TODO Auto-generated catch block

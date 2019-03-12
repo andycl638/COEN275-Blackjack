@@ -32,9 +32,11 @@ public class EndGamePanel extends GamePanel{
 		int scrollBarWidth = 10;
 		private int width = 200;
 		private int height = 40;
+		private String message = "";
 		
-		public EndGamePanel() {
+		public EndGamePanel(String message) {
 			LOGGER.info("In constructor 1 for endgame panel");
+			this.message = message;
 			this.setBackground(super.grey);
 			this.setOpaque(false);
 			this.setLayout(null);
@@ -47,7 +49,7 @@ public class EndGamePanel extends GamePanel{
 			result = new JLabel();
 			String text = "<html>"+
 								"<h3>"+
-										"Player 1 Won!!!"+
+										this.message+
 								"</h3>"+
 							"</html>";
 			result.setText(text);

@@ -130,52 +130,30 @@ public class RulesPanel extends GamePanel{
 	
 	public String getRulesText() {
 		String text = "<html>"+
-						"<br/><br/>"
-						+ "<h1>"+
-							"&nbsp;&nbsp;&nbsp;&nbsp;Game Rules"+
-						"</h1>"+
-						"<ol>"+
-							"<li>Blackjack may be played with one to eight decks of 52-card decks.</li>"+
-							"<li>Aces may be counted as 1 or 11 points, 2 to 9 according to pip value, and tens and face cards <br/>"+
-							"count as ten points.</li>"+
-							"<li>The value of a hand is the sum of the point values of the individual cards. Except, a <br/>"+
-							"'blackjack' is the highest hand, consisting of an ace and any 10-point card, and it outranks all<br/>"+
-							" other 21-point hands.</li>"+
-							"<li>After the players have bet, the dealer will give two cards to each player and two cards to<br/> "+
-							"himself. One of the dealer cards is dealt face up. The facedown card is called the 'hole card.'</li>"+
-							"<li>If the dealer has a ten or an ace showing (after offering insurance with an ace showing), then<br/>"+
-							" he will peek at his facedown card to see if he has a blackjack. If he does, then he will turn it over<br/>"+
-							" immediately.</li>"+
-							"<li>If the dealer has a ten or an ace showing (after offering insurance with an ace showing), then he <br/>"+
-							"will peek at his facedown card to see if he has a blackjack. If he does, then he will turn it over immediately.</li>"+
-							"<li>If the dealer does have a blackjack, then all wagers (except insurance) will lose, unless the <br/>"+
-							"player also has a blackjack, which will result in a push. The dealer will resolve insurance wagers at<br/>"+
-							" this time.</li>"+
-							"<li>Play begins with the player to the dealer's left. The following are the choices available to the <br/>"+
-							"player:"+
-							"<ul>"+
-								"<li><b><u>Stand</u> :</b> Player stands pat with his cards.</li>"+
-								"<li><b><u>Hit</u> :</b> Player draws another card (and more if he wishes). If this card causes the <br/>"+
-								"player's total points to exceed 21 (known as 'breaking' or 'busting') then he loses.</li>"+
-								"<li><b><u>Double</u> :</b> Player doubles his bet and gets one, and only one, more card.</li>"+
-								"<li><b><u>Split</u> :</b> If the player has a pair, or any two 10-point cards, then he may double his <br/>"+
-								"bet and separate his cards into two individual hands. The dealer will automatically give each card a <br/>"+
-								"second card. Then, the player may hit, stand, or double normally. However, when splitting aces, each ace<br/>"+
-								" gets only one card. Sometimes doubling after splitting is not allowed. If the player gets a ten and ace <br/>"+
-								"after splitting, then it counts as 21 points, not a blackjack. Usually the player may keep re-splitting up <br/>"+
-								"to a total of four hands. Sometimes re-splitting aces is not allowed.</li>"+
-								"<li><b><u>Surrender</u> :</b> The player forfeits half his wager, keeping the other half, and does not play<br/>"+
-								" out his hand. This option is only available on the initial two cards, and depending on casino rules, <br/>"+
-								"sometimes it is not allowed at all.</li>"+
-							"</ul>"+
-							"</li>"+
-							"<li>If the dealer goes over 21 points, then any player who didn't already bust will win.</li>"+
-							"<li>If the dealer does not bust, then the higher point total between the player and dealer will win.</li>"+
-							"<li>Winning wagers pay even money, except a winning player blackjack usually pays 3 to 2. Some casinos have <br/>"+
-							"been short-paying blackjacks, which is a rule strongly in the casino's favor.</li>"+
-						"</ol>"+
-					"</html>";	
-		
+					"<br/><br/>"+
+					"<h1>"+
+					"&nbsp;&nbsp;&nbsp;&nbsp;Game Rules"+
+				"</h1>"+
+				"<ol>"+
+				"<li>Aces may be counted as 1 or 11.\r\n</li>" + 
+				"<li>Number cards hold their value.\r\n</li>" + 
+				"<li>Face cards have a value of 10.\r\n</li>" + 
+				"<li>After the players have bet, the dealer will give two cards to each player and two cards to himself. One of the<br/>"+
+				" dealer cards is dealt face up. The facedown card is called the \"hole card.\"\r\n</li>" + 
+				"<li>The following are the choices available to the player: \r\n" + 
+					"<ul>"+
+						"<li>Blackjack: Player is deal a hand of value 21 (Ace + 10 value card). Wins \r\n</li>" + 
+						"<li>Stand: Player ends his turn\r\n</li>" + 
+						"<li>Hit: Player draws another card.\r\n</li>" + 
+						"<li>Bust: Player hand value exceed 21, loses\r\n</li>" + 
+						"<li>Double: Player doubles his bet.\r\n</li>" + 
+						"<li>Surrender: The player forfeits half his wager, keeping the other half. Game ends\r\n</li>" + 
+					"</ul>"+
+				"</li>"+
+				"<li>After player has had his turn. If dealer hand equals player hand and value is less than 18. Dealer will draw a card..\r\n</li>" + 
+				"<li>If the dealer goes over 21 points, then any player who didn't already bust will win.\r\n</li>" + 
+				"</ol>"+
+				"</html>";
 		return text;
 	}
 }

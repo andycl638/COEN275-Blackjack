@@ -150,7 +150,7 @@ public class BlackjackGui extends JFrame {
 		mainContent.setVisible(false);
 		
 		LOGGER.info("Initializing Dealer");
-		dealerPanel = new DealerPanel();
+		dealerPanel = DealerPanel.getInstance();
 		mainContent.add(dealerPanel);
 		LOGGER.info("Initializing Player");
 		playerPanel = new PlayerPanel(this.player);
@@ -221,9 +221,9 @@ public class BlackjackGui extends JFrame {
 		this.repaint();
 	}
 	
-	public void showEndGameScreen() {
+	public void showEndGameScreen(String message) {
 		showOverlay();
-		EndGamePanel egp = new EndGamePanel();
+		EndGamePanel egp = new EndGamePanel(message);
 		egp.setSize(egp.getPreferredSize());
 		egp.setLocation((getSize().width - egp.getSize().width)/2,
 				(getSize().height - egp.getSize().height)/2);
