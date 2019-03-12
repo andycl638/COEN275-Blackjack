@@ -5,13 +5,19 @@ import java.util.*;
 
 public class Player {
 	private String name;
-	private double balance;
+	private double balance = 1000;
 	private ArrayList<Hand> playersHand;
+	private static Player player;
 
-	public Player(String name) {
-		this.balance = 1000;
-		this.name = name;
+	private Player() {
 		playersHand = new ArrayList<>();
+	}
+	
+	public static Player getInstance() {
+		if (player == null) {
+			player = new Player();
+		}
+		return player;
 	}
 
 	public String getName() {
