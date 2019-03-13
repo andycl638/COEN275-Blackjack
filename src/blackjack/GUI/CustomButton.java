@@ -33,6 +33,7 @@ public class CustomButton extends JLabel {
 		//this.setForeground(Color.WHITE);
 		this.setVerticalAlignment(SwingConstants.CENTER);
 		this.setHorizontalAlignment(SwingConstants.CENTER);
+		this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		addMouseListener(null);
 	}
 	

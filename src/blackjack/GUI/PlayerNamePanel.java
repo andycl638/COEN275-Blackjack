@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.logging.Logger;
@@ -16,7 +18,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.Timer;
 import javax.swing.border.Border;
+
+
+import blackjack.Player;
 
 public class PlayerNamePanel extends GamePanel{
 	//Setup Logging
@@ -30,31 +36,49 @@ public class PlayerNamePanel extends GamePanel{
 		
 		//declare component configuration
 		int scrollBarWidth = 10;
-		private int width = 200;
-		private int height = 40;
+		private int width = 0;
+		private int height = 0;
 		private String placeholder = "Enter your name";
+		private int opacity = 255;
+		private PlayerNamePanel pnp;
+		private Dimension d = new Dimension(0,0);
+		private Timer tm = new Timer(50,new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int targetHeight = 40 + close.getPreferredSize().height + 30;
+				pnp.opacity -= 50;
+				d.height += (targetHeight * 50 / 255);
+				d.width += (200*50/255);
+				if(d.height > targetHeight) d.height = targetHeight;
+				if(d.width > 200) d.width = 200;
+				placeAndResizeComponents();
+				pnp.setSize(d);
+				//pnp.setLocation((panel.width - d.width)/2, (panel.height - d.height)/2);
+				//placeAndResizeComponents();
+				if(pnp.opacity < 0) {
+					pnp.opacity = 0;
+				}
+				if(pnp.opacity == 0 && pnp.getHeight() == targetHeight && pnp.getWidth() == 200) {
+					tm.stop();
+				}
+				
+				pnp.repaint();
+			}
+			
+		});
 		
 		public PlayerNamePanel() {
+			pnp = this;
 			LOGGER.info("In constructor 1 for playername panel");
-			this.setBackground(super.grey);
 			this.setOpaque(false);
 			this.setLayout(null);
 			//this.setBorder(BorderFactory.createLineBorder(new Color(100, 102, 68)));
 			
 			initialize();
+			tm.start();
 		}
 
 		public void initialize() {
-			/*{
-				public void paint(Graphics g) {
-					super.paint(g);
-					Dimension d = dialogBox.getSize();
-					Point p = dialogBox.getLocation();
-					g.setColor(Color.RED);
-					g.drawRoundRect(p.x, p.y, d.width, d.height, 20, 20);
-					super.paintComponent(g);
-				}
-			};*/
 			name = new JTextField() {
 				private String placeholder = "Enter Your Name";
 				
@@ -81,29 +105,12 @@ public class PlayerNamePanel extends GamePanel{
 			};
 			name.setOpaque(false);
 			name.setBorder(javax.swing.BorderFactory.createMatteBorder(2,2,2,2,new Color(0,0,0,0))); //No Color
-			/*scrollPane = new JScrollPane(label);
-			scrollPane.setBorder(null);
-			scrollPane.getViewport().setOpaque(false);
-			scrollPane.setOpaque(false);
-			scrollPane.setHorizontalScrollBarPolicy(
-					ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER
-					);
-			scrollPane.getVerticalScrollBar().setUnitIncrement(20);
-			scrollPane.getVerticalScrollBar().setSize(
-					this.scrollBarWidth, 
-					scrollPane.getVerticalScrollBar().getSize().height
-					);
-			scrollPane.getVerticalScrollBar().setOpaque(false);
-			scrollPane.getVerticalScrollBar().setUI(new ScrollbarUI());
-			scrollPane.getVerticalScrollBar().setPreferredSize(
-					new Dimension(scrollBarWidth, 0)
-					);
-			this.add(scrollPane);*/
 			
 			this.add(name);
 			dialogControl = new JPanel();
 			dialogControl.setLayout(null);
 			dialogControl.setBackground(super.grey);
+			dialogControl.setOpaque(false);
 			close = new CustomButton("Start Playing", false);
 			dialogControl.add(close);
 			
@@ -111,27 +118,18 @@ public class PlayerNamePanel extends GamePanel{
 			
 			this.add(dialogControl);
 			
-			//initializeRules();
+			
 		}
-		
-		/*public void initializeRules() {
-			LOGGER.info("in initializeRules");
-			
-			label.setText(getRulesText());
-				
-			close = new CustomButton("Close", false);
-			dialogControl.add(close);
-			
-			addListener();
-			
-			this.add(dialogControl);
-		}*/
 		
 		private void addListener() {
 			close.addMouseListener(new MouseListener() {
 				public void mouseClicked(MouseEvent arg0) {
 					BlackjackGui.getInstance().hidePlayerNameScreen();
-					BlackjackGui.getInstance().showGameScreen();	
+					
+					Player.getInstance().setName(name.getText());
+					
+					BlackjackGui.getInstance().playerPanel.setPlayerNameLabel(name.getText());
+					BlackjackGui.getInstance().showGameScreen();
 				}
 				public void mouseEntered(MouseEvent arg0) {}
 				public void mouseExited(MouseEvent arg0) {}
@@ -140,7 +138,7 @@ public class PlayerNamePanel extends GamePanel{
 		}
 
 		public Dimension getPreferredSize() {
-			return new Dimension(width,height + close.getPreferredSize().height + 30);
+			return new Dimension(200,40 + close.getPreferredSize().height + 30);
 		}
 		
 		public void setSize(Dimension d) {
@@ -153,17 +151,16 @@ public class PlayerNamePanel extends GamePanel{
 			LOGGER.info("in placeandresizecomponents");
 			
 			int padding = 15;
-			name.setSize(getWidth() - 2*padding, name.getPreferredSize().height);
+			name.setSize(getPreferredSize().width - 2*padding, name.getPreferredSize().height);
 			name.setLocation(padding, padding);
-			
-			//label.setLocation(padding/2,0);
-			//this.setSize(getSize().width, height);
-			//this.setLocation(0, 0);
 
 			close.setSize(((int)(close.getPreferredSize().getWidth()+padding)), ((int)(close.getPreferredSize().getHeight() + 10)));
-			dialogControl.setSize(getWidth(), close.getHeight()+padding);
-			close.setLocation((dialogControl.getWidth()-close.getWidth())/2, (dialogControl.getHeight()-close.getHeight())/2);
-			dialogControl.setLocation(0, height);
+			dialogControl.setSize(getPreferredSize().width, close.getHeight()+padding);
+			close.setLocation(
+					(dialogControl.getSize().width-close.getWidth())/2, 
+					(dialogControl.getSize().height-close.getHeight())/2
+					);
+			dialogControl.setLocation(0, 40);
 		}
 		
 		public void paint(Graphics g) {
@@ -173,8 +170,22 @@ public class PlayerNamePanel extends GamePanel{
 			super.paintChildren(g);
 			g.setColor(Color.white);
 			g.drawRoundRect(0, 0, getSize().width, getSize().height, 20, 20);
-			
+			if(opacity > 0) {
+				Color color = new Color(super.grey.getRed(),
+						super.grey.getGreen(),
+						super.grey.getBlue(),
+						opacity
+						);
+				System.out.println(opacity);
+				g.setColor(color);
+				g.fillRoundRect(0, 0, getSize().width, getSize().height, 20, 20);
+			}
 			// Below paint method was for JTextField not here 
+			
+		}
+
+		public void setPanelSize(Dimension size) {
+			this.panel = size;
 			
 		}
 }

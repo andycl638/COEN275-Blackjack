@@ -4,15 +4,14 @@ import blackjack.GUI.*;
 
 public class BlackjackMain {
 	private BlackjackGui window;
+	private Player player;
 	
 	public BlackjackMain() {
-		Player player = new Player("player 1");
-		int bet = 0;
-		//testAce();
+		player = Player.getInstance();
 		// set the initial bet. should be passed in to dealer
 		// deck might need to be created outside so that the dealer can have the same deck when a game is finished
 		Deck deck = new Deck(); //pass to dealer param
-		Dealer dealer = new Dealer(player, bet, deck);
+		Dealer dealer = new Dealer(player, deck);
 		
 		window = BlackjackGui.getInstance(dealer, player, deck);
 	}
@@ -103,10 +102,8 @@ public class BlackjackMain {
 		// deck might need to be created outside so that the dealer can have the same deck when a game is finished
 	//	Deck deck = new Deck(); //pass to dealer param
 		//Dealer dealer = new Dealer(player, bet, deck);
-		
 		BlackjackMain tester = new BlackjackMain();
-		
-		
+
 	//	tester.testDeckAndHand();
 		
 		// the dealer is passed in to the GUI/event handler

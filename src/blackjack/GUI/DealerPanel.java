@@ -1,18 +1,16 @@
 package blackjack.GUI;
 
+import blackjack.Card;
+
+import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
-import javax.swing.*;
-
 import blackjack.Card;
-
+import blackjack.Player;
 /**
  * 
  * @author Aparna Gangwar
@@ -47,9 +45,14 @@ public class DealerPanel extends GamePanel{
 		return instance;
 	}
 	
+	public static void reinit() {
+		instance = null;
+		instance = getInstance();
+	}
+	
 	public void initialize() {
 		//Initialize player's current balance
-		playerBalance = new JLabel("Balance: $1000");
+		playerBalance = new JLabel("Balance: $" + Player.getInstance().getBalance());
 		playerBalance.setForeground(super.paleYellow);
 		playerBalance.setHorizontalAlignment(SwingConstants.CENTER);
 		playerBalance.setVerticalAlignment(SwingConstants.CENTER);
@@ -62,6 +65,7 @@ public class DealerPanel extends GamePanel{
 		dealerLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		dealerLabel.setVerticalAlignment(SwingConstants.CENTER);
 		dealerLabel.setFont(new Font("Helvetica Neue",Font.PLAIN, 16));
+		dealerLabel.setVisible(false);
 		this.add(dealerLabel);
 		
 		//Creating Deck Panel
@@ -76,6 +80,14 @@ public class DealerPanel extends GamePanel{
 		
 		initializeControlPanel();
 		initializeHandPanel();
+	}
+	public void setBalance() {
+		playerBalance.setText("Balance: $" + Player.getInstance().getBalance());
+	}
+	
+	public void showDealerLabel() {
+		dealerLabel.setVisible(true);
+		this.repaint();
 	}
 	
 	private void initializeControlPanel() {
@@ -105,11 +117,7 @@ public class DealerPanel extends GamePanel{
 		dealerHandPanel.setLayout(null);
 		System.out.println(dealerHandPanel.getBackground());
 		System.out.println(DealerPanel.getDealerHand().toString());
-		// displaying initial two cards
-		//for (Card c: BlackjackGui.dealer.getDealerHand().getHand()) {
-		//	dealerHandPanel.addCard(c.getImagePath());
-		//}
-		dealerHandPanel.addCard("/cards/back.gif");
+		dealerHandPanel.addCard("/cards/back1.png");
 		dealerHandPanel.addCard(BlackjackGui.dealer.getDealerHand().getHand().get(1).getImagePath());
 		dealerHandPanel.setVisible(false);
 		
