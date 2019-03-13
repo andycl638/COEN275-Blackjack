@@ -183,9 +183,4 @@ public class PlayerNamePanel extends GamePanel{
 			// Below paint method was for JTextField not here 
 			
 		}
-
-		public void setPanelSize(Dimension size) {
-			this.panel = size;
-			
-		}
 }
