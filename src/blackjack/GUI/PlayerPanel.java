@@ -88,6 +88,10 @@ public class PlayerPanel extends GamePanel {
 		playerName.setText(inputName + ": ");
 	}
 	
+	public String getPlayerNameLabel() {
+		return playerName.getText();
+	}
+	
 	/**
 	 * Method to initialize bets buttons
 	 * Bet options are $1, $5, $10, $25, $50
@@ -322,12 +326,13 @@ public class PlayerPanel extends GamePanel {
 				
 				try {
 
+
 					if (deal.isEnabled()==false){
 						System.out.println("player stops and gives control to dealer: " + hand.getHandValue());
 						int result=BlackjackGui.dealer.dDecision(hand);
 
 						System.out.println("show dealer hand");
-						DealerPanel.initializeHandPanel2();
+						DealerPanel.getInstance().initializeHandPanel2();
 						if (result == 0){
 							BlackjackGui.dealer.endGame(0, result);	// tie, hand values are 18 or higher
 						}else if (result == -1) {
@@ -378,7 +383,7 @@ public class PlayerPanel extends GamePanel {
 						playerHandsPanel.add(playerHandPanel1);
 
 						playerName.setText(player.getName() + ": " + player.getHand().get(0).getHandValue());
-
+						DealerPanel.getInstance().showDealerLabel();
 						// display dealers hand
 						DealerPanel.getDealerHand().setVisible(true);
 
@@ -391,8 +396,28 @@ public class PlayerPanel extends GamePanel {
 				}
 				if (BlackjackGui.dealer.getIsBlackjack()) {
 					double amount = BlackjackGui.player.getHand().get(0).getBet() * 1.5;
-					JOptionPane.showMessageDialog(null, "Congratulations it's a BLACKJACK!");
-					BlackjackGui.dealer.endGame(amount, 1);
+					//JOptionPane.showMessageDialog(null, "Congratulations it's a BLACKJACK!");
+					BlackjackGui.getInstance().showEndGameScreen("Congratulations it's a BLACKJACK!", "OKAY", new EndGamePanel.ActionCallback() {
+							@Override
+							public void callback() {
+								BlackjackGui.getInstance().hideEndGameScreen();
+								
+								new Thread() {
+									public void run() {
+										try {
+											Thread.sleep(1000);
+											BlackjackGui.dealer.endGame(amount, 1);
+											BlackjackGui.getInstance().repaint();
+										} catch(Exception e) {}
+									}
+								}.start();
+								
+								
+								BlackjackGui.getInstance().repaint();
+							}
+					});
+					//BlackjackGui.getInstance().showRulesScreen();
+					//
 
 				}
 				

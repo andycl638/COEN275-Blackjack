@@ -1,7 +1,7 @@
 package blackjack;
 
+import blackjack.GUI.BlackjackGui;
 import blackjack.GUI.DealerPanel;
-
 import javax.swing.*;
 
 public class Dealer {
@@ -237,6 +237,8 @@ public class Dealer {
 		}
 		
 		// show dialog box with result and give user option to play again
-		JOptionPane.showMessageDialog(null, message);
-    }
+		//JOptionPane.showMessageDialog(null, message);
+		BlackjackGui.getInstance().showEndGameScreen(message, "Play Again", () -> BlackjackGui.getInstance().restartGame());
+	}
+
 }

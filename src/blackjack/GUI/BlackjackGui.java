@@ -7,6 +7,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 import blackjack.BlackjackEventHandler;
+import blackjack.BlackjackMain;
 import blackjack.Dealer;
 import blackjack.Deck;
 import blackjack.Player;
@@ -80,6 +81,11 @@ public class BlackjackGui extends JFrame {
 		return instance;
 	}
 	
+	public static void reinit(Dealer dealer, Player player, Deck deck) {
+		instance = null;
+		getInstance(dealer,player,deck);
+		
+	}
 	public static BlackjackGui getInstance(Dealer dealer, Player player, Deck deck) {
 		if(instance == null)
 			instance = new BlackjackGui(dealer, player, deck);
@@ -121,7 +127,12 @@ public class BlackjackGui extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		//this.setBackground(panelBackground);
-		layeredPane = new JLayeredPane();
+		layeredPane = new JLayeredPane() {
+			public void paint(Graphics g) {
+				System.out.println(Thread.currentThread().getName() + "LayeredPane paint");
+				super.paint(g);
+			}
+		};
 		contentPane.add(layeredPane);
 		
 		initializeChildComponents();
@@ -150,7 +161,7 @@ public class BlackjackGui extends JFrame {
 		mainContent.setVisible(false);
 		
 		LOGGER.info("Initializing Dealer");
-		dealerPanel = new DealerPanel();
+		dealerPanel = DealerPanel.getInstance();
 		mainContent.add(dealerPanel);
 		LOGGER.info("Initializing Player");
 		playerPanel = new PlayerPanel(this.player);
@@ -175,16 +186,21 @@ public class BlackjackGui extends JFrame {
 	}
 	
 	public void showPlayerNameScreen() {
-		showOverlay();
-		//playerNamePanel.setVisible(true);
-		
-		PlayerNamePanel pnp = new PlayerNamePanel();
-		pnp.setSize(pnp.getPreferredSize());
-		pnp.setLocation((getSize().width - pnp.getSize().width)/2,
-				(getSize().height - pnp.getSize().height)/2);
-		LOGGER.info(pnp.getBounds().toString());
-		overlay.add(pnp);
-		this.repaint();
+		if(Player.getInstance().getName().length() > 0) {
+			showGameScreen();
+		} else {
+			showOverlay();
+			//playerNamePanel.setVisible(true);
+			
+			PlayerNamePanel pnp = new PlayerNamePanel();
+			pnp.setSize(0,0);
+			//pnp.setPanelSize(getSize());
+			pnp.setLocation((getSize().width - pnp.getPreferredSize().width)/2,
+					(getSize().height - pnp.getPreferredSize().height)/2);
+			LOGGER.info(pnp.getBounds().toString());
+			overlay.add(pnp);
+			this.repaint();
+		}
 	}
 	
 	public void hidePlayerNameScreen() {
@@ -213,25 +229,47 @@ public class BlackjackGui extends JFrame {
 		this.repaint();
 	}
 	
-	public void showEndGameScreen() {
+	public void exitGame() {
+		System.exit(0);
+		
+	}
+	public void showEndGameScreen(String message, String btnText, EndGamePanel.ActionCallback callback) {
 		showOverlay();
-		EndGamePanel egp = new EndGamePanel();
-		egp.setSize(egp.getPreferredSize());
-		egp.setLocation((getSize().width - egp.getSize().width)/2,
-				(getSize().height - egp.getSize().height)/2);
+		if(callback == null) {
+			callback = ()->BlackjackGui.getInstance().exitGame();
+		}
+		
+		EndGamePanel egp = new EndGamePanel(message, btnText, callback);
+		//egp.setSize(egp.getPreferredSize());
+		egp.setSize(0,0);
+		egp.setLocation((getSize().width - egp.getPreferredSize().width)/2,
+				(getSize().height - egp.getPreferredSize().height)/2);
 		overlay.add(egp);		
 		this.repaint();
 	}
 	
 	public void hideEndGameScreen() {
 		layeredPane.remove(overlay);
+		overlay.setVisible(false);
 		overlay = null;
 		//rulesPanel.setVisible(false);
-		this.repaint();
+		layeredPane.repaint();
 	}
 	
-	public void exitGame() {
-		System.exit(0);
+	public void restartGame() {
+		this.setVisible(false);
+		player = Player.getInstance();
+		// set the initial bet. should be passed in to dealer
+		// deck might need to be created outside so that the dealer can have the same deck when a game is finished
+		Player.reinit();
+		Deck deck = new Deck(); //pass to dealer param
+		Dealer dealer = new Dealer(player, deck);
+		
+		// Reinitialize all singleton
+		DealerPanel.reinit();
+		
+		BlackjackGui.reinit(dealer, player, deck);
+		//System.exit(0);
 	}
 	
 	public void showOverlay() {

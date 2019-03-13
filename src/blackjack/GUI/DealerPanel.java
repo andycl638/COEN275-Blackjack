@@ -33,8 +33,21 @@ public class DealerPanel extends GamePanel{
 	private int pControlPanel = 10;
 	public boolean showRules = false;
 	
-	public DealerPanel() {		
+	private static DealerPanel instance;
+	
+	private DealerPanel() {		
 		initialize();
+	}
+	
+	public static DealerPanel getInstance() {
+		if(instance == null)
+			instance = new DealerPanel();
+		return instance;
+	}
+	
+	public static void reinit() {
+		instance = null;
+		instance = getInstance();
 	}
 	
 	public void initialize() {
@@ -52,6 +65,7 @@ public class DealerPanel extends GamePanel{
 		dealerLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		dealerLabel.setVerticalAlignment(SwingConstants.CENTER);
 		dealerLabel.setFont(new Font("Helvetica Neue",Font.PLAIN, 16));
+		dealerLabel.setVisible(false);
 		this.add(dealerLabel);
 		
 		//Creating Deck Panel
@@ -71,7 +85,12 @@ public class DealerPanel extends GamePanel{
 		playerBalance.setText("Balance: $" + Player.getInstance().getBalance());
 	}
 	
-	public void initializeControlPanel() {
+	public void showDealerLabel() {
+		dealerLabel.setVisible(true);
+		this.repaint();
+	}
+	
+	private void initializeControlPanel() {
 		controlPanel = new JPanel();
 		controlPanel.setLayout(null);
 		controlPanel.setOpaque(false);
@@ -87,7 +106,7 @@ public class DealerPanel extends GamePanel{
 		controlPanel.add(exit);
 	}
 	
-	public void initializeHandPanel() {
+	protected void initializeHandPanel() {
 		//Dealer Hand Panel
 		LOGGER.info("INITIALIZING DEALER HAND PANEL");
 		
@@ -105,7 +124,7 @@ public class DealerPanel extends GamePanel{
 
 	}
 	
-	public static void initializeHandPanel2() {
+	protected void initializeHandPanel2() {
 		//Dealer Hand Panel
 		System.out.println(DealerPanel.getDealerHand().getSize().toString());
 		DealerPanel.getDealerHand().removeAll();
@@ -123,8 +142,8 @@ public class DealerPanel extends GamePanel{
 		DealerPanel.getDealerHand().revalidate();
 		
 		// this will show 1 more card
-		DealerPanel.getDealerHand().setSize(new Dimension(312, 97));
-		DealerPanel.getDealerHand().repaint();
+		placeAndResizeComponents();
+		this.repaint();
 		
 		System.out.println(DealerPanel.getDealerHand().toString());
 		dealerHandPanel.setVisible(true);
@@ -139,6 +158,7 @@ public class DealerPanel extends GamePanel{
 		dealerHandPanel.addCard("/cards/back.gif");
 		dealerHandPanel.setVisible(true);
 	}
+	
 	private void addListener() {
 		rules.addMouseListener(new MouseListener() {
 			public void mouseClicked(MouseEvent arg0) {

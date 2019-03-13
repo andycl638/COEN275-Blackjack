@@ -102,10 +102,8 @@ public class BlackjackMain {
 		// deck might need to be created outside so that the dealer can have the same deck when a game is finished
 	//	Deck deck = new Deck(); //pass to dealer param
 		//Dealer dealer = new Dealer(player, bet, deck);
-		
 		BlackjackMain tester = new BlackjackMain();
-		
-		
+
 	//	tester.testDeckAndHand();
 		
 		// the dealer is passed in to the GUI/event handler

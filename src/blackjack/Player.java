@@ -4,7 +4,7 @@ import java.util.*;
 
 
 public class Player {
-	private String name;
+	private String name = "";
 	private double balance = 1000;
 	private ArrayList<Hand> playersHand;
 	private static Player player;
@@ -20,6 +20,9 @@ public class Player {
 		return player;
 	}
 
+	public static void reinit() {
+		player.playersHand.clear();
+	}
 	public String getName() {
 		return this.name;
 	}
