@@ -16,7 +16,7 @@ public class CustomButton extends JLabel {
 	private Color darkgrey = new Color(65,79,88,200);
 	
 	private boolean isImage = true;
-	private String text, path;
+	private String path;
 	private boolean isHighlighted, isPressed;
 	private int value = 0;
 	

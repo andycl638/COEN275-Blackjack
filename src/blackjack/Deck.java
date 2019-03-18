@@ -2,7 +2,6 @@ package blackjack;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Deck {
@@ -30,6 +29,7 @@ public class Deck {
             throw new Exception();
         }
         
+        //This is used to test blackjack case
         /*int randomNum = 0;
     //    int randomNum = ThreadLocalRandom.current().nextInt(0, this.deckOfCards.size() - 1);
         if (counter == 0) {

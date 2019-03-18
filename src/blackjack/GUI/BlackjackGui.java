@@ -2,19 +2,14 @@ package blackjack.GUI;
 
 import java.awt.*;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.event.*;
 
-import blackjack.BlackjackEventHandler;
-import blackjack.BlackjackMain;
+
 import blackjack.Dealer;
 import blackjack.Deck;
 import blackjack.Player;
 
 import java.awt.event.*;
-import java.io.File;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class BlackjackGui extends JFrame {
@@ -37,8 +32,6 @@ public class BlackjackGui extends JFrame {
 	CustomImage background = new CustomImage("resources/background.jpg");
 	
 	//Declare background and foreground colors
-	private Color frameBackground = new Color(102, 0, 34); //brown color
-	private Color panelBackground = new Color(0, 102, 68); //green color
 	private Color overlayColor = new Color(0,0,0,100); //transparent grey
 	
 	//Dealer and Player panel dimensions
@@ -50,9 +43,6 @@ public class BlackjackGui extends JFrame {
 	protected int pRight = 10;
 	protected int gap = 10;
 	protected int pheight, pwidth; //Panels width and height
-	
-	// Declare Event Handler
-	protected BlackjackEventHandler eventHandler = new BlackjackEventHandler();
 	
 	// Declare backend objects
 	protected static Dealer dealer;

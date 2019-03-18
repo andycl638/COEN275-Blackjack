@@ -3,15 +3,11 @@ package blackjack.GUI;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.BufferedReader;
 import java.util.logging.Logger;
 
 import javax.swing.*;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+
 
 public class RulesPanel extends GamePanel{
 	//Setup Logging
