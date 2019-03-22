@@ -4,11 +4,11 @@ import java.awt.*;
 import java.awt.image.*;
 import javax.swing.*;
 import java.io.*;
-//import java.util.*;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
+//creates custom images which are used in custom buttons
 public class CustomImage {
 	private String filename;
 	private BufferedImage image = null;
@@ -18,11 +18,13 @@ public class CustomImage {
 	
 	final private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	
+	//constructor
 	public CustomImage(String filename) {
 		this.filename = filename;
 		readImage();
 	}
 	
+	//	reads image file and creates image
 	private void readImage() {
 		try {
 			image = ImageIO.read(new File(filename));
@@ -39,6 +41,7 @@ public class CustomImage {
 		}
 	}
 	
+	//	creates Image icon for image read by readImage()
 	public ImageIcon getImageIcon() {
 		return new ImageIcon(image.getScaledInstance(width, height, Image.SCALE_SMOOTH));
 	}
@@ -47,6 +50,7 @@ public class CustomImage {
 		return resizedImage;
 	}
 	
+	//	sets size for the image
 	public CustomImage setSize(Dimension dimension) {
 		if(width == 0 || height == 0) return this;
 		height = dimension.height;
@@ -55,6 +59,7 @@ public class CustomImage {
 		return this;
 	}
 	
+	//overloaded method for passing in width and height for resizing image
 	public CustomImage setSize(int width, int height) {
 		if(width == 0 || height == 0) return this;
 		this.height = height;
