@@ -87,9 +87,9 @@ public class BlackjackGui extends JFrame {
 	/**
 	 * 
 	 * Creates an instance of BlackjackGui, if it doesn't exist already
-	 * @param dealer
-	 * @param player
-	 * @param deck
+	 * @param dealer: Dealer object
+	 * @param player: Player object
+	 * @param deck: deck object
 	 * @return
 	 */
 	public static BlackjackGui getInstance(Dealer dealer, Player player, Deck deck) {
