@@ -13,9 +13,8 @@ import java.awt.event.MouseListener;
 import java.util.logging.Logger;
 
 /**
- * 
- * @author Aparna Gangwar
  * Class to create Player Panel
+ * Has aggregation relationship with backend's Player object
  */
 public class PlayerPanel extends GamePanel {
 
@@ -46,9 +45,10 @@ public class PlayerPanel extends GamePanel {
 		initialize();
 	}
 	
+	/**
+	 * Initializes the player panel
+	 */
 	public void initialize() {
-
-		//this.setLayout(null);
 		
 		//Initialize Player details
 		initializePlayerDetailsPanel();
@@ -57,7 +57,6 @@ public class PlayerPanel extends GamePanel {
 		initializeOptionsPanel();
 		
 		// this will be used to manage all the bets and options the player uses
-
 		playerActions(player.getHand().get(0));
 
 	}
@@ -69,7 +68,6 @@ public class PlayerPanel extends GamePanel {
 		playerDetailsPanel = new JPanel();
 		
 		playerDetailsPanel.setLayout(null);
-		//playerDetailsPanel.setBackground(super.panelBackground);
 		playerDetailsPanel.setOpaque(false);
 		playerDetailsPanel.setBorder(new BevelBorder(10));
 		
@@ -127,10 +125,7 @@ public class PlayerPanel extends GamePanel {
 	
 	/**
 	 * Method to initialize player hands.
-	 * Playerhands is the main panel which will contain playerHandPanel1 and playerHandPanel2.
-	 * Initially, playerHandPanel2 stays empty. 
-	 * In case of a split, playerHandPanel2 gets card and a gap is inserted between the two hands.
-	 * Split is checked through boolean isSplit.
+	 * Playerhands is the main panel which will contain playerHandPanel1
 	 */
 	public void initializePlayerHands() {
 		playerHandsPanel = new JPanel();
@@ -144,6 +139,10 @@ public class PlayerPanel extends GamePanel {
 		this.add(playerHandsPanel);
 	}
 	
+	/**
+	 * Initialize options panel
+	 * The panel on bottom right which has hit, stand, deal, surrender and double buttons
+	 */
 	public void initializeOptionsPanel() {
 		optionsPanel = new JPanel();
 		
@@ -164,7 +163,15 @@ public class PlayerPanel extends GamePanel {
 		optionsPanel.add(surrender);
 	}
 	
+	/**
+	 * Adds action listeners to all the buttons in player panel like bet buttons and action buttons
+	 * @param hand
+	 */
 	private void playerActions(Hand hand) {
+		
+		//Add mouse listener to all the bet buttons
+		//On clicking any bet button, their value gets added to current bet
+		//Current bet is displayed in the playerBet label
 		betOne.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -275,6 +282,78 @@ public class PlayerPanel extends GamePanel {
 			public void mouseReleased(MouseEvent arg0) {}
 		});
 		
+		//Deal can only be clicked once
+		//On clicking deal, it gets disabled along with the bet buttons
+		//The cards for dealer and player's panel are added to their respective hand panels
+		//All the components are placed, resized and repainted
+		deal.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				try {
+					if(deal.isEnabled()) {
+						System.out.println("show cards " + hand.getHandValue());
+						deal.setEnabled(false);
+						betOne.setEnabled(false);
+						betFive.setEnabled(false);
+						betTen.setEnabled(false);
+						betTwentyFive.setEnabled(false);
+						betFifty.setEnabled(false);
+						for (Card c : player.getHand().get(0).getHand()) {
+							playerHandPanel1.addCard(c.getImagePath());
+						}
+						
+						//Add playerHandPanel 1 & 2 to playerHandsPanel
+						playerHandsPanel.add(playerHandPanel1);
+						playerName.setText(player.getName() + ": " + player.getHand().get(0).getHandValue());
+						DealerPanel.getInstance().showDealerLabel();
+						
+						// display dealers hand
+						DealerPanel.getDealerHand().setVisible(true);
+						placeAndResizeComponents();
+						repaint();
+					}
+       			} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+				//if the player gets blackjack, the dialog box with congratulatory message shows up
+				//on clicking the button in the dialog, it is hidden and we use multi-threading to display a second information 
+				//dialog box with the amount the player has won
+				if (BlackjackGui.dealer.getIsBlackjack()) {
+					double amount = BlackjackGui.player.getHand().get(0).getBet() * 1.5;
+					BlackjackGui.getInstance().showEndGameScreen("Congratulations it's a BLACKJACK!", "OKAY", new EndGamePanel.ActionCallback() {
+							@Override
+							public void callback() {
+								BlackjackGui.getInstance().hideEndGameScreen();
+								
+								// Multi-threading for painting end game screen
+								new Thread() {
+									public void run() {
+										try {
+											Thread.sleep(1000);
+											BlackjackGui.dealer.endGame(amount, 1);
+											BlackjackGui.getInstance().repaint();
+										} catch(Exception e) {}
+									}
+								}.start();
+								BlackjackGui.getInstance().repaint();
+							}
+					});
+				}
+			}
+			@Override
+			public void mouseEntered(MouseEvent arg0) {}
+			@Override
+			public void mouseExited(MouseEvent arg0) {}
+			@Override
+			public void mousePressed(MouseEvent arg0) {}
+			@Override
+			public void mouseReleased(MouseEvent arg0) {}
+		});
+		
+		//disables doubleDown and surrender as they can be clicked only until first hit
+		//add the card that was dealt to players hand
+		//check for bust, if yes, call Dealer's endGame
 		hit.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -299,7 +378,7 @@ public class PlayerPanel extends GamePanel {
 						if(BlackjackGui.dealer.bust(hand))
 						{
 							BlackjackGui.dealer.endGame(-hand.getBet(), -1);
-              BlackjackGui.getInstance().dealerPanel.setBalance();
+							BlackjackGui.getInstance().dealerPanel.setBalance();
 						}
 					}
 
@@ -319,20 +398,19 @@ public class PlayerPanel extends GamePanel {
 			public void mouseReleased(MouseEvent arg0) {}
 		});
 		
+		//the player stops playing
+		//dealer gets the play and starts hitting
+		//based on what the game result is, result is populated and it is used to call end game
 		stand.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				
-				
 				try {
-
-
 					if (deal.isEnabled()==false){
 						System.out.println("player stops and gives control to dealer: " + hand.getHandValue());
 						int result=BlackjackGui.dealer.dDecision(hand);
 
 						System.out.println("show dealer hand");
-						DealerPanel.getInstance().initializeHandPanel2();
+						DealerPanel.getInstance().reinitializeHandPanel();
 						if (result == 0){
 							BlackjackGui.dealer.endGame(0, result);	// tie, hand values are 18 or higher
 						}else if (result == -1) {
@@ -343,10 +421,8 @@ public class PlayerPanel extends GamePanel {
 							BlackjackGui.dealer.endGame(0, result);	//System.out.println("Game Broke");
 						}
 					}
-          BlackjackGui.getInstance().dealerPanel.setBalance();
-
+					BlackjackGui.getInstance().dealerPanel.setBalance();
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -360,113 +436,14 @@ public class PlayerPanel extends GamePanel {
 			public void mouseReleased(MouseEvent arg0) {}
 		});
 		
-		deal.addMouseListener(new MouseListener() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				
-				
-				try {
-					if(deal.isEnabled()) {
-						System.out.println("show cards " + hand.getHandValue());
-						deal.setEnabled(false);
-						betOne.setEnabled(false);
-						betFive.setEnabled(false);
-						betTen.setEnabled(false);
-						betTwentyFive.setEnabled(false);
-						betFifty.setEnabled(false);
-						for (Card c : player.getHand().get(0).getHand()) {
-							playerHandPanel1.addCard(c.getImagePath());
-						}
-
-
-						//Add playerHandPanel 1 & 2 to playerHandsPanel
-						playerHandsPanel.add(playerHandPanel1);
-
-						playerName.setText(player.getName() + ": " + player.getHand().get(0).getHandValue());
-						DealerPanel.getInstance().showDealerLabel();
-						// display dealers hand
-						DealerPanel.getDealerHand().setVisible(true);
-
-						placeAndResizeComponents();
-						repaint();
-					}
-       			} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				if (BlackjackGui.dealer.getIsBlackjack()) {
-					double amount = BlackjackGui.player.getHand().get(0).getBet() * 1.5;
-					//JOptionPane.showMessageDialog(null, "Congratulations it's a BLACKJACK!");
-					BlackjackGui.getInstance().showEndGameScreen("Congratulations it's a BLACKJACK!", "OKAY", new EndGamePanel.ActionCallback() {
-							@Override
-							public void callback() {
-								BlackjackGui.getInstance().hideEndGameScreen();
-								
-								new Thread() {
-									public void run() {
-										try {
-											Thread.sleep(1000);
-											BlackjackGui.dealer.endGame(amount, 1);
-											BlackjackGui.getInstance().repaint();
-										} catch(Exception e) {}
-									}
-								}.start();
-								
-								
-								BlackjackGui.getInstance().repaint();
-							}
-					});
-					//BlackjackGui.getInstance().showRulesScreen();
-					//
-
-				}
-				
-				
-			}
-			@Override
-			public void mouseEntered(MouseEvent arg0) {}
-			@Override
-			public void mouseExited(MouseEvent arg0) {}
-			@Override
-			public void mousePressed(MouseEvent arg0) {}
-			@Override
-			public void mouseReleased(MouseEvent arg0) {}
-		});
-		
-		surrender.addMouseListener(new MouseListener() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				try {
-					if (deal.isEnabled()==false && player.getHand().get(0).getHand().size()<=2 ){
-						//System.out.println("Player hand size:"+player.getHand().get(0).getHand().size();
-						System.out.println("player stops and gives control to dealer: " + hand.getHandValue());
-						BlackjackGui.dealer.surrender(hand);
-
-						// disable buttons on player panel
-						//check bust for dealer hand
-					}
-
-					
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			@Override
-			public void mouseEntered(MouseEvent arg0) {}
-			@Override
-			public void mouseExited(MouseEvent arg0) {}
-			@Override
-			public void mousePressed(MouseEvent arg0) {}
-			@Override
-			public void mouseReleased(MouseEvent arg0) {}
-		});
-		
+		//Doubles the players bet and resets the playerBet label
 		doubleDown.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 					
 				try {
+					// disable buttons on player panel
+					//check bust for dealer hand
 					if(deal.isEnabled()==false && player.getHand().get(0).getHand().size()<=2){
 							if(hand.getHand().size()<=2) {
 							System.out.println("player doubles bet(before): " + hand.getBet());
@@ -475,13 +452,31 @@ public class PlayerPanel extends GamePanel {
 							repaint();
 							System.out.println("player doubles bet(after): " + hand.getBet());
 						}
-						// disable buttons on player panel
-						//check bust for dealer hand
-
 					}
-
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			@Override
+			public void mouseEntered(MouseEvent arg0) {}
+			@Override
+			public void mouseExited(MouseEvent arg0) {}
+			@Override
+			public void mousePressed(MouseEvent arg0) {}
+			@Override
+			public void mouseReleased(MouseEvent arg0) {}
+		});
+		
+		//Calls dealer's surrender method
+		surrender.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				try {
+					if (deal.isEnabled()==false && player.getHand().get(0).getHand().size()<=2 ){
+						System.out.println("player stops and gives control to dealer: " + hand.getHandValue());
+						BlackjackGui.dealer.surrender(hand);
+					}
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}

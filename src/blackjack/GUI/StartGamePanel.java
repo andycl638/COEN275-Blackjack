@@ -4,9 +4,9 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.logging.Logger;
-
 import javax.swing.*;
 
+//This Class creates Start game panel
 public class StartGamePanel extends GamePanel{
 	final private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	
@@ -25,6 +25,8 @@ public class StartGamePanel extends GamePanel{
 	public StartGamePanel() {
 		initialize();
 	}
+	
+	//Initializes the start game panel and its components
 	@Override
 	public void initialize() {
 		controlPanel = new JPanel();
@@ -34,7 +36,6 @@ public class StartGamePanel extends GamePanel{
 		banner = new CustomButton("resources/startLabel.png");
 		
 		startGame = new CustomButton("Start game", false);
-		//startGame.setFont(new Font("Monospaced", Font.ITALIC+Font.BOLD, 20));
 		rules = new CustomButton("Rules", false);
 		exit = new CustomButton("Exit", false);
 		
@@ -45,9 +46,9 @@ public class StartGamePanel extends GamePanel{
 		controlPanel.add(startGame);
 		this.add(banner);
 		this.add(controlPanel);
-		//placeAndResizeComponents();
 	}
 
+	// Action Listeners for Start Game, Rules and Exit button
 	private void addListener() {
 		startGame.addMouseListener(new MouseListener() {
 			public void mouseClicked(MouseEvent arg0) {
@@ -83,9 +84,9 @@ public class StartGamePanel extends GamePanel{
 		});
 	}
 	
+	//	This method places and resizes the components
 	@Override
 	public void placeAndResizeComponents() {
-		// TODO Auto-generated method stub
 		background.setSize(this.getSize());
 		banner.setSize(this.getWidth()/2,this.getHeight()/7);
 		banner.setLocation((this.getWidth() - banner.getWidth())/2, pBannerTop);
@@ -111,6 +112,7 @@ public class StartGamePanel extends GamePanel{
 				);
 	}
 	
+	//paints the background image on the panel
 	public void paint(Graphics g) {
 		super.paint(g);
 		g.drawImage(background.getImage(), 0, 0, null);

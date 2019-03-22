@@ -11,10 +11,9 @@ import java.util.logging.Logger;
 
 import blackjack.Card;
 import blackjack.Player;
+
 /**
- * 
- * @author Aparna Gangwar
- *	Class to create Dealer Panel.
+ *	Class to create Dealer Panel(Singleton).
  */
 public class DealerPanel extends GamePanel{
 	//Setup Logging
@@ -39,17 +38,27 @@ public class DealerPanel extends GamePanel{
 		initialize();
 	}
 	
+	/**
+	*	If instance of DealerPanel is not created then creates it
+	*   otherwise returns the instance of DealerPanel   
+	*/
 	public static DealerPanel getInstance() {
 		if(instance == null)
 			instance = new DealerPanel();
 		return instance;
 	}
 	
+	/**
+	 * Sets current instance to null and creates new instance of DealerPanel
+	 */
 	public static void reinit() {
 		instance = null;
 		instance = getInstance();
 	}
 	
+	/**
+	 * 	Creates and initializes the components of Dealer Panel
+	 */
 	public void initialize() {
 		//Initialize player's current balance
 		playerBalance = new JLabel("Balance: $" + Player.getInstance().getBalance());
@@ -81,6 +90,10 @@ public class DealerPanel extends GamePanel{
 		initializeControlPanel();
 		initializeHandPanel();
 	}
+	
+	/**
+	 * Sets the player balance Jlabel
+	 */
 	public void setBalance() {
 		playerBalance.setText("Balance: $" + Player.getInstance().getBalance());
 	}
@@ -90,6 +103,9 @@ public class DealerPanel extends GamePanel{
 		this.repaint();
 	}
 	
+	/**
+	 * 	Creates and initialises control panel used for rules and exit custom button
+	 */
 	private void initializeControlPanel() {
 		controlPanel = new JPanel();
 		controlPanel.setLayout(null);
@@ -106,6 +122,9 @@ public class DealerPanel extends GamePanel{
 		controlPanel.add(exit);
 	}
 	
+	/**
+	 * 	Creates and initializes dealer hand panel
+	 */
 	protected void initializeHandPanel() {
 		//Dealer Hand Panel
 		LOGGER.info("INITIALIZING DEALER HAND PANEL");
@@ -124,7 +143,10 @@ public class DealerPanel extends GamePanel{
 
 	}
 	
-	protected void initializeHandPanel2() {
+	/**
+	 * reinitialize hand panel and add all the dealt cards to it when stand is clicked
+	 */
+	protected void reinitializeHandPanel() {
 		//Dealer Hand Panel
 		System.out.println(DealerPanel.getDealerHand().getSize().toString());
 		DealerPanel.getDealerHand().removeAll();
@@ -154,6 +176,9 @@ public class DealerPanel extends GamePanel{
 		return dealerHandPanel;
 	}
 	
+	/**
+	 * adds one static hidden card to dealers hand
+	 */
 	public static void addDealerCards() {
 		dealerHandPanel.addCard("/cards/back.gif");
 		dealerHandPanel.setVisible(true);
@@ -182,6 +207,9 @@ public class DealerPanel extends GamePanel{
 		});
 	}
 	
+	/**
+	 * Place and resize all the dealer panel components
+	 */
 	public void placeAndResizeComponents() {		
 		playerBalance.setLocation(0,0);
 		playerBalance.setSize(playerBalance.getPreferredSize());

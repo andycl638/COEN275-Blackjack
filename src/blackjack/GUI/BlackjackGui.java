@@ -12,6 +12,11 @@ import blackjack.Player;
 import java.awt.event.*;
 import java.util.logging.Logger;
 
+/**
+ * 
+ * Main GUI class that calls and places the components on the frame
+ * Singleton class: there can only be one instance of this class through the game
+ */
 public class BlackjackGui extends JFrame {
 	//Setup Logging
 	final private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -50,7 +55,7 @@ public class BlackjackGui extends JFrame {
 	protected static Deck deck;
 
 	/**
-	 * Create the main frame.
+	 * Creates the main frame.
 	 */
 	private BlackjackGui(Dealer dealer, Player player, Deck deck) {
 		super("BlackJack- COEN 275");
@@ -67,15 +72,26 @@ public class BlackjackGui extends JFrame {
 		}
 	}
 	
+	/**
+	 * returns instance of blackjackGui
+	 * @return
+	 */
 	public static BlackjackGui getInstance() {
 		return instance;
 	}
-	
 	public static void reinit(Dealer dealer, Player player, Deck deck) {
 		instance = null;
-		getInstance(dealer,player,deck);
-		
+		getInstance(dealer,player,deck);	
 	}
+	
+	/**
+	 * 
+	 * Creates an instance of BlackjackGui, if it doesn't exist already
+	 * @param dealer: Dealer object
+	 * @param player: Player object
+	 * @param deck: deck object
+	 * @return
+	 */
 	public static BlackjackGui getInstance(Dealer dealer, Player player, Deck deck) {
 		if(instance == null)
 			instance = new BlackjackGui(dealer, player, deck);
@@ -84,23 +100,22 @@ public class BlackjackGui extends JFrame {
 	
 	/**
 	 * Configure the main frame and initialize the dealer and player panels
+	 *
 	 */
 	private void initialize() {
 		
 		//frame = new JFrame();
 		contentPane = this.getContentPane();
 		contentPane.addComponentListener(new ComponentListener() {
-			@Override public void componentHidden(ComponentEvent arg0) {}
-			@Override public void componentMoved(ComponentEvent arg0) {}
-			@Override public void componentResized(ComponentEvent arg0) {
-				// TODO Auto-generated method stub
+			public void componentHidden(ComponentEvent arg0) {}
+			public void componentMoved(ComponentEvent arg0) {}
+			public void componentResized(ComponentEvent arg0) {
 				placeAndResizeComponents();
 				startPanel.placeAndResizeComponents();
 				dealerPanel.placeAndResizeComponents();
 				playerPanel.placeAndResizeComponents();
-				//rulesPanel.placeAndResizeComponents();
 			}
-			@Override public void componentShown(ComponentEvent arg0) {}
+			public void componentShown(ComponentEvent arg0) {}
 		});
 		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -115,8 +130,7 @@ public class BlackjackGui extends JFrame {
 		// Configuration
 		this.setSize(dimension); //Frame Size
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		//this.setBackground(panelBackground);
+
 		layeredPane = new JLayeredPane() {
 			public void paint(Graphics g) {
 				System.out.println(Thread.currentThread().getName() + "LayeredPane paint");
@@ -128,14 +142,15 @@ public class BlackjackGui extends JFrame {
 		initializeChildComponents();
 		if(!isStart) {
 			showGameScreen();
-			//showRulesScreen();
 		}
 		else {
 			showStartScreen();
 		}
-		//placeAndResizeComponents();
 	}
 	
+	/**
+	 * Initialized the start panel, dealer panel, player panel and adds them to layered pane on the same level
+	 */
 	public void initializeChildComponents() {
 		startPanel = new StartGamePanel();
 		startPanel.setVisible(false);
@@ -158,23 +173,32 @@ public class BlackjackGui extends JFrame {
 		mainContent.add(playerPanel);
 		
 		LOGGER.info("Initializing Rules");
-
 		layeredPane.add(startPanel, 1);
 		layeredPane.add(mainContent, 1);
 	}
 	
+	/**
+	 * Shows start panel and hides main panel
+	 */
 	public void showStartScreen() {
 		LOGGER.info("Initializing start panel");
 		startPanel.setVisible(true);
 		mainContent.setVisible(false);
 	}
 	
+	/**
+	 * Shows main panel(game panel) and hides start panel 
+	 */
 	public void showGameScreen() {
 		LOGGER.info("Initializing game panels");
 		startPanel.setVisible(false);
 		mainContent.setVisible(true);
 	}
 	
+	/**
+	 * Shows the screen with the player name dialog box if the player doesn't exist already
+	 * If the player is already existing, show the game screen
+	 */
 	public void showPlayerNameScreen() {
 		if(Player.getInstance().getName().length() > 0) {
 			showGameScreen();
@@ -193,13 +217,21 @@ public class BlackjackGui extends JFrame {
 		}
 	}
 	
+	/**
+	 * Hides player name screen
+	 * Removes the overlay from layered pane and repaints the base screen 
+	 */
 	public void hidePlayerNameScreen() {
 		layeredPane.remove(overlay);
 		overlay = null;
-		//playerNamePanel.setVisible(false);
 		this.repaint();
 	}
 	
+	/**
+	 * Shows rules dialog box by adding overlay on top of the base screen on the layered pane.
+	 * Adds rules dialog box on top of the overlay.
+	 * Called on click of rules button.
+	 */
 	public void showRulesScreen() {
 		showOverlay();
 		
@@ -212,6 +244,10 @@ public class BlackjackGui extends JFrame {
 		this.repaint();
 	}
 	
+	/**
+	 * Hides the rules dialog box by removing overlay from layered pane.
+	 * Repaints to show the background screen
+	 */
 	public void hideRulesScreen() {
 		layeredPane.remove(overlay);
 		overlay = null;
@@ -219,10 +255,20 @@ public class BlackjackGui extends JFrame {
 		this.repaint();
 	}
 	
+	/**
+	 * Called on clicking exit buttons
+	 */
 	public void exitGame() {
 		System.exit(0);
 		
 	}
+	
+	/**
+	 * Calls the endGameScreen
+	 * @param message: The message that needs to be displayed in the dialog box
+	 * @param btnText: the btn text that needs to be shown
+	 * @param callback the method that needs to be called on the press of the button
+	 */
 	public void showEndGameScreen(String message, String btnText, EndGamePanel.ActionCallback callback) {
 		showOverlay();
 		if(callback == null) {
@@ -238,6 +284,9 @@ public class BlackjackGui extends JFrame {
 		this.repaint();
 	}
 	
+	/**
+	 * Hides the end game dialog. Only used in case of blackjack when we show two dialog boxes
+	 */
 	public void hideEndGameScreen() {
 		layeredPane.remove(overlay);
 		overlay.setVisible(false);
@@ -246,9 +295,13 @@ public class BlackjackGui extends JFrame {
 		layeredPane.repaint();
 	}
 	
+	/**
+	 * Called when player clicks on "Play Again" in end game dialog box
+	 */
 	public void restartGame() {
 		this.setVisible(false);
 		player = Player.getInstance();
+		
 		// set the initial bet. should be passed in to dealer
 		// deck might need to be created outside so that the dealer can have the same deck when a game is finished
 		Player.reinit();
@@ -262,6 +315,11 @@ public class BlackjackGui extends JFrame {
 		//System.exit(0);
 	}
 	
+	/**
+	 * Creates a translucent JPanel to be displayed on top of the current screen
+	 * Adds it on a higher level on layered pane to display it over the base screen.
+	 * All the dialog box type screens: rules panel, playername panel, end game panel; are added on top of it.
+	 */
 	public void showOverlay() {
 		overlay = new JPanel();
 		overlay.setLayout(null);
@@ -281,6 +339,9 @@ public class BlackjackGui extends JFrame {
 		});
 	}
 	
+	/**
+	 * Resizes and places the components initialized to the class
+	 */
 	public void placeAndResizeComponents() {
 		LOGGER.info("Size of main frame: "+this.getSize().toString());
 		
