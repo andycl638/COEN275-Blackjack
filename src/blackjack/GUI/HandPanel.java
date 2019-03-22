@@ -13,6 +13,9 @@ public class HandPanel extends JPanel{
 	public Color c1 = new Color(0, 128, 0); //green background color
 	
 	
+	/**
+	 * Builds the HandPanel
+	 */
 	HandPanel() {
 		initialize();
 	}
@@ -39,6 +42,9 @@ public class HandPanel extends JPanel{
 		return "hand size: " + this.cards.size();
 	}
 	
+	/**
+	 * Places and resizes the components dynamically as they are added to the screen
+	 */
 	public void placeAndResizeComponents() {
 		int x = 0;
 		int y = 0;

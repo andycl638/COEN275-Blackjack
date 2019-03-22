@@ -24,6 +24,9 @@ public class RulesPanel extends GamePanel{
 	private int width = 800;
 	private int height = 400;
 	
+	/**
+	 * Builds the rules panel
+	 */
 	public RulesPanel() {
 		LOGGER.info("In constructor 1 for rules panel");
 		this.setBackground(grey);
@@ -33,6 +36,9 @@ public class RulesPanel extends GamePanel{
 		initialize();
 	}
 
+	/**
+	 * Initializes the rules panel 
+	 */
 	public void initialize() {
 		/*{
 			public void paint(Graphics g) {
@@ -85,6 +91,9 @@ public class RulesPanel extends GamePanel{
 		this.add(dialogControl);
 	}
 	
+	/**
+	 * Adds the action listener to the components of the game panel
+	 */
 	private void addListener() {
 		RulesPanel that = this;
 		
@@ -97,15 +106,23 @@ public class RulesPanel extends GamePanel{
 			public void mousePressed(MouseEvent arg0) {}
 			public void mouseReleased(MouseEvent arg0) {}});
 	}
-
+	/**
+	 * Gets the preferred size of the components 
+	 */
 	public Dimension getPreferredSize() {
 		return new Dimension(width,height + close.getPreferredSize().height + 40);
 	}
 	
+	/**
+	 * Sets the preferred size for the components
+	 */
 	public void setSize(Dimension d) {
 		super.setSize(d);
 		placeAndResizeComponents();
 	}
+	/**
+	 * Places and resizes the components dynamically as they are added to the screen
+	 */
 	@Override
 	public void placeAndResizeComponents() {
 		LOGGER.info("in placeandresizecomponents");
@@ -124,6 +141,10 @@ public class RulesPanel extends GamePanel{
 		dialogControl.setLocation(0, height);
 	}
 	
+	/**
+	 * Sets the text for the rules of the game
+	 * @return string text
+	 */
 	public String getRulesText() {
 		String text = "<html>"+
 					"<br/><br/>"+
