@@ -57,6 +57,12 @@ public class EndGamePanel extends GamePanel{
 			}
 		});
 		
+		/**
+		 * EndGamePanel is built
+		 * @param message
+		 * @param btnText
+		 * @param callback
+		 */
 		public EndGamePanel(String message, String btnText, ActionCallback callback) {
 			egp = this;
 			LOGGER.info("In constructor 1 for endgame panel");
@@ -71,7 +77,9 @@ public class EndGamePanel extends GamePanel{
 			initialize();
 			tm.start();
 		}
-
+		/**
+		 * Initializes the components of the EndGamePanel
+		 */
 		public void initialize() {
 			result = new JLabel();
 			String text = "<html>"+
@@ -98,6 +106,9 @@ public class EndGamePanel extends GamePanel{
 			this.add(dialogControl);
 		}
 	
+		/**
+		 * Adds the action listener to the components of the game panel
+		 */
 		private void addListener() {
 			btn.addMouseListener(new MouseListener() {
 				public void mouseClicked(MouseEvent arg0) {
@@ -109,17 +120,26 @@ public class EndGamePanel extends GamePanel{
 				public void mousePressed(MouseEvent arg0) {}
 				public void mouseReleased(MouseEvent arg0) {}});
 		}
-
+		
+		/**
+		 * Gets the preferred size of the components 
+		 */
 		public Dimension getPreferredSize() {
 			return new Dimension(200,40 + btn.getPreferredSize().height + 60);
 		}
 		
+		/**
+		 * Sets the preferred size for the components
+		 */
 		public void setSize(Dimension d) {
 			super.setSize(d);
 			placeAndResizeComponents();
 		}
 		
 		@Override
+		/**
+		 * Places and resizes the components dynamically as they are added to the screen
+		 */
 		public void placeAndResizeComponents() {
 			LOGGER.info("in placeandresizecomponents");
 			
@@ -133,6 +153,9 @@ public class EndGamePanel extends GamePanel{
 			dialogControl.setLocation(0, height+padding);
 		}
 		
+		/**
+		 * Paints the JComponents according to the properties set
+		 */
 		public void paint(Graphics g) {
 			super.paint(g); 
 			g.setColor(super.grey);

@@ -57,6 +57,9 @@ public class PlayerNamePanel extends GamePanel{
 			
 		});
 		
+		/**
+		 * Builds the playerNamePanel
+		 */
 		public PlayerNamePanel() {
 			pnp = this;
 			LOGGER.info("In constructor 1 for playername panel");
@@ -67,7 +70,10 @@ public class PlayerNamePanel extends GamePanel{
 			initialize();
 			tm.start();
 		}
-
+		
+		/**
+		 * Initializes the components of the PlayerNamePanel
+		 */
 		public void initialize() {
 			name = new JTextField() {
 				private String placeholder = "Enter Your Name";
@@ -111,6 +117,9 @@ public class PlayerNamePanel extends GamePanel{
 			
 		}
 		
+		/**
+		 * Adds the action listener to the components of the game panel
+		 */
 		private void addListener() {
 			close.addMouseListener(new MouseListener() {
 				public void mouseClicked(MouseEvent arg0) {
@@ -126,16 +135,24 @@ public class PlayerNamePanel extends GamePanel{
 				public void mousePressed(MouseEvent arg0) {}
 				public void mouseReleased(MouseEvent arg0) {}});
 		}
-
+		/**
+		 * Gets the preferred size of the components 
+		 */
 		public Dimension getPreferredSize() {
 			return new Dimension(200,40 + close.getPreferredSize().height + 30);
 		}
 		
+		/**
+		 * Sets the preferred size for the components
+		 */
 		public void setSize(Dimension d) {
 			super.setSize(d);
 			placeAndResizeComponents();
 		}
 		
+		/**
+		 * Places and resizes the components dynamically as they are added to the screen
+		 */
 		@Override
 		public void placeAndResizeComponents() {
 			LOGGER.info("in placeandresizecomponents");
@@ -152,7 +169,10 @@ public class PlayerNamePanel extends GamePanel{
 					);
 			dialogControl.setLocation(0, 40);
 		}
-		
+				
+		/**
+		 * Paints the JComponents according to the properties set
+		 */
 		public void paint(Graphics g) {
 			super.paint(g); // This was missing
 			g.setColor(super.grey);
