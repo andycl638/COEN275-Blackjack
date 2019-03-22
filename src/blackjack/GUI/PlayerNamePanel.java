@@ -11,15 +11,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.logging.Logger;
 
-import javax.swing.BorderFactory;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.Timer;
-import javax.swing.border.Border;
 
 
 import blackjack.Player;
@@ -31,14 +25,10 @@ public class PlayerNamePanel extends GamePanel{
 		//declare components
 		private JPanel dialogControl;
 		private CustomButton close;
-		private JScrollPane scrollPane; 
 		private JTextField name;
 		
 		//declare component configuration
 		int scrollBarWidth = 10;
-		private int width = 0;
-		private int height = 0;
-		private String placeholder = "Enter your name";
 		private int opacity = 255;
 		private PlayerNamePanel pnp;
 		private Dimension d = new Dimension(0,0);

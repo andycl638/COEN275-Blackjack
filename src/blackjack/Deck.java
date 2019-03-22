@@ -2,13 +2,15 @@ package blackjack;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Deck {
     private ArrayList<Card> deckOfCards = new ArrayList<Card>();
     int counter = 0;
     
+    /**
+     * Deck is built
+     */
     public Deck() {
         HashMap<Integer, Character> intSuitMapping=new HashMap<Integer, Character>();
         intSuitMapping.put(0,'s'); //spade card
@@ -23,6 +25,11 @@ public class Deck {
         System.out.println("Created deck of "+deckOfCards.size()+" cards");
     }
     
+    /**
+     * Randomly select a card and remove it from the deck
+     * @return a random card from the deck
+     * @throws Exception
+     */
     public Card deal() throws Exception {
     
         if(this.deckOfCards.size()<1){
@@ -30,6 +37,7 @@ public class Deck {
             throw new Exception();
         }
         
+        //This is used to test blackjack case
         /*int randomNum = 0;
     //    int randomNum = ThreadLocalRandom.current().nextInt(0, this.deckOfCards.size() - 1);
         if (counter == 0) {
