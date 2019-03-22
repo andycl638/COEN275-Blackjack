@@ -2,20 +2,20 @@ package blackjack;
 
 import blackjack.GUI.BlackjackGui;
 import blackjack.GUI.DealerPanel;
-import javax.swing.*;
 
 public class Dealer {
     private Hand dealersHand = new Hand();
     private static Deck deck;
     private Player player;
-    private boolean playerStand = false;
     private boolean isBlackjack = false;
-    private int result = Integer.MIN_VALUE;
 
-    // this is called at the beginning of the game. It sets up the game
-    // shuffle deck
-    // deal hand to player and dealer
+    // this is called at the beginning of the game. 
     // check if there is a blackjack or bust right away
+    /**
+     * It sets up the game. Deal hand to player and dealer
+     * @param player - The player object
+     * @param deck - The deck object
+     */
     public Dealer(Player player, Deck deck) {
         // constructs the deck and "shuffle"
         this.deck = deck;
@@ -68,15 +68,28 @@ public class Dealer {
 
     }
     
+    /**
+     * Get the value of blackjack flag
+     * @return blackjack exist flag
+     */
     public boolean getIsBlackjack() {
     	return this.isBlackjack;
     }
     
+    /**
+     * Get hand object for dealer
+     * @return dealers hand
+     */
     public Hand getDealerHand() {
     	return this.dealersHand;
     }
 
-    // pass in arraylist to compare both player hands and give result
+    // pass in arraylist to 
+    /**
+     * compare player and dealer hand and give result
+     * @param playerHand Players hand
+     * @return 0 = tie; 1 = player win; -1 = player lost;
+     */
     public int dDecision(Hand playerHand) {
         int result = 0;
         
@@ -84,16 +97,14 @@ public class Dealer {
         	result = compareHands(playerHand);
         	
         	if (result == 0){
-        		//endGame(0, result); // tie, hand values are 18 or higher
+        		// tie, hand values are 18 or higher
         		System.out.println("dDecision: tie");
         		return result;
-        		//break;
         	}
         	else if (result == -1) {
-        		//endGame(-playerHand.getBet(), result); // player lost, dealer has higher hand value
+        	    // player lost, dealer has higher hand value
         		System.out.println("dDecision: dealer win");
         		return result;
-        		//break;
         	}
         	else if (result == 1) {
         		Card c = hit(this.dealersHand); // deal a card to dealer hand 
@@ -102,27 +113,24 @@ public class Dealer {
         		System.out.println(DealerPanel.getDealerHand().toString());
         		System.out.println("new dealer value: " + this.dealersHand.getHandValue());
         		
-        		//DealerPanel.getDealerHand().placeAndResizeComponents();
-        		
         		System.out.println("display card: " + c.getImagePath());
-        		//DealerPanel.getDealerHand().repaint();
-        		
+   
             	if(bust(this.dealersHand)) {
-            		//endGame(playerHand.getBet(), result); // player wins because dealer busted
             		System.out.println("dDecision: dealer bust");
             		return result;
-            		//break;
             	}
         	}
-        	else {
-    			//System.out.println("game broke");
+        	else {			
     			return -2;
-    			//break;
     		}
         }
     }
 
-    // Param: Hand, can be player or dealer
+    /**
+     * Deal a new card to the hand
+     * @param hand can be player or dealer
+     * @return a card object
+     */
     public static Card hit(Hand hand) {
     	Card c = null;
         try {
@@ -137,47 +145,43 @@ public class Dealer {
         return c;
     }
     
-    // first time
+    /**
+     * double the bet from the player
+     * @param playerHand - update the bet of the hand
+     */
     public void doubleDown(Hand playerHand) {
         //double the bet
         playerHand.setBet(playerHand.getBet() * 2);
     }
 
-    //first time
+    /**
+     * Player loses the game
+     * @param playerHand - update the bet of the hand
+     */
     public void surrender(Hand playerHand) {
         double amount = -(playerHand.getBet() / 2);
     	 // the player gets half of his bet amount back and it is added to the balance
         endGame(amount, -1);
     }
 
-    //first time
-    public void split(Hand playerHand) {
-        //add a new hand to player
-        Hand newHand = new Hand(); //creating a new hand object
-        Card splitCard = playerHand.getHand().remove(0);
-        
-        newHand.addCards(splitCard); //adding the previous card to the new hand
-        
-        try {
-        	// dealing a new card to both hands
-			newHand.addCards(this.deck.deal());
-			playerHand.addCards(this.deck.deal());
-		} catch (Exception e) {
-			
-			e.printStackTrace();
-		}
-        
-        this.player.addHand(newHand); //adding the new hand to the player 
-    }
-
+    /**
+     * check if the hand value is 21
+     * @param hand - get the hand value
+     * @return true if it is 21
+     */
     public boolean is21(Hand hand) {
+    	// hand value is 21
         if (hand.getHandValue() == 21) {
            return true;
         }
         return false;
     }
 
-
+    /**
+     * check if hand value is over 21
+     * @param hand - get the hand value
+     * @return true if it is over 21
+     */
     public boolean bust(Hand hand) {
         // hand value greater than 21 is a bust
         if (hand.getHandValue() > 21) {
@@ -186,11 +190,11 @@ public class Dealer {
         return false;
     }
 
-    //Can return:
-    //	1 for continue
-    //	0 for tie
-    //	-1 for stop
-    // this is only called by the dealer
+    /**
+     * this is only called by the dealer
+     * @param playerHand hand object of the player
+     * @return 1 = continue; 0 = tie; -1 = stop
+     */
     private int compareHands(Hand playerHand) {
         //compare dealers and player's hands total value.
         //return whether dealer needs to continue playing or not.
@@ -211,12 +215,20 @@ public class Dealer {
         return result;
     }
 
-    // the amount won or lost should be calculated in each function else
-    // pass in + or - amount so the balance can get set.
+    /**
+     * the amount won or lost
+     * @param amount - pass in + or - amount so the balance can get set.
+     */
 	private void updateBalance(double amount) {
+		// set player's balance with new amount
 		this.player.setBalance(this.player.getBalance() + amount);
 	}
 	
+	/**
+	 * Determine if the game should end or not.
+	 * @param amount - amount won or lost
+	 * @param result - 0 = tie; 1 = player win; -1 = player lost;
+	 */
 	public void endGame(double amount, int result) {
 		updateBalance(amount);
 		String message = "";
@@ -237,7 +249,6 @@ public class Dealer {
 		}
 		
 		// show dialog box with result and give user option to play again
-		//JOptionPane.showMessageDialog(null, message);
 		BlackjackGui.getInstance().showEndGameScreen(message, "Play Again", () -> BlackjackGui.getInstance().restartGame());
 	}
 
